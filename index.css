@@ -177,6 +177,9 @@ html, body {
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.867);
 }
+
+
+
 .postMenu{
     flex: 1;
     display: flex;
@@ -546,11 +549,17 @@ background-color:#404941;
 
 }
 
+textarea {
+    color: #fff;
+      }
+
+
 #ReplyTextPlace1{
     width:96%;
     height:540px;
     margin:2%;
     background: #191919;
+    
 }
 
 .sumbitCol{
