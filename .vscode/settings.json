@@ -10,5 +10,6 @@
             "username": "carloschan",
             "password": "123456"
         }
-    ]
+    ],
+    "livePreview.defaultPreviewPath": "/Users/carloschan/WSP/project2/index.html"
 }
