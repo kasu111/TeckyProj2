@@ -12,6 +12,10 @@
     />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
       integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
       crossorigin="anonymous"
@@ -21,9 +25,41 @@
     <title>Project2</title>
   </head>
   <body>
+    <div id="newPost" class="none">
+      <div class="animate__animated animate__flash boxPost">
+        <header>
+          <div></div>
+          <div><h3>發表主題</h3></div>
+          <div id="postClose"><i class="fa-solid fa-xmark"></i></div>
+        </header>
+        <main>
+          <form action="" id="postform">
+            <div>
+              <input
+                type="text"
+                class="writeTitle"
+                placeholder="請輸入主題"
+                required
+              />
+              <div></div>
+            </div>
+            <textarea
+              type="text"
+              name=""
+              class="writeText"
+              placeholder="請輸入內文"
+              required
+            ></textarea>
+            <div class="subadd">
+              <input type="submit" class="add" />
+            </div>
+          </form>
+        </main>
+      </div>
+    </div>
     <div class="mainLine">
       <div class="topLine topleft">
-        <div class="dropdown">
+        <div class="dropdown none">
           <button
             type="button"
             class="btn btn-secondary toggle boxShadow"
@@ -104,7 +140,7 @@
             </button>
           </form>
         </div>
-        <div class="loginDiv">
+        <div class="loginDiv none">
           <form action="" class="flex loginForm">
             <div>
               <label for="username">會員 : </label>
@@ -129,7 +165,7 @@
             <input type="submit" class="loginSubmit" />
           </form>
         </div>
-        <div class="flex1 addPage jusbet none">
+        <div class="flex1 addPage jusbet">
           <div>
             <div class="dropdown">
               <button
@@ -160,7 +196,7 @@
           <div class="test1 Showname">
             <h3>iudsffidlasfs</h3>
           </div>
-          <div class="btn btn-secondary toggle boxShadow">
+          <div class="btn btn-secondary toggle boxShadow" id="addPost">
             <i class="fa-solid fa-file-circle-plus"></i>
           </div>
         </div>
@@ -226,5 +262,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="./index.js"></script>
+    <script>
+      import "animate.css";
+    </script>
   </body>
 </html>
