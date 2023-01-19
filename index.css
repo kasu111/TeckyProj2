@@ -394,14 +394,15 @@ background-color:#404941;
     color: #aaa;
     width:auto;
     height: 24px;
-
-    
-    
+    display: flex;
+    justify-content: space-between;
+   
 }
 
 
-.MultiFunction > i{
-    padding: 0 5px;
+.bar > div > i{
+    padding: 0 8px;
+    font-size: 18px;
     
 }
 
