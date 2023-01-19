@@ -4,6 +4,7 @@ body{
     margin: 0;
     background-color: black;
     color: white;
+    position: relative;
 }
 #titlePage{
     background-color:#3d3d3ddd;
@@ -63,7 +64,7 @@ height: 27px;
 }
 .flex{display: flex;}
 .none{
-    display: none;
+    display: none !important;
 }
 .flex1{
     flex:1;
@@ -274,7 +275,87 @@ html, body {
 .alitem{
     align-items: center;
 }  
+#newPost{
+    z-index: 1;
+    background-color: rgba(6, 6, 6, 0.732);
+    position: absolute;
+    right:0;
+    left:0; 
+    top:0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.boxPost{
+    background-color: rgb(71, 71, 71);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.473) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(77, 235, 138, 0.68) 0px 2px 1px, rgba(77, 235, 138, 0.68) 0px 4px 2px, rgba(77, 235, 138, 0.68) 0px 8px 4px, rgba(77, 235, 138, 0.177) 0px 16px 8px, rgba(77, 235, 138, 0.264) 0px 32px 16px,rgba(77, 235, 138, 0.441) 0px -1px 40px 
 
+    /* width: 50%; */
+    /* min-width: 600px; */
+}
+.boxPost header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.boxPost header div{
+    margin:10px 15px;
+}
+.boxPost main ,.subadd{
+    display: flex;
+    justify-content: center;
+}
+
+.writeText{
+    color: rgba(202, 234, 223, 0.719);
+    right: 10px;
+    width: 80%; 
+    min-width: 600px;
+    min-height: 500px;
+    margin: 10px 15px;
+    border-color: rgba(127, 255, 212, 0.669);
+    background-color: rgba(0, 0, 0, 0.217);
+    border-radius: 5px;
+    text-indent: 10px;
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.473) 1px 5px 10px 5px inset;
+}
+header div h3{
+  
+    color:rgba(255, 255, 255, 0.888);
+    font-weight: bold;
+    text-shadow: 0 0 2px rgba(127, 255, 212, 0.888),0 0 5px rgba(127, 255, 212, 0.395); 
+}
+.writeTitle{
+    text-shadow: 0 0 1px rgba(127, 255, 212, 0.13) ;
+    border-top: 1px solid rgba(127, 255, 212, 0.145);
+    border-bottom: 1px solid rgba(127, 255, 212, 0.145);
+    background-color: rgba(0, 0, 0, 0.217);
+    width: 100%;
+    border-right:none;
+    border-left: none;
+    font-size: 20px;
+    font-weight: bolder;
+    padding: 5px 40px;
+    color: rgba(171, 255, 227, 0.719);
+    overflow: auto;
+}
+.add{
+    border-radius: 10px;
+    color: white;
+margin-bottom: 25px;
+width: 93%;
+height: 35px;
+background-color:#404941;
+}
+.add:hover{
+    border: 1px solid rgba(171, 255, 227, 0.719);
+    background-color:#6d87707e;
+    text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
+    box-shadow: 0 0 15px rgba(171, 255, 227, 0.719);
+}
 @media only screen and (max-width: 1390px){
     .loginForm{
         justify-content: center;

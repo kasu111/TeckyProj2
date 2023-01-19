@@ -20,9 +20,11 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
+    "@types/formidable": "^2.0.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "formidable": "^2.1.1",
     "pg": "^8.8.0"
   }
 }

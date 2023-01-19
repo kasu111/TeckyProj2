@@ -19,7 +19,7 @@
     },
     "database": "MySQL",
     "databaseName": "",
-    "canvasType": "ERD",
+    "canvasType": "@vuerd/builtin-generator-code",
     "language": "GraphQL",
     "tableCase": "pascalCase",
     "columnCase": "camelCase",
@@ -209,10 +209,10 @@
           }
         ],
         "ui": {
-          "active": false,
+          "active": true,
           "left": 140.6668,
           "top": 165.1112,
-          "zIndex": 6,
+          "zIndex": 12,
           "widthName": 60,
           "widthComment": 60
         },
