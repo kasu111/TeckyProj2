@@ -3,8 +3,8 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -408.5,
-    "scrollLeft": -490.16666666666674,
+    "scrollTop": -428.5,
+    "scrollLeft": -183.16666666666674,
     "zoomLevel": 0.8,
     "show": {
       "tableComment": true,
@@ -19,7 +19,7 @@
     },
     "database": "MySQL",
     "databaseName": "",
-    "canvasType": "@vuerd/builtin-sql-ddl",
+    "canvasType": "ERD",
     "language": "GraphQL",
     "tableCase": "pascalCase",
     "columnCase": "camelCase",
@@ -235,7 +235,7 @@
           "active": false,
           "left": 601.3894,
           "top": 315.3618,
-          "zIndex": 56,
+          "zIndex": 6,
           "widthName": 60,
           "widthComment": 60
         },
@@ -320,7 +320,7 @@
           "active": false,
           "left": 336.834,
           "top": 97.5,
-          "zIndex": 48,
+          "zIndex": 5,
           "widthName": 61.9559326171875,
           "widthComment": 60
         },
@@ -355,7 +355,7 @@
             "id": "4998397b-b236-4c06-8036-9be0c4cebad3"
           },
           {
-            "name": "body",
+            "name": "title",
             "comment": "",
             "dataType": "TEXT",
             "default": "",
@@ -424,29 +424,6 @@
             "id": "73eb018e-300b-4237-8b9c-30b4844fdc66"
           },
           {
-            "name": "photo",
-            "comment": "",
-            "dataType": "TEXT",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 60,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            },
-            "id": "55b68d00-363b-4df3-be6f-d508558a23bc"
-          },
-          {
             "name": "count_like",
             "comment": "",
             "dataType": "INTEGER",
@@ -474,7 +451,7 @@
           "active": false,
           "left": 41.25,
           "top": 276.8059,
-          "zIndex": 58,
+          "zIndex": 12,
           "widthName": 60,
           "widthComment": 60
         },
@@ -628,7 +605,7 @@
           "active": false,
           "left": 138.1395,
           "top": 744.8337,
-          "zIndex": 3,
+          "zIndex": 8,
           "widthName": 64.62094116210938,
           "widthComment": 60
         },
@@ -713,7 +690,7 @@
           "active": false,
           "left": 1281.5277,
           "top": 1020.1392,
-          "zIndex": 37,
+          "zIndex": 3,
           "widthName": 85.03092956542969,
           "widthComment": 60
         },
@@ -775,7 +752,7 @@
           "active": false,
           "left": 975.9167,
           "top": 65.75,
-          "zIndex": 40,
+          "zIndex": 4,
           "widthName": 60,
           "widthComment": 60
         },
@@ -860,7 +837,7 @@
           "active": false,
           "left": 692.9167,
           "top": 674,
-          "zIndex": 36,
+          "zIndex": 2,
           "widthName": 172.79383850097656,
           "widthComment": 60
         },
@@ -920,7 +897,7 @@
             "73eb018e-300b-4237-8b9c-30b4844fdc66"
           ],
           "x": 471.90887451171875,
-          "y": 324.8059,
+          "y": 319.6809,
           "direction": "right"
         },
         "constraintName": "fk_users_to_posts",
@@ -963,7 +940,7 @@
             "4998397b-b236-4c06-8036-9be0c4cebad3"
           ],
           "x": 256.5794372558594,
-          "y": 468.8059,
+          "y": 448.3059,
           "direction": "bottom"
         },
         "end": {
@@ -1093,7 +1070,7 @@
             "4998397b-b236-4c06-8036-9be0c4cebad3"
           ],
           "x": 471.90887451171875,
-          "y": 420.8059,
+          "y": 405.4309,
           "direction": "right"
         },
         "end": {

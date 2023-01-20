@@ -24,16 +24,23 @@ postClose.addEventListener("click", () => {
 
 })
 
-postPost.addEventListener("submit", async (event) => {
+const ppp = postPost.addEventListener("submit", async (event) => {
     event.preventDefault()
-    const data = event.target
+    console.log(event);
+    // const { data } = event.target
+    const form = event.target;
+    const formData = new FormData(form);
+    // console.log(form);
+    // formData.append("title", form.title.value);
+    // formData.append("posttext", form.posttext.value)
+    // console.log(formData);
     const res = await fetch("/addPost", {
         method: "POST",
-        body: data,
+        body: formData,
     });
     await res.json();
     postPost.reset();
-    await loadpost()
+    // await loadpost()
 })
 // loadpost()
 // async function loadpost() {

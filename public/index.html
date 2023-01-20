@@ -23,6 +23,7 @@
     referrerpolicy="no-referrer"
   />
   <!-- <link rel="stylesheet" href="./index.css" /> -->
+  <link rel="stylesheet" href="./carlos.css">
   <link rel="stylesheet" href="./index.css" />
   <link rel="stylesheet" href="./kevin.css">
   <title>Project2</title>
@@ -39,12 +40,12 @@
         <div id="postClose"><i class="fa-solid fa-xmark"></i></div>
       </header>
       <main>
-        <form action="" id="postform">
+        <form name="postform" id="postform" enctype="multipart/form-data">
           <div>
-            <input type="text" class="writeTitle" placeholder="請輸入主題" required />
+            <input name="title" type="text" class="writeTitle" placeholder="請輸入主題" required />
             <div></div>
           </div>
-          <textarea type="text" name="" class="writeText" placeholder="請輸入內文" required></textarea>
+          <textarea name="posttext" class="writeText" placeholder="請輸入內文" required></textarea>
           <div class="subadd">
             <input type="submit" class="add" />
           </div>

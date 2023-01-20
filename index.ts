@@ -32,7 +32,7 @@ const form = formidable({
   uploadDir,
   keepExtensions: true,
   maxFiles: 1,
-  maxFileSize: 400 * 250 ** 2, // the default limit is 200MB
+  maxFileSize: 400 * 200 ** 2, // the default limit is 200MB
   filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
 let formidable_promise = (req: express.Request) => {
@@ -53,6 +53,8 @@ let formidable_promise = (req: express.Request) => {
       } else if (JSON.stringify({ files }.files) !== "{}") {
         // formidable does not exist fields but exist file
         resolve({ files });
+      } else {
+        resolve({ fields });
       }
     });
   });
@@ -76,20 +78,31 @@ function transfer_formidable_into_obj(form_result: formResult) {
 }
 app.post("/addPost", async (req: express.Request, res: express.Response) => {
   // const content = req.body;
+  // console.log(req);
+
   let formResult: any = await formidable_promise(req);
+  // console.log(formResult);
   let obj: any = transfer_formidable_into_obj(formResult);
-  console.log(obj);
 
   if (obj.hasOwnProperty("image")) {
-    await client.query(
-      `INSERT INTO posts (body,photo,count_like) VALUES ($1,$2,$3)`,
-      [obj.content, obj.image, 0]
-    );
-  } else
     await client.query(`INSERT INTO posts (body,count_like) VALUES ($1,$2)`, [
-      obj.content,
+      obj.title,
       0,
     ]);
+    await client.query(
+      `INSERT INTO comments (body,count_like) VALUES ($1,$2)`,
+      [obj.posttext, 0]
+    );
+  } else {
+    await client.query(`INSERT INTO posts (body,count_like) VALUES ($1,$2)`, [
+      obj.title,
+      0,
+    ]);
+    await client.query(
+      `INSERT INTO comments (body,count_like) VALUES ($1,$2)`,
+      [obj.posttext, 0]
+    );
+  }
   res.status(200).json({
     success: true,
     result: true,
@@ -104,6 +117,6 @@ app.use(express.static(o));
 //   const poster = await client.query("SELECT name,body,created_at, FROM posts");
 // });
 
-server.listen(4000, () => {
-  console.log("running port localhost:4000");
+server.listen(8000, () => {
+  console.log("running port localhost:8000");
 });
