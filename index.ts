@@ -76,14 +76,10 @@ function transfer_formidable_into_obj(form_result: formResult) {
   }
   return result;
 }
+//輸入新post到database
 app.post("/addPost", async (req: express.Request, res: express.Response) => {
-  // const content = req.body;
-  // console.log(req);
-
   let formResult: any = await formidable_promise(req);
-  // console.log(formResult);
   let obj: any = transfer_formidable_into_obj(formResult);
-
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(
       `INSERT INTO posts (body,count_like,user_id) VALUES ($1,$2,$3) RETURNING id`,
@@ -109,16 +105,15 @@ app.post("/addPost", async (req: express.Request, res: express.Response) => {
     message: "success",
   });
 });
-// app.get();
+//post new title到左邊column
+app.get("/addPost", async (req: express.Request, res: express.Response) => {
+  const posttitle = await client.query("SELECT id,content FROM posts");
+});
 let o = path.join(__dirname, "public");
 
 
 
 app.use(express.static(o));
-
-// app.get("/addPost", async (req: express.Request, res: express.Response) => {
-//   const poster = await client.query("SELECT name,body,created_at, FROM posts");
-// });
 
 server.listen(8000, () => {
   console.log("running port localhost:8000");
