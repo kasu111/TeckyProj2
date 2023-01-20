@@ -6,6 +6,8 @@ import formidable from "formidable";
 import { Client } from "pg";
 import dotenv from "dotenv";
 import http from "http";
+import moment from "moment";
+// import { format, formatDistance, formatRelative, subDays } from "date-fns";
 dotenv.config();
 export const client = new Client({
   database: process.env.DB_NAME,
@@ -105,9 +107,37 @@ app.post("/addPost", async (req: express.Request, res: express.Response) => {
     message: "success",
   });
 });
+function timetype(time: any) {
+  let settime = moment(time).format("YYMMDD,h:mm");
+  settime = moment(settime, "YYMMDD,h:mm").fromNow();
+  return settime;
+}
 //post new title到左邊column
 app.get("/addPost", async (req: express.Request, res: express.Response) => {
-  const posttitle = await client.query("SELECT id,content FROM posts");
+  const posttitle = await client.query(
+    "SELECT users.name,count_like,posts.body,users.sex,created_at FROM posts join users on posts.user_id = users.id"
+  );
+
+  let postData = posttitle.rows;
+  postData = postData.map((obj) =>
+    Object.assign(obj, {
+      created_at: timetype(obj.created_at),
+    })
+  );
+
+  postData = postData.map((obj) =>
+    obj.sex
+      ? Object.assign(obj, { meta: "bluecolor" })
+      : Object.assign(obj, { meta: "redcolor" })
+  );
+
+  // console.log(postData);
+
+  res.status(200).json({
+    result: true,
+    message: "success",
+    postData,
+  });
 });
 let o = path.join(__dirname, "public");
 

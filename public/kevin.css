@@ -1,0 +1,19 @@
+.time{
+    font-size: 13px;
+    padding-left: 15px;
+}
+.like{
+    font-size: 20px;
+    padding-right: 5px;
+}
+.bluecolor {
+    /* color:rgb(31, 101, 175); */
+    color:rgb(39, 79, 153);
+    font-weight: bolder;
+    text-shadow: 0 0 5px rgb(201, 217, 252);
+}
+.redcolor{
+    color:rgb(192, 61, 61);
+    font-weight: bolder;
+    text-shadow: 0 0 5px rgb(255, 204, 204);
+}
