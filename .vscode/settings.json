@@ -9,6 +9,16 @@
             "database": "project2",
             "username": "kevin06531",
             "password": "kevin06531"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "project2car",
+            "database": "project2car",
+            "username": "carloschan",
+            "password": "123456"
         }
     ],
     "livePreview.defaultPreviewPath": "/Users/carloschan/WSP/project2/index.html"

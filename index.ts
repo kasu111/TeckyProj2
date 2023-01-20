@@ -6,6 +6,7 @@ import formidable from "formidable";
 import { Client } from "pg";
 import dotenv from "dotenv";
 import http from "http";
+// import { checkPassword } from "./hash";
 dotenv.config();
 export const client = new Client({
   database: process.env.DB_NAME,
@@ -13,6 +14,17 @@ export const client = new Client({
   password: process.env.DB_PASSWORD,
 });
 client.connect();
+
+declare module "express-session" {
+  interface SessionData {
+    users?: {
+      id: string;
+      name: string;
+      // password: string
+    };
+  }
+}
+
 const app = express();
 const server = new http.Server(app);
 // const io = new SocketIO(server);
@@ -111,6 +123,44 @@ app.get("/addPost", async (req: express.Request, res: express.Response) => {
 });
 let o = path.join(__dirname, "public");
 
+//login checkpassword
+ app.post("/login", async (req: express.Request, res: express.Response)=>{
+  const username = req.body.username;
+  const password = req.body.password;
+
+  // 1.Login Success
+  // 2. Wrong User Name
+  // 3. Wrong Password
+
+  const users = await client.query(
+      `select * from users where username = '${username}'`);
+      if(users.rows.length == 0){
+        res.json({
+          success: false,
+          msg: "User doesn't exist!",
+        });
+        return;
+      }
+
+      const user = users.rows[0];
+      const check = await checkPassword(password, user.password);
+      if(!check){
+        res.json({
+          success: false,
+          msg: "Wrong Password!",
+        });
+        return;
+      }
+
+      req.session.users = {id: users.id, name: users.name};
+      //AJAX, Restful
+
+      res.json({
+        success: true,
+      });
+ });
+
+
 
 
 app.use(express.static(o));
@@ -118,3 +168,7 @@ app.use(express.static(o));
 server.listen(8000, () => {
   console.log("running port localhost:8000");
 });
+function checkPassword(password: any, password1: any) {
+  throw new Error("Function not implemented.");
+}
+
