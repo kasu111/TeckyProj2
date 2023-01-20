@@ -121,15 +121,11 @@ app.get("/addPost", async (req: express.Request, res: express.Response) => {
   let postData = posttitle.rows;
   postData = postData.map((obj) =>
     Object.assign(obj, {
-      created_at: timetype(obj.created_at),
+      created_at: timetype(obj.created_at)
     })
   );
 
-  postData = postData.map((obj) =>
-    obj.sex
-      ? Object.assign(obj, { meta: "bluecolor" })
-      : Object.assign(obj, { meta: "redcolor" })
-  );
+  postData = postData.map(obj=> obj.sex ? Object.assign(obj,{meta:'bluecolor'}) : Object.assign(obj,{meta:'redcolor'}))
 
   // console.log(postData);
 
