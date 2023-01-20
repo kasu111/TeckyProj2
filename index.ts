@@ -85,22 +85,22 @@ app.post("/addPost", async (req: express.Request, res: express.Response) => {
   let obj: any = transfer_formidable_into_obj(formResult);
 
   if (obj.hasOwnProperty("image")) {
-    await client.query(`INSERT INTO posts (body,count_like) VALUES ($1,$2)`, [
-      obj.title,
-      0,
-    ]);
+    const newRecord: any = await client.query(
+      `INSERT INTO posts (body,count_like,user_id) VALUES ($1,$2,$3) RETURNING id`,
+      [obj.title, 0, 1]
+    );
     await client.query(
-      `INSERT INTO comments (body,count_like) VALUES ($1,$2)`,
-      [obj.posttext, 0]
+      `INSERT INTO comments (body,count_like,user_id,post_id) VALUES ($1,$2,$3,$4)`,
+      [obj.posttext, 0, 1, newRecord.rows[0].id]
     );
   } else {
-    await client.query(`INSERT INTO posts (body,count_like) VALUES ($1,$2)`, [
-      obj.title,
-      0,
-    ]);
+    const newRecord: any = await client.query(
+      `INSERT INTO posts (body,count_like,user_id) VALUES ($1,$2,$3) RETURNING id`,
+      [obj.title, 0, 1]
+    );
     await client.query(
-      `INSERT INTO comments (body,count_like) VALUES ($1,$2)`,
-      [obj.posttext, 0]
+      `INSERT INTO comments (body,count_like,user_id,post_id) VALUES ($1,$2,$3,$4)`,
+      [obj.posttext, 0, 1, newRecord.rows[0].id]
     );
   }
   res.status(200).json({
@@ -109,6 +109,7 @@ app.post("/addPost", async (req: express.Request, res: express.Response) => {
     message: "success",
   });
 });
+// app.get();
 let o = path.join(__dirname, "public");
 
 app.use(express.static(o));
