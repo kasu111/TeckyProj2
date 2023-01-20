@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <!-- <link rel="stylesheet" href="./index.css" /> -->
+  <link rel="stylesheet" href="./index.css" />
+  <link rel="stylesheet" href="./kevin.css">
+  <title>Project2</title>
+</head>
+
+<body>
+  <div id="newPost" class="none">
+    <div class="animate__animated animate__flash boxPost">
+      <header>
+        <div></div>
+        <div>
+          <h3>發表主題</h3>
+        </div>
+        <div id="postClose"><i class="fa-solid fa-xmark"></i></div>
+      </header>
+      <main>
+        <form name="postform" id="postform" enctype="multipart/form-data">
+          <div>
+            <input name="title" type="text" class="writeTitle" placeholder="請輸入主題" required />
+            <div></div>
+          </div>
+          <textarea name="posttext" class="writeText" placeholder="請輸入內文" required></textarea>
+          <div class="subadd">
+            <input type="submit" class="add" />
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+  <div class="mainLine">
+    <div class="topLine topleft">
+      <div class="dropdown none">
+        <button type="button" class="btn btn-secondary toggle boxShadow" data-bs-toggle="dropdown" aria-expanded="false"
+          data-bs-auto-close="outside">
+          <i class="fa-solid fa-user-plus"></i>
+        </button>
+        <form class="dropdown-menu p-4 dropdown-bcolor">
+          <div class="mb-3">
+            <label for="exampleDropdownFormEmail2" class="form-label" maxlength="20">username:</label>
+            <input type="text" class="form-control" id="username" placeholder="請輸入名稱" required />
+          </div>
+          <div class="mb-3">
+            <label for="exampleDropdownFormPassword2" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="請輸入密碼"
+              minlength="8" required />
+          </div>
+          <div class="mb-3">
+            <div class="form-check jusbet">
+              <div>
+                <input class="form-check-input" id="checkpass" type="checkbox" />
+                <label class="form-check-label" for="checkpass">
+                  顯示密碼
+                </label>
+              </div>
+              <div>
+                <input type="radio" name="gender" id="male" value="male" />
+                <label for="male">男姓</label>
+                <input type="radio" name="gender" id="female" value="female" required />
+                <label for="female">女姓</label>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-secondary toggle icon boxShadow" name="username">
+            Sign in
+          </button>
+          <button type="reset" class="btn btn-secondary toggle icon boxShadow" name="username">
+            Reset
+          </button>
+        </form>
+      </div>
+      <div class="loginDiv none">
+        <form action="" class="flex loginForm">
+          <div>
+            <label for="username">會員 : </label>
+            <input type="email" name="username" class="username" placeholder="請輸入名稱" required />
+          </div>
+          <div>
+            <label for="password">密碼 : </label>
+            <input type="password" name="password" class="password" placeholder="請輸入密碼" required />
+          </div>
+          <input type="submit" class="loginSubmit" />
+        </form>
+      </div>
+      <div class="flex1 addPage jusbet">
+        <div>
+          <div class="dropdown">
+            <button class="btn btn-secondary -toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <button class="dropdown-item" type="button">Action</button>
+              </li>
+              <li>
+                <button class="dropdown-item" type="button">
+                  Another action
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" type="button">
+                  Something else here
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="test1 Showname">
+          <h3>iudsffidlasfs</h3>
+        </div>
+        <div id="addPost" class="btn btn-secondary toggle boxShadow">
+          <i class="fa-solid fa-file-circle-plus"></i>
+        </div>
+      </div>
+    </div>
+    <div class="title">
+      <div>TA</div>
+    </div>
+    <!-- 開posts -->
+    <div class="postLine">
+      <div class="post">
+        <div class="postSet">
+          <div class="postMenu">
+            <div class="postName">IDNAME</div>
+            <div>
+              <i class="fa-regular fa-thumbs-up"></i>
+              <div>0</div>
+            </div>
+            <div>time</div>
+          </div>
+          <div>
+            <select name="titlePage" id="titlePage">
+              <option value="">第一頁</option>
+            </select>
+          </div>
+        </div>
+        <div class="postTitle">
+          <div class="Red"></div>
+          <div class="mainTitle">
+            <h4>
+              textextetxssfsfsdfscdcsfdsofjsosfsfsfsa
+              ddsvdfvdfvdfvudfjbvdfvghdajvetext
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="titleLine">
+    <div class="topLine topRight">
+      <div><i class="fa-solid fa-chevron-left"></i></div>
+      <div class="titletext">kskklnlklnkfskl</div>
+      <div class="flex alitem">
+        <div>SHARE</div>
+        <div><i class="fa-solid fa-heart"></i></div>
+      </div>
+    </div>
+    <div>
+      <div class="nextPage">
+        <div>上一頁</div>
+        <div>第幾頁</div>
+        <div>下一頁</div>
+      </div>
+      <!-- 開comments -->
+      <div class="commentsWall">
+        <div class="commentBox">
+          <div class="bar">
+            <div>
+           
+            <span id="CommentID">#1</span>
+            <span class="TKGusername">先生唔好打交</span>
+            <span class="DOTDOTDOT">•</span>
+            <span class="PostedDate" data-tip="2023年1月19日 12:33:07" title="2023年1月19日 12:33:07" currentitem="false">48
+              分鐘前</span>
+           
+            
+              <i class="fa-solid fa-eye"></i>
+
+              <i class="fa-solid fa-reply"></i>
+            </div>
+
+            <div class="MultiFunction">
+              <i class="fa-solid fa-share-nodes flexEnd"></i>
+
+              <i class="fa-solid fa-triangle-exclamation flexEnd"></i>
+            </div>
+          </div>
+          <div class="CommentContent">#內文#</div>
+          <div class="likeDislike">
+            <div class="likeArea">
+              <div class="likePlace">
+                <div><i class="fa-regular fa-thumbs-up"></i> 0</div>
+                <div><i class="fa-regular fa-thumbs-down"></i> 99</div>
+              </div>
+            </div>
+            <div class="quoteArea"><i class="fa-solid fa-comments"></i>0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ReplyBox">
+        <div class="ReplyTopic">
+          <div class="closePage">回覆：美國最新型機械人面世</div>
+          <div class="closePage2">
+            <div>
+            <i class="fa-solid fa-down-left-and-up-right-to-center"></i></div>
+            <div>
+            <i class="fa-solid fa-xmark"></i></div>
+          </div>
+        </div>
+        <div class="FunctionsSoMany">
+          
+        <div><i class="fa-regular fa-face-smile"></i></div>
+        <div><i class="fa-regular fa-image"></i></div>
+        <div><i class="fa-solid fa-link"></i></div>
+        <div><i class="fa-solid fa-palette"></i></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        
+        </div>
+        <div class="ReplyTextPlace">
+          <form class="ReplyForm" action="">
+            <textarea name="" id="ReplyTextPlace1" ></textarea>
+          </form>
+        </div>
+          <div class="sumbitCol">
+            <form action="submitForm">
+              <span><i class="fa-solid fa-paper-plane"></i></span>
+              <input type="submit" class="submitBTN" value="Return" >
+            </form>
+          </div>
+     
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <script src="./index.js"></script>
+  <script src="./kevin.js"></script>
+</body>
+
+</html>
