@@ -112,6 +112,8 @@ app.post("/addPost", async (req: express.Request, res: express.Response) => {
 // app.get();
 let o = path.join(__dirname, "public");
 
+
+
 app.use(express.static(o));
 
 // app.get("/addPost", async (req: express.Request, res: express.Response) => {
