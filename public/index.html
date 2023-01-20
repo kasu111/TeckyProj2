@@ -65,7 +65,7 @@
     </div>
     <div class="mainLine">
       <div class="topLine topleft">
-        <div class="dropdown none">
+        <div class="dropdown">
           <button
             type="button"
             class="btn btn-secondary toggle boxShadow"
@@ -75,7 +75,7 @@
           >
             <i class="fa-solid fa-user-plus"></i>
           </button>
-          <form class="dropdown-menu p-4 dropdown-bcolor">
+          <form id="signup" class="dropdown-menu p-4 dropdown-bcolor">
             <div class="mb-3">
               <label
                 for="exampleDropdownFormEmail2"
@@ -135,7 +135,7 @@
               class="btn btn-secondary toggle icon boxShadow"
               name="username"
             >
-              Sign in
+              Sign up
             </button>
             <button
               type="reset"
@@ -146,8 +146,8 @@
             </button>
           </form>
         </div>
-        <div class="loginDiv none">
-          <form action="" class="flex loginForm">
+        <div class="loginDiv">
+          <form id="signin" class="flex loginForm">
             <div>
               <label for="username">會員 : </label>
               <input
@@ -171,7 +171,7 @@
             <input type="submit" class="loginSubmit" />
           </form>
         </div>
-        <div class="flex1 addPage jusbet">
+        <div class="flex1 addPage jusbet none">
           <div>
             <div class="dropdown">
               <button
