@@ -42,10 +42,10 @@ const ppp = postPost.addEventListener("submit", async (event) => {
     postPost.reset();
     // await loadpost()
 })
-// loadpost()
-// async function loadpost() {
-//     const res = await fetch("/addPost", {
-//         method: "GET",
-//     })
-//     let json = await res.json();
-// }
+loadpost()
+async function loadpost() {
+    const res = await fetch("/addPost", {
+        method: "GET",
+    })
+    let json = await res.json();
+}

@@ -109,14 +109,12 @@ app.post("/addPost", async (req: express.Request, res: express.Response) => {
     message: "success",
   });
 });
-// app.get();
+app.get("/addPost", async (req: express.Request, res: express.Response) => {
+  const posttitle = await client.query("SELECT id,content FROM posts");
+});
 let o = path.join(__dirname, "public");
 
 app.use(express.static(o));
-
-// app.get("/addPost", async (req: express.Request, res: express.Response) => {
-//   const poster = await client.query("SELECT name,body,created_at, FROM posts");
-// });
 
 server.listen(8000, () => {
   console.log("running port localhost:8000");
