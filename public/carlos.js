@@ -19,3 +19,22 @@ document.querySelector('#signin').addEventListener("submit",async event=>{
         document.querySelector("div#user").innerHTML = result.msg;
     }
 });
+
+async function checkUserLogin(){
+    const res = await fetch("/user");
+    const sessionResult = await res.json();
+    const form = document.querySelector("#signin");
+    const userDiv = document.querySelector("div#user")
+    if(sessionResult.id === null){
+        userDiv.innerHTML = "";
+        form.classList.remove("none")  
+    }else{
+        userDiv.innerHTML = `${sessionResult.name}
+        <div><a href="/logout">登出</a></div>`;
+        form.classList.add("none")
+    }
+}
+
+window.onload = async function(){
+    await checkUserLogin();
+}

@@ -125,14 +125,14 @@ app.get("/addPost", async (req: express.Request, res: express.Response) => {
 let o = path.join(__dirname, "public");
 
 app.use(express.static(o));
-
+/////////////////////////////////////////Carlos part/////////////////
 
 //get user ID and name
 app.get("/user", async (req: Request, res:Response)=>{
   res.json(req.session.user?req.session.user : {id:null});
 })
 
-//login checkpassword
+//login && checkpassword
 app.post("/login", async (req: express.Request, res: express.Response)=>{
   const username = req.body.username;
   const password = req.body.password;
@@ -170,12 +170,15 @@ app.post("/login", async (req: express.Request, res: express.Response)=>{
         success: true,
         msg: "Login Success!",
       });
-
-      // res.redirect("/admin .html");
       // res.json(users.rows)
       
  });
 
+ app.get("/logout",(req,res)=>{
+  req.session.destroy((err)=>{
+    res.redirect('/');
+  });
+ })
 
 server.listen(8000, () => {
   console.log("running port localhost:8000");

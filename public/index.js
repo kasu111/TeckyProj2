@@ -2,14 +2,14 @@
 // import { format, formatDistance, formatRelative, subDays } from "date-fns";
 
 // const moment = require("moment");
-const checkpass = document.getElementById("checkpass").addEventListener("click", () => {
-    let password = document.getElementById("exampleDropdownFormPassword2")
-    if (password.type === "password") {
-        password.type = "text";
-    } else {
-        password.type = "password";
-    }
-})
+// const checkpass = document.getElementById("checkpass").addEventListener("click", () => {
+//     let password = document.getElementById("exampleDropdownFormPassword2")
+//     if (password.type === "password") {
+//         password.type = "text";
+//     } else {
+//         password.type = "password";
+//     }
+// })
 const newPost = document.querySelector("#newPost")
 const addNewPost = document.getElementById("addPost")
 addNewPost.addEventListener("click", () => {
@@ -57,7 +57,7 @@ async function loadpost() {
     console.log(post);
 
 
-    // if (json.result) {
+    if (json.result) {
     postLine.innerHTML = post.map(obj =>
         `<div class="post">
           <div class="postSet">
@@ -86,6 +86,6 @@ async function loadpost() {
             </div>
           </div>
         </div>`).join('')
-    // }
+    }
 
 }
