@@ -68,3 +68,5 @@ ALTER TABLE REF_notification_users_post
 ADD CONSTRAINT FK_users_TO_REF_notification_users_post FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE REF_notification_users_post
 ADD CONSTRAINT FK_posts_TO_REF_notification_users_post FOREIGN KEY (post_id) REFERENCES posts (id);
+
+

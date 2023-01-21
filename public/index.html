@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- <link rel="stylesheet" href="./index.css" /> -->
+
   <link rel="stylesheet" href="./carlos.css" />
   <link rel="stylesheet" href="./index.css" />
   <link rel="stylesheet" href="./kevin.css" />
@@ -50,14 +50,14 @@
           data-bs-auto-close="outside">
           <i class="fa-solid fa-user-plus"></i>
         </button>
-        <form id="signup" class="dropdown-menu p-4 dropdown-bcolor">
+        <form id="signup" method="POST" action="/signup" class="dropdown-menu p-4 dropdown-bcolor">
           <div class="mb-3">
             <label for="exampleDropdownFormEmail2" class="form-label" maxlength="20">username:</label>
-            <input type="text" class="form-control" id="username" placeholder="請輸入名稱" required />
+            <input type="text" name="username"class="form-control" id="username" placeholder="請輸入名稱" required />
           </div>
           <div class="mb-3">
             <label for="exampleDropdownFormPassword2" class="form-label">Password:</label>
-            <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="請輸入密碼"
+            <input type="password" name="password"class="form-control" id="exampleDropdownFormPassword2" placeholder="請輸入密碼"
               minlength="8" required />
           </div>
           <div class="mb-3">
@@ -103,7 +103,7 @@
       <!-- ////////////////////////////////////////////////////////////////// -->
       <div class="flex1 addPage jusbet ">
         <div>
-          <div class="dropdown none">
+          <div class="dropdown none ">
             <button class="btn btn-secondary -toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-bars"></i>
             </button>
