@@ -106,11 +106,11 @@ async function loadpost() {
         if (json.result) {
           title.innerText = json.allData.map(obj =>
             obj.title).join("");
-          commPlace.innerHTML = json.allData.map(obj =>
+          commPlace.innerHTML = json.allData.map((obj, index) =>
             `<div class="commentBox">
               <div class="bar">
                 <div>
-                  <div id="CommentID">#1</div>
+                  <div id="CommentID">#${index + 1}</div>
                   <div class="TKGusername ${obj.meta}">${obj.name}</div>
                   <div class="DOTDOTDOT">•</div>
                   <div class="PostedDate" currentitem="false">${obj.write_at}</div>

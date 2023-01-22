@@ -142,7 +142,7 @@ app.post("/login", async (req: express.Request, res: express.Response)=>{
   // 3. Wrong Password
 
   const users = await client.query(
-      `select * from users where name = '${username}'`);
+      `select * from userss where name = '${username}'`);
     
       if(users.rows.length == 0){
         res.json({
@@ -179,6 +179,42 @@ app.post("/login", async (req: express.Request, res: express.Response)=>{
     res.redirect('/');
   });
  })
+
+ //users sign up 
+ app.post(
+  "/signup",
+  async (req: Request, res: Response) => {
+    try {
+      console.log(req.body.username);
+      console.log(req.body.password);
+      
+      
+      const username = req.body.username;
+      const password = req.body.password;
+      // const sex = req.body.sex;
+      // const regDate = req.body.regDate;
+      // const IsAdmin = req.body.IsAdmin;
+      // const vip = req.body.vip;
+      // const email = req.body.email;
+
+      await client.query(
+       
+          `insert into userss (name,password) values($1,$2)`,
+          [username,password])
+     
+
+      res.json({ 
+        success: true,
+        user:{
+          username: username,
+          password: password,
+        }
+      });
+    } catch (ex) {
+        console.log(ex);
+        res.json({success:false});
+    }
+  })
 
 server.listen(8000, () => {
   console.log("running port localhost:8000");

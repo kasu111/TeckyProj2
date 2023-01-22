@@ -12,3 +12,8 @@ npm install ts-node-dev
 
 npm install express-session
 npm install -D @types/express-session
+
+
+//// hashing password///
+npm install bcryptjs @types/bcryptjs
+import * as bcrypt from "bcryptjs"
