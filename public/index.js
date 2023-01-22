@@ -14,52 +14,52 @@ const newPost = document.querySelector("#newPost")
 const addNewPost = document.getElementById("addPost")
 addNewPost.addEventListener("click", () => {
 
-    newPost.classList.remove("none")
+  newPost.classList.remove("none")
 })
 const postPost = document.querySelector("#postform")
 const postClose = document.getElementById("postClose")
 postClose.addEventListener("click", () => {
-    const newPost = document.querySelector("#newPost")
-    postPost.reset();
-    newPost.classList.add("none");
+  const newPost = document.querySelector("#newPost")
 
+  postPost.reset();
+  newPost.classList.add("none");
 })
 
 postPost.addEventListener("submit", async (event) => {
-    event.preventDefault()
-    // console.log(event);
-    // const { data } = event.target
-    const form = event.target;
-    const formData = new FormData(form);
-    // console.log(form);
-    // formData.append("title", form.title.value);
-    // formData.append("posttext", form.posttext.value)
-    // console.log(formData);
-    const res = await fetch("/addPost", {
-        method: "POST",
-        body: formData,
-    });
-    await res.json();
-    postPost.reset();
-    await loadpost()
+  event.preventDefault()
+  // console.log(event);
+  // const { data } = event.target
+  const form = event.target;
+  const formData = new FormData(form);
+  // console.log(form);
+  // formData.append("title", form.title.value);
+  // formData.append("posttext", form.posttext.value)
+  // console.log(formData);
+  const res = await fetch("/addPost", {
+    method: "POST",
+    body: formData,
+  });
+  await res.json();
+  postPost.reset();
+  await loadpost()
 })
 loadpost()
 
 async function loadpost() {
-    let post = []
-    const res = await fetch("/addPost", {
-        method: "GET",
+  let post = []
+  const res = await fetch("/getPost", {
+    method: "GET",
 
-    })
-    let json = await res.json();
-    post = json.postData;
-    const postLine = document.querySelector(".postLine")
-    console.log(post);
+  })
+  let json = await res.json();
+  post = json.postData;
+  const postLine = document.querySelector(".postLine")
+  // const toptitle = document.querySelector(".titletext")
 
 
-    if (json.result) {
-    postLine.innerHTML = post.map(obj =>
-        `<div class="post">
+  if (json.result) {
+    postLine.innerHTML = post.map(obj => {
+      return `<div class="post" data-id="${obj.id}">
           <div class="postSet">
             <div class="postMenu">
               <div class="postName ${obj.meta}">${obj.name}</div>
@@ -81,11 +81,72 @@ async function loadpost() {
             <div class="Red"></div>
             <div class="mainTitle">
               <h4>
-                ${obj.body}
+                ${obj.title}
               </h4>
             </div>
           </div>
-        </div>`).join('')
+        </div>`
+    }).join("")
+    const comments = postLine.children
+    for (let i = 0; i < comments.length; i++) {
+      const comment = comments[i]
+      const id = comment.getAttribute("data-id")
+
+
+      comment.addEventListener("click", async () => {
+        let rescomm = [];
+        console.log("fysufguyegsufgysufgesuy")
+        const res = await fetch(`/addPostCommemt/${id}`, {
+          method: "GET",
+        })
+        const json = await res.json();
+
+        const title = document.querySelector(".titletext")
+        const commPlace = document.querySelector(".commentsWall")
+        if (json.result) {
+          title.innerText = json.allData.map(obj =>
+            obj.title).join("");
+          commPlace.innerHTML = json.allData.map(obj =>
+            `<div class="commentBox">
+              <div class="bar">
+                <div>
+                  <div id="CommentID">#1</div>
+                  <div class="TKGusername ${obj.meta}">${obj.name}</div>
+                  <div class="DOTDOTDOT">•</div>
+                  <div class="PostedDate" currentitem="false">${obj.write_at}</div>
+
+                  <i class="fa-solid fa-eye none"></i>
+
+                  <i class="fa-solid fa-reply none"></i>
+                </div>
+
+                <div class="MultiFunction">
+                  <i class="fa-solid fa-share-nodes flexEnd none"></i>
+
+                  <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
+                </div>
+              </div>
+              <div class="CommentContent">${obj.comm}</div>
+              <div class="likeDislike">
+                <div class="likeArea">
+                  <div class="likePlace">
+                    <div><i class="fa-regular fa-thumbs-up"></i> ${obj.count_like}</div>
+                  </div>
+                </div>
+                <div class="quoteArea none">
+                  <i class="fa-solid fa-comments"></i>0
+                </div>
+              </div>
+            </div>`).join('')
+        };
+
+
+
+      })
     }
 
+
+
+
+  }
 }

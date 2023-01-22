@@ -253,6 +253,7 @@ html, body {
     margin-right: 8px;
     box-shadow: 0px 0px 10px rgba(52, 52, 52, 0.994) !important}
 .post{
+    /* z-index: 1; */
     margin:5px 2px 10px 3px;
     border-radius: 10px;
     width: 95%;
@@ -279,7 +280,7 @@ html, body {
 .alitem{
     align-items: center;
 }  
-#newPost{
+#newPost,#resetPass{
     z-index: 1;
     background-color: rgba(6, 6, 6, 0.732);
     position: absolute;

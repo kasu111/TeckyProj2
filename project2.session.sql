@@ -11,7 +11,6 @@ CREATE TABLE users(
     registered_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status_admin BOOLEAN NOT NULL DEFAULT false,
     VIP BOOLEAN NOT NULL DEFAULT false,
-    email VARCHAR NOT NULL,
     PRIMARY KEY (id)
 );
 CREATE TABLE comment_like (
@@ -22,11 +21,12 @@ CREATE TABLE comment_like (
 );
 CREATE TABLE comments (
     id Serial NOT NULL,
-    body TEXT NOT NULL,
+    comm TEXT NOT NULL,
     photo TEXT NULL,
     user_id SERIAL NOT NULL,
     post_id SERIAL NOT NULL,
     count_like INTEGER NULL DEFAULT 0,
+    write_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
 CREATE TABLE post_likes (
@@ -37,10 +37,9 @@ CREATE TABLE post_likes (
 );
 CREATE TABLE posts (
     id SERIAL NOT NULL,
-    body TEXT NOT NULL,
+    title TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id SERIAL NOT NULL,
-    photo TEXT NULL,
     count_like INTEGER NULL DEFAULT 0,
     PRIMARY KEY (id)
 );

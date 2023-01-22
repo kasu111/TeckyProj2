@@ -84,20 +84,20 @@ app.post("/addPost", async (req: express.Request, res: express.Response) => {
   let obj: any = transfer_formidable_into_obj(formResult);
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(
-      `INSERT INTO posts (body,count_like,user_id) VALUES ($1,$2,$3) RETURNING id`,
+      `INSERT INTO posts (title,count_like,user_id) VALUES ($1,$2,$3) RETURNING id`,
       [obj.title, 0, 1]
     );
     await client.query(
-      `INSERT INTO comments (body,count_like,user_id,post_id) VALUES ($1,$2,$3,$4)`,
+      `INSERT INTO comments (comm,count_like,user_id,post_id) VALUES ($1,$2,$3,$4)`,
       [obj.posttext, 0, 1, newRecord.rows[0].id]
     );
   } else {
     const newRecord: any = await client.query(
-      `INSERT INTO posts (body,count_like,user_id) VALUES ($1,$2,$3) RETURNING id`,
+      `INSERT INTO posts (title,count_like,user_id) VALUES ($1,$2,$3) RETURNING id`,
       [obj.title, 0, 1]
     );
     await client.query(
-      `INSERT INTO comments (body,count_like,user_id,post_id) VALUES ($1,$2,$3,$4)`,
+      `INSERT INTO comments (comm,count_like,user_id,post_id) VALUES ($1,$2,$3,$4)`,
       [obj.posttext, 0, 1, newRecord.rows[0].id]
     );
   }
@@ -112,20 +112,56 @@ function timetype(time: any) {
   settime = moment(settime, "YYMMDD,h:mm").fromNow();
   return settime;
 }
+app.get(
+  "/addPostCommemt/:id",
+  async (req: express.Request, res: express.Response) => {
+    // const post = await client.query(
+    //   "SELECT posts.title,users.name FROM posts join users on posts.user_id = users.id"
+    // );
+
+    const id = req.params.id;
+    const comments = await client.query(
+      `SELECT users.sex,posts.id,posts.title,users.name,comments.comm,comments.write_at,posts.count_like FROM comments join posts on comments.post_id = posts.id join users on posts.user_id = users.id where posts.id=$1`,
+      [id]
+    );
+    let allData = comments.rows;
+    allData = allData.map((obj) =>
+      Object.assign(obj, { write_at: timetype(obj.write_at) })
+    );
+    console.log(allData);
+
+    allData = allData.map((obj) =>
+      obj.sex
+        ? Object.assign(obj, { meta: "bluecolor" })
+        : Object.assign(obj, { meta: "redcolor" })
+    );
+    console.log("allData", allData);
+
+    res.status(200).json({
+      result: true,
+      message: "success",
+      allData,
+    });
+  }
+);
 //post new title到左邊column
-app.get("/addPost", async (req: express.Request, res: express.Response) => {
+app.get("/getPost", async (req: express.Request, res: express.Response) => {
   const posttitle = await client.query(
-    "SELECT users.name,count_like,posts.body,users.sex,created_at FROM posts join users on posts.user_id = users.id"
+    "SELECT posts.id,users.name,count_like,posts.title,users.sex,created_at FROM posts join users on posts.user_id = users.id"
   );
 
   let postData = posttitle.rows;
   postData = postData.map((obj) =>
     Object.assign(obj, {
-      created_at: timetype(obj.created_at)
+      created_at: timetype(obj.created_at),
     })
   );
 
-  postData = postData.map(obj=> obj.sex ? Object.assign(obj,{meta:'bluecolor'}) : Object.assign(obj,{meta:'redcolor'}))
+  postData = postData.map((obj) =>
+    obj.sex
+      ? Object.assign(obj, { meta: "bluecolor" })
+      : Object.assign(obj, { meta: "redcolor" })
+  );
 
   // console.log(postData);
 

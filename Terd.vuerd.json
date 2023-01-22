@@ -3,8 +3,8 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -285,
-    "scrollLeft": -231,
+    "scrollTop": -187,
+    "scrollLeft": -270,
     "zoomLevel": 0.8,
     "show": {
       "tableComment": true,
@@ -19,7 +19,7 @@
     },
     "database": "MySQL",
     "databaseName": "",
-    "canvasType": "@vuerd/builtin-generator-code",
+    "canvasType": "ERD",
     "language": "GraphQL",
     "tableCase": "pascalCase",
     "columnCase": "camelCase",
@@ -209,10 +209,10 @@
           }
         ],
         "ui": {
-          "active": true,
+          "active": false,
           "left": 140.6668,
           "top": 165.1112,
-          "zIndex": 12,
+          "zIndex": 6,
           "widthName": 60,
           "widthComment": 60
         },
