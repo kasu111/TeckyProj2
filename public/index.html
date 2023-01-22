@@ -66,7 +66,7 @@
     <div class="mainLine">
       <div class="topLine topleft">
         <!-- /////////////////////////////////////////////////////////////// -->
-        <div class="dropdown none">
+        <div class="dropdown part1">
           <button
             type="button"
             class="btn btn-secondary toggle boxShadow"
@@ -76,17 +76,9 @@
           >
             <i class="fa-solid fa-user-plus"></i>
           </button>
-          <form
-            id="signup"
-            method="POST"
-            action="/signup"
-            class="dropdown-menu p-4 dropdown-bcolor"
-          >
+          <form id="signup" class="dropdown-menu p-4 dropdown-bcolor">
             <div class="mb-3">
-              <label
-                for="exampleDropdownFormEmail2"
-                class="form-label"
-                maxlength="20"
+              <label for="username" class="form-label" maxlength="20"
                 >username:</label
               >
               <input
@@ -125,13 +117,13 @@
                   </label>
                 </div>
                 <div>
-                  <input type="radio" name="gender" id="male" value="male" />
+                  <input type="radio" name="sex" id="male" value="true" />
                   <label for="male">男姓</label>
                   <input
                     type="radio"
-                    name="gender"
+                    name="sex"
                     id="female"
-                    value="female"
+                    value="false"
                     required
                   />
                   <label for="female">女姓</label>
@@ -141,21 +133,19 @@
             <button
               type="submit"
               class="btn btn-secondary toggle icon boxShadow"
-              name="username"
             >
               Sign up
             </button>
             <button
               type="reset"
               class="btn btn-secondary toggle icon boxShadow"
-              name="username"
             >
               Reset
             </button>
           </form>
         </div>
         <!-- //////////////////////////////////////////////////////////////// -->
-        <div class="loginDiv none">
+        <div class="loginDiv part2">
           <form
             id="signin"
             method="POST"
@@ -187,7 +177,7 @@
           <div id="user"></div>
         </div>
         <!-- ////////////////////////////////////////////////////////////////// -->
-        <div class="flex1 addPage jusbet">
+        <div class="part3 flex1 addPage jusbet none">
           <div>
             <div class="dropdown">
               <button
@@ -210,7 +200,7 @@
                   </button>
                 </li>
                 <li>
-                  <button class="dropdown-item" type="button">
+                  <button id="logout" class="dropdown-item" type="button">
                     <i class="fa-solid fa-right-from-bracket"></i>Logout
                   </button>
                 </li>
@@ -222,9 +212,7 @@
               </ul>
             </div>
           </div>
-          <div class="test1 Showname">
-            <h3>iudsffidlasfs</h3>
-          </div>
+          <div class="test1 Showname"></div>
           <div id="addPost" class="btn btn-secondary toggle boxShadow">
             <i class="fa-solid fa-file-circle-plus"></i>
           </div>
@@ -311,7 +299,7 @@
           </div>
         </div>
         <!-- ////////////////////////////////////////////// -->
-        <div class="ReplyBox">
+        <div class="ReplyBox none">
           <div class="ReplyTopic">
             <div class="closePage">回覆：美國最新型機械人面世</div>
             <div class="closePage2">

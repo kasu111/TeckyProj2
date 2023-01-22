@@ -3,16 +3,6 @@ CREATE TABLE ads (
     image text NULL,
     PRIMARY KEY (id)
 );
-CREATE TABLE users(
-    id SERIAL NOT NULL,
-    name VARCHAR NOT NULL,
-    password VARCHAR NOT NULL,
-    sex BOOLEAN NOT NULL DEFAULT false,
-    registered_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    status_admin BOOLEAN NOT NULL DEFAULT false,
-    VIP BOOLEAN NOT NULL DEFAULT false,
-    PRIMARY KEY (id)
-);
 CREATE TABLE comment_like (
     id serial NOT NULL,
     user_id SERIAL NOT NULL,
@@ -21,11 +11,10 @@ CREATE TABLE comment_like (
 );
 CREATE TABLE comments (
     id Serial NOT NULL,
-    comm TEXT NOT NULL,
+    body TEXT NOT NULL,
     photo TEXT NULL,
     user_id SERIAL NOT NULL,
     post_id SERIAL NOT NULL,
-    count_like INTEGER NULL DEFAULT 0,
     write_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
@@ -38,15 +27,24 @@ CREATE TABLE post_likes (
 CREATE TABLE posts (
     id SERIAL NOT NULL,
     title TEXT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id SERIAL NOT NULL,
-    count_like INTEGER NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
 CREATE TABLE REF_notification_users_post (
     id serial NOT NULL,
     user_id SERIAL NOT NULL,
     post_id SERIAL NOT NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE users (
+    id SERIAL NOT NULL,
+    name VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    sex BOOLEAN NOT NULL DEFAULT true,
+    registered_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status_admin BOOLEAN NOT NULL DEFAULT false,
+    VIP BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );
 ALTER TABLE post_likes
@@ -67,5 +65,3 @@ ALTER TABLE REF_notification_users_post
 ADD CONSTRAINT FK_users_TO_REF_notification_users_post FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE REF_notification_users_post
 ADD CONSTRAINT FK_posts_TO_REF_notification_users_post FOREIGN KEY (post_id) REFERENCES posts (id);
-
-

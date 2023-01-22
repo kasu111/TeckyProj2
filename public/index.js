@@ -41,6 +41,7 @@ postPost.addEventListener("submit", async (event) => {
   });
   await res.json();
   postPost.reset();
+  newPost.classList.add("none");
   await loadpost()
 })
 loadpost()
@@ -65,7 +66,7 @@ async function loadpost() {
               <div class="postName ${obj.meta}">${obj.name}</div>
               <div class="like">
                 <i class="fa-regular fa-thumbs-up"></i>
-                <div>${obj.count_like}</div>
+                <div>0</div>
               </div>
               <div>
               <div class="time">${obj.created_at}</div>
@@ -94,16 +95,16 @@ async function loadpost() {
 
 
       comment.addEventListener("click", async () => {
-        let rescomm = [];
-        console.log("fysufguyegsufgysufgesuy")
         const res = await fetch(`/addPostCommemt/${id}`, {
           method: "GET",
         })
+
         const json = await res.json();
 
         const title = document.querySelector(".titletext")
         const commPlace = document.querySelector(".commentsWall")
         if (json.result) {
+          console.log("suifgsafkjs");
           title.innerText = json.allData.map(obj =>
             obj.title).join("");
           commPlace.innerHTML = json.allData.map((obj, index) =>
@@ -126,11 +127,11 @@ async function loadpost() {
                   <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
                 </div>
               </div>
-              <div class="CommentContent">${obj.comm}</div>
+              <div class="CommentContent">${obj.body}</div>
               <div class="likeDislike">
                 <div class="likeArea">
-                  <div class="likePlace">
-                    <div><i class="fa-regular fa-thumbs-up"></i> ${obj.count_like}</div>
+                  <div class="likePlace like_${id}">
+                    <div><i class="fa-regular fa-thumbs-up"></i> 0</div>
                   </div>
                 </div>
                 <div class="quoteArea none">
@@ -143,10 +144,25 @@ async function loadpost() {
 
 
       })
+
+      //   const clickLike = document.querySelector(`.like_${id}`)
+      //   clickLike.addEventListener("click", async () => {
+
+      //     const res = await fetch("/clickLike", {
+      //       headers: {
+      //         "Content-Type": "application/json"
+      //       },
+      //       method: "POST",
+      //       body: JSON.stringify(id)
+      //     })
+      //     await res.json()
+
+      //   })
+      // }
+
+
+
+
     }
-
-
-
-
   }
 }

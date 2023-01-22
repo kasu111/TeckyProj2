@@ -1,4 +1,4 @@
-import express , {Request,Response} from "express";
+import express, { Request, Response } from "express";
 import expressSession, { MemoryStore } from "express-session";
 import path from "path";
 import fs from "fs";
@@ -128,12 +128,12 @@ app.use(express.static(o));
 /////////////////////////////////////////Carlos part/////////////////
 
 //get user ID and name
-app.get("/user", async (req: Request, res:Response)=>{
-  res.json(req.session.user?req.session.user : {id:null});
-})
+app.get("/user", async (req: Request, res: Response) => {
+  res.json(req.session.user ? req.session.user : { id: null });
+});
 
 //login && checkpassword
-app.post("/login", async (req: express.Request, res: express.Response)=>{
+app.post("/login", async (req: express.Request, res: express.Response) => {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -142,79 +142,68 @@ app.post("/login", async (req: express.Request, res: express.Response)=>{
   // 3. Wrong Password
 
   const users = await client.query(
-      `select * from userss where name = '${username}'`);
-    
-      if(users.rows.length == 0){
-        res.json({
-          success: false,
-          msg: "User doesn't exist!",
-        }); 
-        return;
-      }
+    `select * from users where name = '${username}'`
+  );
 
+  if (users.rows.length == 0) {
+    res.json({
+      success: false,
+      msg: "User doesn't exist!",
+    });
+    return;
+  }
 
-      const user = users.rows[0];
-      const check: any = await checkPassword(password, user.password);
-      if(!check){
-        res.json({
-          success: false,
-          msg: "Wrong Password!",
-        });
-        return;
-      }
+  const user = users.rows[0];
+  const check: any = await checkPassword(password, user.password);
+  if (!check) {
+    res.json({
+      success: false,
+      msg: "Wrong Password!",
+    });
+    return;
+  }
 
-      req.session.user = {id:user.id, name: user.name};
-      // AJAX, Restful
+  req.session.user = { id: user.id, name: user.name };
+  // AJAX, Restful
 
-      res.json({
-        success: true,
-        msg: "Login Success!",
-      });
-      // res.json(users.rows)
-      
- });
-
- app.get("/logout",(req,res)=>{
-  req.session.destroy((err)=>{
-    res.redirect('/');
+  res.json({
+    success: true,
+    msg: "Login Success!",
   });
- })
+  // res.json(users.rows)
+});
 
- //users sign up 
- app.post(
-  "/signup",
-  async (req: Request, res: Response) => {
-    try {
-      console.log(req.body.username);
-      console.log(req.body.password);
-      
-      
-      const username = req.body.username;
-      const password = req.body.password;
-      // const sex = req.body.sex;
-      // const regDate = req.body.regDate;
-      // const IsAdmin = req.body.IsAdmin;
-      // const vip = req.body.vip;
-      // const email = req.body.email;
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    res.redirect("/");
+  });
+});
 
-      await client.query(
-       
-          `insert into userss (name,password) values($1,$2)`,
-          [username,password])
-     
+//users sign up
+app.post("/signup", async (req: Request, res: Response) => {
+  try {
+    const username = req.body.username;
+    const password = req.body.password;
+    const hashedPassword = await hashPassword(password);
+    const sex = req.body.sex;
 
-      res.json({ 
-        success: true,
-        user:{
-          username: username,
-          password: password,
-        }
-      });
-    } catch (ex) {
-        console.log(ex);
-        res.json({success:false});
-    }
-  })
+    const newRecord = await client.query(
+      `insert into users (name,password,sex,status_admin,vip) values($1,$2,$3, $4, $5) RETURNING id`,
+      [username, hashedPassword, sex, false, false]
+    );
+
+    req.session.user = { id: newRecord.rows[0].id, name: username };
+    res.json({
+      success: true,
+      user: {
+        username: username,
+      },
+    });
+  } catch (error) {
+    console.log("ex,", error);
+    res.json({ success: false, msg: "Failed to sign up" });
+  }
+});
 
 server.listen(8000, () => {
   console.log("running port localhost:8000");
@@ -222,4 +211,3 @@ server.listen(8000, () => {
 // function checkPassword(password: any, password1: any) {
 //   throw new Error("Function not implemented.");
 // }
-
