@@ -10,7 +10,7 @@ resetClose.addEventListener("click", () => {
     resetPass.classList.add("none");
 
 })
-const newcomment = document.querySelector(".alitem")
-newcomment.addEventListener("click", () => {
+// const newcomment = document.querySelector(".alitem")
+// newcomment.addEventListener("click", () => {
 
-})
+// })

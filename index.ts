@@ -89,27 +89,31 @@ function transfer_formidable_into_obj(form_result: formResult) {
   }
   return result;
 }
+//////////////////////////////////////////////////////
 //輸入新post到database
 app.post("/addPost", async (req: express.Request, res: express.Response) => {
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
+  const user = req.session.user;
+  const userid = user?.id;
+
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(
       `INSERT INTO posts (title,user_id) VALUES ($1,$2) RETURNING id`,
-      [obj.title, 1]
+      [obj.title, userid]
     );
     await client.query(
       `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
-      [obj.posttext, 1, newRecord.rows[0].id]
+      [obj.posttext, userid, newRecord.rows[0].id]
     );
   } else {
     const newRecord: any = await client.query(
       `INSERT INTO posts (title,user_id) VALUES ($1,$2) RETURNING id`,
-      [obj.title, 1]
+      [obj.title, userid]
     );
     await client.query(
       `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
-      [obj.posttext, 1, newRecord.rows[0].id]
+      [obj.posttext, userid, newRecord.rows[0].id]
     );
   }
   res.status(200).json({
@@ -178,8 +182,8 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
 });
 
 app.post("/clickLike", async (req: express.Request, res: express.Response) => {
-  console.log("sfesf", req.body.id);
-  console.log("sfesf", req.session.id);
+  // console.log("sfesf", req.body.id);
+  // console.log("sfesf", req.session.id);
   // const likepost = await client.query(
   //   `INSERT INTO posts_likes (users_id,post_id) VALUES ($1,$2)`,
   //   [req.session.id, req.body.id]
@@ -202,9 +206,9 @@ app.post("/login", async (req: express.Request, res: express.Response) => {
   // 2. Wrong User Name
   // 3. Wrong Password
 
-  const users = await client.query(
-    `select * from users where name = '${username}'`
-  );
+  const users = await client.query(`select * from users where name = $1`, [
+    username,
+  ]);
 
   if (users.rows.length == 0) {
     res.json({

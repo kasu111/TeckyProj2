@@ -2,14 +2,14 @@
 // import { format, formatDistance, formatRelative, subDays } from "date-fns";
 
 // const moment = require("moment");
-// const checkpass = document.getElementById("checkpass").addEventListener("click", () => {
-//     let password = document.getElementById("exampleDropdownFormPassword2")
-//     if (password.type === "password") {
-//         password.type = "text";
-//     } else {
-//         password.type = "password";
-//     }
-// })
+const checkpass = document.getElementById("checkpass").addEventListener("click", () => {
+  let password = document.getElementById("exampleDropdownFormPassword2")
+  if (password.type === "password") {
+    password.type = "text";
+  } else {
+    password.type = "password";
+  }
+})//
 const newPost = document.querySelector("#newPost")
 const addNewPost = document.getElementById("addPost")
 addNewPost.addEventListener("click", () => {
@@ -145,24 +145,28 @@ async function loadpost() {
 
       })
 
-      //   const clickLike = document.querySelector(`.like_${id}`)
-      //   clickLike.addEventListener("click", async () => {
+      // const clickLike = document.querySelector(`.like_${id}`)
+      // clickLike.addEventListener("click", async () => {
 
-      //     const res = await fetch("/clickLike", {
-      //       headers: {
-      //         "Content-Type": "application/json"
-      //       },
-      //       method: "POST",
-      //       body: JSON.stringify(id)
-      //     })
-      //     await res.json()
-
+      //   const res = await fetch("/clickLike", {
+      //     headers: {
+      //       "Content-Type": "application/json"
+      //     },
+      //     method: "POST",
+      //     body: JSON.stringify(id)
       //   })
-      // }
+      //   await res.json()
 
+      //   console.log("likelike",res.likepost);
 
-
-
+      // })
     }
+
+
+
+
   }
 }
+
+
+
