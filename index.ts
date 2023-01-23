@@ -219,12 +219,17 @@ app.post("/clickLike", async (req: express.Request, res: express.Response) => {
   });
 });
 app.get("/user", async (req: express.Request, res: express.Response) => {
+  //if you want to insert admin hashed password into database use below script
+  // const password = await hashPassword("1234")
+  // res.json(password)
   res.json(req.session.user ? req.session.user : { id: null });
 });
 
 app.post("/login", async (req: express.Request, res: express.Response) => {
   const username = req.body.username;
   const password = req.body.password;
+  // console.log(username)
+  // console.log(password)
 
   // 1.Login Success
   // 2. Wrong User Name

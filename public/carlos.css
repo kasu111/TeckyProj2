@@ -215,3 +215,7 @@ textarea {
     padding:5px;
 }
 
+#smallCommentBar{
+    position: fixed;
+    
+}

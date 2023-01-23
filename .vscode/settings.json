@@ -15,8 +15,8 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "project2car",
-            "database": "project2car",
+            "name": "project2alpha",
+            "database": "project2alpha",
             "username": "carloschan",
             "password": "123456"
         }

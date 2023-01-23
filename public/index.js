@@ -2,31 +2,32 @@
 // import { format, formatDistance, formatRelative, subDays } from "date-fns";
 
 // const moment = require("moment");
-const checkpass = document.getElementById("checkpass").addEventListener("click", () => {
-  let password = document.getElementById("exampleDropdownFormPassword2")
-  if (password.type === "password") {
-    password.type = "text";
-  } else {
-    password.type = "password";
-  }
-})//
-const newPost = document.querySelector("#newPost")
-const addNewPost = document.getElementById("addPost")
+const checkpass = document
+  .getElementById("checkpass")
+  .addEventListener("click", () => {
+    let password = document.getElementById("exampleDropdownFormPassword2");
+    if (password.type === "password") {
+      password.type = "text";
+    } else {
+      password.type = "password";
+    }
+  }); //
+const newPost = document.querySelector("#newPost");
+const addNewPost = document.getElementById("addPost");
 addNewPost.addEventListener("click", () => {
-
-  newPost.classList.remove("none")
-})
-const postPost = document.querySelector("#postform")
-const postClose = document.getElementById("postClose")
+  newPost.classList.remove("none");
+});
+const postPost = document.querySelector("#postform");
+const postClose = document.getElementById("postClose");
 postClose.addEventListener("click", () => {
-  const newPost = document.querySelector("#newPost")
+  const newPost = document.querySelector("#newPost");
 
   postPost.reset();
   newPost.classList.add("none");
-})
+});
 
 postPost.addEventListener("submit", async (event) => {
-  event.preventDefault()
+  event.preventDefault();
   // console.log(event);
   // const { data } = event.target
   const form = event.target;
@@ -42,25 +43,25 @@ postPost.addEventListener("submit", async (event) => {
   await res.json();
   postPost.reset();
   newPost.classList.add("none");
-  await loadpost()
-})
-loadpost()
+  await loadpost();
+});
+loadpost();
 
 async function loadpost() {
-  let post = []
+  let post = [];
   const res = await fetch("/getPost", {
     method: "GET",
-
-  })
+  });
   let json = await res.json();
   post = json.postData;
-  const postLine = document.querySelector(".postLine")
+  const postLine = document.querySelector(".postLine");
   // const toptitle = document.querySelector(".titletext")
   const comments = postLine.children
 
   if (json.result) {
-    postLine.innerHTML = post.map(obj => {
-      return `<div class="post" data-id="${obj.id}">
+    postLine.innerHTML = post
+      .map((obj) => {
+        return `<div class="post" data-id="${obj.id}">
           <div class="postSet">
             <div class="postMenu">
               <div class="postName ${obj.meta}">${obj.name}</div>
@@ -87,22 +88,21 @@ async function loadpost() {
             </div>
           </div>
         </div>`
-    }).join("")
+      }).join("")
 
     for (let i = 0; i < comments.length; i++) {
-      const comment = comments[i]
-      const id = comment.getAttribute("data-id")
-
+      const comment = comments[i];
+      const id = comment.getAttribute("data-id");
 
       comment.addEventListener("click", async () => {
         const res = await fetch(`/addPostCommemt/${id}`, {
           method: "GET",
-        })
+        });
 
         const json = await res.json();
 
-        const title = document.querySelector(".titletext")
-        const commPlace = document.querySelector(".commentsWall")
+        const title = document.querySelector(".titletext");
+        const commPlace = document.querySelector(".commentsWall");
         if (json.result) {
           // console.log("suifgsafkjs");
           title.innerText = json.allData.map(obj =>
@@ -114,7 +114,8 @@ async function loadpost() {
                   <div id="CommentID">#${index + 1}</div>
                   <div class="TKGusername ${obj.meta}">${obj.name}</div>
                   <div class="DOTDOTDOT">•</div>
-                  <div class="PostedDate" currentitem="false">${obj.write_at}</div>
+                  <div class="PostedDate" currentitem="false">${obj.write_at
+            }</div>
 
                   <i class="fa-solid fa-eye none"></i>
 

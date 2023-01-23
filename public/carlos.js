@@ -2,7 +2,10 @@ const part1 = document.querySelector(".part1")//未login
 const part2 = document.querySelector(".part2")//未login
 const part3 = document.querySelector(".part3")//login
 const Showname = document.querySelector(".Showname")
-document.querySelector('#signin').addEventListener("submit", async event => {
+
+const signin = document.querySelector('#signin')
+
+signin.addEventListener("submit", async event => {
     event.preventDefault();
     const form = event.target;
     const body = {
@@ -79,6 +82,25 @@ document.querySelector('#signup').addEventListener("submit", async event => {
         document.querySelector("div#user").innerHTML = result.msg;
     }
 });
+
+//reply box open /close
+const reply = document.querySelector("#replyComment")
+const replyBox = document.querySelector("#replyBox")
+const closeReplyBox = document.querySelector("#closeReplyBox")
+
+
+reply.addEventListener("click",async () => {
+    // console.log("replyBox is clicked");
+    replyBox.classList.remove("none")
+})
+closeReplyBox.addEventListener("click",async () => {
+    // console.log("replyBox is closed");
+    replyBox.classList.add("none")
+})
+
+
+
+
 
 
 

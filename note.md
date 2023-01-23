@@ -17,3 +17,15 @@ npm install -D @types/express-session
 //// hashing password///
 npm install bcryptjs @types/bcryptjs
 import * as bcrypt from "bcryptjs"
+
+
+
+entering database project2alpha
+  "previewLimit": 50,
+  "server": "localhost",
+  "port": 5432,
+  "driver": "PostgreSQL",
+  "name": "project2alpha",
+  "database": "project2alpha",
+  "username": "carloschan",
+  "password": "123456"
