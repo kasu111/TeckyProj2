@@ -76,7 +76,7 @@
           >
             <i class="fa-solid fa-user-plus"></i>
           </button>
-          <form id="signup" class="dropdown-menu p-4 dropdown-bcolor">
+          <form id="signup" action="/signup" class="dropdown-menu p-4 dropdown-bcolor">
             <div class="mb-3">
               <label for="username" class="form-label" maxlength="20"
                 >username:</label
@@ -134,7 +134,7 @@
               type="submit"
               class="btn btn-secondary toggle icon boxShadow"
             >
-              Sign up
+             註冊
             </button>
             <button
               type="reset"
@@ -172,7 +172,7 @@
           <div id="user"></div>
         </div>
         <!-- ////////////////////////////////////////////////////////////////// -->
-        <div class="part3 flex1 addPage jusbet none">
+        <div class="part3 flex1 addPage jusbet none ">
           <div>
             <div class="dropdown">
               <button
@@ -248,7 +248,9 @@
         <div><i class="fa-solid fa-chevron-left"></i></div>
         <div class="titletext"></div>
         <div class="flex alitem">
-          <div><i class="fa-solid fa-comment-medical"></i></div>
+          <div id="replyComment">
+            <i class="fa-solid fa-comment-medical"></i>
+          </div>
           <div><i class="fa-solid fa-heart"></i></div>
         </div>
       </div>
@@ -261,7 +263,7 @@
         <!-- 開comments -->
         <div class="commentsWall">
           <!-- //////////////////////////////////////////////////////////// -->
-          <div class="commentBox none">
+          <div class="commentBox ">
             <div class="bar">
               <div>
                 <div id="CommentID">#1</div>
@@ -294,14 +296,12 @@
           </div>
         </div>
         <!-- ////////////////////////////////////////////// -->
-        <div class="ReplyBox none">
+        <div id="replyBox" class="ReplyBox none ">
           <div class="ReplyTopic">
             <div class="closePage">回覆：美國最新型機械人面世</div>
             <div class="closePage2">
-              <div>
-                <i class="fa-solid fa-down-left-and-up-right-to-center"></i>
-              </div>
-              <div>
+            
+              <div id="closeReplyBox">
                 <i class="fa-solid fa-xmark"></i>
               </div>
             </div>
@@ -326,11 +326,13 @@
           <div class="sumbitCol">
             <form action="submitForm">
               <span><i class="fa-solid fa-paper-plane"></i></span>
+              
               <input type="submit" class="submitBTN" value="Return" />
             </form>
           </div>
         </div>
       </div>
+
     </div>
     <div id="resetPass" class="none">
       <div class="animate__animated animate__flash boxPost">
