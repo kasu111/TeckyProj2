@@ -9,6 +9,7 @@ import http from "http";
 import moment from "moment";
 import { hashPassword } from "./hash";
 import { checkPassword } from "./hash";
+import session from "express-session";
 // import { format, formatDistance, formatRelative, subDays } from "date-fns";
 dotenv.config();
 export const client = new Client({
@@ -32,7 +33,7 @@ app.use(
 declare module "express-session" {
   interface SessionData {
     user?: {
-      id: string;
+      id: Number;
       name: string;
       // password: string
     };
@@ -160,8 +161,26 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
   const posttitle = await client.query(
     "SELECT posts.id,users.name,posts.title,users.sex,created_at FROM posts join users on posts.user_id = users.id"
   );
+  // const posttitle = await client.query(
+  //   "SELECT posts.id,users.name,posts.title,users.sex,posts.created_at FROM post_likes join users on posts.user_id = users.id"
+  // );
 
   let postData = posttitle.rows;
+  postData = postData.map((obj) =>
+    Object.assign(obj, {
+      created_at: timetype(obj.created_at),
+    })
+  );
+  // postData = postData.map(async (obj) => {
+  //   const postlikes = await client.query(
+  //     "SELECT user_id FROM post_likes where post_id = $1",
+  //     [obj.id]
+  //   );
+  //   let postlike = postlikes.rows.length;
+  //   let like = postlike.toString();
+  //   Object.assign(obj, { like: like });
+  // });
+
   postData = postData.map((obj) =>
     Object.assign(obj, {
       created_at: timetype(obj.created_at),
@@ -173,7 +192,6 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
       ? Object.assign(obj, { meta: "bluecolor" })
       : Object.assign(obj, { meta: "redcolor" })
   );
-
   res.status(200).json({
     result: true,
     message: "success",
@@ -182,16 +200,22 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
 });
 
 app.post("/clickLike", async (req: express.Request, res: express.Response) => {
-  // console.log("sfesf", req.body.id);
-  // console.log("sfesf", req.session.id);
-  // const likepost = await client.query(
-  //   `INSERT INTO posts_likes (users_id,post_id) VALUES ($1,$2)`,
-  //   [req.session.id, req.body.id]
-  // );
+  const showlike = await client.query(
+    "SELECT post_id,user_id FROM post_likes WHERE post_id = $1 AND user_id = $2",
+    [req.body.id, req.session.user?.id]
+  );
+  if (showlike.rowCount > 0) {
+  } else {
+    const likepost = await client.query(
+      `INSERT INTO post_likes (user_id,post_id) VALUES ($1,$2) RETURNING post_id`,
+      [req.session.user?.id, req.body.id]
+    );
+  }
+
   res.status(200).json({
     result: true,
     message: "success",
-    likepost: {},
+    // likepost: ,
   });
 });
 app.get("/user", async (req: express.Request, res: express.Response) => {
@@ -269,6 +293,24 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
     res.json({ success: false, msg: "Failed to sign up" });
   }
 });
+/////////////////////////////////////////////////////////////////////
+// app.get(
+//   "/showLike/:id",
+//   async (req: express.Request, res: express.Response) => {
+//     const id = req.params.id;
+//     const postlikes = await client.query(
+//       "SELECT user_id FROM post_likes where post_id = $1",
+//       [id]
+//     );
+//     let likes = postlikes.rows.length;
+//     const like = likes.toString();
+//     res.status(200).json({
+//       result: true,
+//       message: "success",
+//       postlike: like,
+//     });
+//   }
+// );
 
 let o = path.join(__dirname, "public");
 

@@ -56,7 +56,7 @@ async function loadpost() {
   post = json.postData;
   const postLine = document.querySelector(".postLine")
   // const toptitle = document.querySelector(".titletext")
-
+  const comments = postLine.children
 
   if (json.result) {
     postLine.innerHTML = post.map(obj => {
@@ -66,7 +66,7 @@ async function loadpost() {
               <div class="postName ${obj.meta}">${obj.name}</div>
               <div class="like">
                 <i class="fa-regular fa-thumbs-up"></i>
-                <div>0</div>
+                <div data-like="${obj.id}"></div>
               </div>
               <div>
               <div class="time">${obj.created_at}</div>
@@ -88,7 +88,7 @@ async function loadpost() {
           </div>
         </div>`
     }).join("")
-    const comments = postLine.children
+
     for (let i = 0; i < comments.length; i++) {
       const comment = comments[i]
       const id = comment.getAttribute("data-id")
@@ -104,10 +104,10 @@ async function loadpost() {
         const title = document.querySelector(".titletext")
         const commPlace = document.querySelector(".commentsWall")
         if (json.result) {
-          console.log("suifgsafkjs");
+          // console.log("suifgsafkjs");
           title.innerText = json.allData.map(obj =>
             obj.title).join("");
-          commPlace.innerHTML = json.allData.map((obj, index) =>
+          commPlace.innerHTML = await json.allData.map((obj, index) =>
             `<div class="commentBox">
               <div class="bar">
                 <div>
@@ -131,42 +131,55 @@ async function loadpost() {
               <div class="likeDislike">
                 <div class="likeArea">
                   <div class="likePlace like_${id}">
-                    <div><i class="fa-regular fa-thumbs-up"></i> 0</div>
+                    <div><i class="fa-regular fa-thumbs-up"></i>${obj.like}</div>
                   </div>
                 </div>
                 <div class="quoteArea none">
                   <i class="fa-solid fa-comments"></i>0
                 </div>
               </div>
-            </div>`).join('')
+            </div>`).join('');
+          const clickLike = document.querySelector(`.like_${id}`)
+          clickLike.addEventListener("click", async () => {
+            const res = await fetch("/clickLike", {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              method: "POST",
+              body: JSON.stringify({ id })
+            })
+            await res.json()
+
+          })
+
         };
 
 
 
+
       })
-
-      // const clickLike = document.querySelector(`.like_${id}`)
-      // clickLike.addEventListener("click", async () => {
-
-      //   const res = await fetch("/clickLike", {
-      //     headers: {
-      //       "Content-Type": "application/json"
-      //     },
-      //     method: "POST",
-      //     body: JSON.stringify(id)
-      //   })
-      //   await res.json()
-
-      //   console.log("likelike",res.likepost);
-
-      // })
     }
 
-
-
-
   }
+  /////////////////////////////////////////////////////////////
+  // for (let i = 0; i < comments.length; i++) {
+  //   const comment = comments[i]
+  //   const id = comment.getAttribute("data-like")
+  //   await checkLike(id)
+  //   async function checkLike(ids) {
+  //     const res = await fetch(`/showLike/:${ids}`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       body: JSON.stringify({ ids }),
+  //     })
+  //     json = await res.json()
+  //     id.innerHTML = await json.postlike.map((obj) => {
+  //       obj.like;
+  //     })
+  //   }
+  // }
 }
-
 
 
