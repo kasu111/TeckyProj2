@@ -252,7 +252,7 @@
         <div><i class="fa-solid fa-chevron-left"></i></div>
         <div class="titletext"></div>
         <div class="flex alitem">
-          <div id="replyComment">
+          <div id="replyComment" class="post-1">
             <i class="fa-solid fa-comment-medical"></i>
           </div>
           <div><i class="fa-solid fa-heart"></i></div>
@@ -277,7 +277,7 @@
 
                 <i class="fa-solid fa-eye none"></i>
 
-                <i class="fa-solid fa-reply none"></i>
+                <i class="fa-solid fa-reply"></i>
               </div>
 
               <div class="MultiFunction">
@@ -322,17 +322,21 @@
             <div></div>
           </div>
           <div class="ReplyTextPlace">
-            <form class="ReplyForm" action="">
-              <textarea name="" id="ReplyTextPlace1"></textarea>
-            </form>
-          </div>
-          <div class="sumbitCol">
-            <form action="submitForm">
+            <form id="reply" class="ReplyForm" action="">
+              <textarea name="replyContent" id="ReplyTextPlace1"></textarea>
+              <div class="replySubmit">
               <span><i class="fa-solid fa-paper-plane"></i></span>
-
-              <input type="submit" class="submitBTN" value="Return" />
+              
+              <input type="submit" class="submitBTN post-" value="回覆" />
+            </div>
             </form>
+            <div id="reply"></div>
           </div>
+          <!-- <div class="sumbitCol"> -->
+            <!-- <form action="submitForm">
+              
+            </form> -->
+          <!-- </div> -->
         </div>
       </div>
     </div>

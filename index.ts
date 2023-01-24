@@ -40,6 +40,7 @@ declare module "express-session" {
   }
 }
 
+
 const uploadDir = "uploads";
 fs.mkdirSync(uploadDir, { recursive: true });
 const form = formidable({
@@ -218,6 +219,8 @@ app.post("/clickLike", async (req: express.Request, res: express.Response) => {
     // likepost: ,
   });
 });
+
+//check user login or not
 app.get("/user", async (req: express.Request, res: express.Response) => {
   //if you want to insert admin hashed password into database use below script
   // const password = await hashPassword("1234")
@@ -225,6 +228,7 @@ app.get("/user", async (req: express.Request, res: express.Response) => {
   res.json(req.session.user ? req.session.user : { id: null });
 });
 
+//check user and password
 app.post("/login", async (req: express.Request, res: express.Response) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -267,6 +271,7 @@ app.post("/login", async (req: express.Request, res: express.Response) => {
   // res.json(users.rows)
 });
 
+//logout
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     res.redirect("/");
@@ -298,6 +303,41 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
     res.json({ success: false, msg: "Failed to sign up" });
   }
 });
+
+//reply a post (commentsssss)
+
+//輸入新comment到database TESTING NOT CONFIrM
+app.post("/reply", async (req: express.Request, res: express.Response) => {
+    const userid = req.session.user?.id || "1";
+    const replyContent = req.body.replyContent;
+   //how to track which post i am replying?
+   const newRecord = await client.query(
+    `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
+    [replyContent,"",userid,req.body.postId]
+   ) 
+   
+
+    res.status(200).json({
+      success: true,
+      result: true,
+      message: "success",
+    });
+  });
+ 
+
+// app.post("/reply", async (req: express.Request, res: express.Response)=> {
+  
+    //check user login -> or if doesn't log it reply button display none
+    //mark replying user id and name 
+    //create new comments box
+    //show comments box content
+
+
+    
+
+// });
+   
+
 /////////////////////////////////////////////////////////////////////
 // app.get(
 //   "/showLike/:id",

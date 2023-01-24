@@ -1,6 +1,6 @@
 .commentsWall{
     width:cover;
-    display: flex;
+    display: block;
     justify-content: center;
 }
 
@@ -191,6 +191,11 @@ textarea {
       }
 
 
+.replySubmit{
+    display: flex;
+    justify-content: flex-end;
+}
+      
 #ReplyTextPlace1{
     width:96%;
     height:540px;
@@ -209,10 +214,13 @@ textarea {
 .submitBTN{
     margin-right:20px;
     border-radius: 5px;
+    width:150px;
 }
 .fa-paper-plane{
     font-size: 20px;
-    padding:5px;
+    padding:10px;
+    margin-right:10px;
+    color: white;
 }
 
 #smallCommentBar{
