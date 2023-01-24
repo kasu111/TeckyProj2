@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import expressSession, { MemoryStore } from "express-session";
 import path from "path";
 import fs from "fs";
@@ -135,12 +135,23 @@ app.get(
 
     const id = req.params.id;
     const comments = await client.query(
-      `SELECT users.sex,posts.id,posts.title,users.name,comments.body,comments.write_at FROM comments join posts on comments.post_id = posts.id join users on posts.user_id = users.id where posts.id=$1`,
+      `SELECT sex,posts.id,title,name,body,write_at FROM comments join posts on comments.post_id = posts.id join users on posts.user_id = users.id where posts.id=$1`,
       [id]
     );
     let allData = comments.rows;
     allData = allData.map((obj) =>
       Object.assign(obj, { write_at: timetype(obj.write_at) })
+    );
+
+    allData = await Promise.all(
+      allData.map(async (obj) => {
+        const postlikes = await client.query(
+          "SELECT user_id FROM post_likes where post_id = $1",
+          [obj.id]
+        );
+        let like = postlikes.rows.length;
+        return Object.assign(obj, { like: like });
+      })
     );
 
     allData = allData.map((obj) =>
@@ -166,27 +177,23 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
   // );
 
   let postData = posttitle.rows;
+
+  postData = await Promise.all(
+    postData.map(async (obj) => {
+      const postlikes = await client.query(
+        "SELECT user_id FROM post_likes where post_id = $1",
+        [obj.id]
+      );
+      let like = postlikes.rows.length;
+      return Object.assign(obj, { like: like });
+    })
+  );
+
   postData = postData.map((obj) =>
     Object.assign(obj, {
       created_at: timetype(obj.created_at),
     })
   );
-  // postData = postData.map(async (obj) => {
-  //   const postlikes = await client.query(
-  //     "SELECT user_id FROM post_likes where post_id = $1",
-  //     [obj.id]
-  //   );
-  //   let postlike = postlikes.rows.length;
-  //   let like = postlike.toString();
-  //   Object.assign(obj, { like: like });
-  // });
-
-  postData = postData.map((obj) =>
-    Object.assign(obj, {
-      created_at: timetype(obj.created_at),
-    })
-  );
-
   postData = postData.map((obj) =>
     obj.sex
       ? Object.assign(obj, { meta: "bluecolor" })
@@ -205,17 +212,20 @@ app.post("/clickLike", async (req: express.Request, res: express.Response) => {
     [req.body.id, req.session.user?.id]
   );
   if (showlike.rowCount > 0) {
-  } else {
-    const likepost = await client.query(
-      `INSERT INTO post_likes (user_id,post_id) VALUES ($1,$2) RETURNING post_id`,
-      [req.session.user?.id, req.body.id]
-    );
+    return res.status(200).json({
+      result: true,
+      message: "liked already",
+    });
   }
+  const likepost = await client.query(
+    `INSERT INTO post_likes (user_id,post_id) VALUES ($1,$2) RETURNING post_id`,
+    [req.session.user?.id, req.body.id]
+  );
 
   res.status(200).json({
     result: true,
     message: "success",
-    // likepost: ,
+    likepost,
   });
 });
 app.get("/user", async (req: express.Request, res: express.Response) => {
@@ -303,17 +313,21 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 //   "/showLike/:id",
 //   async (req: express.Request, res: express.Response) => {
 //     const id = req.params.id;
-//     const postlikes = await client.query(
-//       "SELECT user_id FROM post_likes where post_id = $1",
-//       [id]
-//     );
-//     let likes = postlikes.rows.length;
-//     const like = likes.toString();
-//     res.status(200).json({
-//       result: true,
-//       message: "success",
-//       postlike: like,
-//     });
+
+//     console.log("idididiididdddddidididdididdiidd", req.params);
+//     if (id !== null) {
+//       const postlikes = await client.query(
+//         "SELECT user_id FROM post_likes where post_id = $1",
+//         [id]
+//       );
+//       let likes = postlikes.rows.length;
+//       const like = likes.toString();
+//       res.status(200).json({
+//         result: true,
+//         message: "success",
+//         postlike: like,
+//       });
+//     }
 //   }
 // );
 
