@@ -129,7 +129,7 @@ async function loadpost() {
 
                   <i class="fa-solid fa-eye none"></i>
 
-                  <i class="fa-solid fa-reply none"></i>
+                  <i class="fa-solid fa-reply post-${json.allData[0].id}"></i>
                 </div>
 
                 <div class="MultiFunction">
@@ -150,6 +150,11 @@ async function loadpost() {
                 </div>
               </div>
             </div>`).join('');
+
+            document.querySelector("#replyComment").classList = [`post-${json.allData[0].id}`]
+            document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
+            //console.log(document.querySelector('.submitBTN').classList[1])
+
           const clickLike = document.querySelector(`.like_${id}`)
           clickLike.addEventListener("click", async () => {
             if (islogin) {

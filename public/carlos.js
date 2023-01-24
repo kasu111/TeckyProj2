@@ -105,6 +105,35 @@
 //     replyBox.classList.add("none")
 // })
 
+//new comments fetching TESTING NOT CONFIRM
+document.querySelector('#reply').addEventListener("submit", async event => {
+    event.preventDefault();
+    const form = event.target;
+    const body = {
+        replyContent: form.replyContent.value,
+        postId: document.querySelector(".submitBTN").classList[1].substring(5)
+    }
+    const res = await fetch("/reply", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+    const result = await res.json();//result = (success:true)
+    if (result.success) {
+        window.location = "/"
+    } else {
+        document.querySelector("div#reply").innerHTML = result.msg;
+    }
+});
+
+//reply button track post id
+//document.querySelector("#replyComment").classList = [`post-${json.allData[0].id}`]
+//document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
+//console.log(document.querySelector('.submitBTN').classList[1])
+
+
 
 
 
