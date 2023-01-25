@@ -40,7 +40,6 @@ declare module "express-session" {
   }
 }
 
-
 const uploadDir = "uploads";
 fs.mkdirSync(uploadDir, { recursive: true });
 const form = formidable({
@@ -318,35 +317,50 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 
 //輸入新comment到database TESTING NOT CONFIrM
 app.post("/reply", async (req: express.Request, res: express.Response) => {
-    const userid = req.session.user?.id || "1";
-    const replyContent = req.body.replyContent;
-   //how to track which post i am replying?
-   const newRecord = await client.query(
+  const userid = req.session.user?.id || "1";
+  const replyContent = req.body.replyContent;
+  //how to track which post i am replying?
+  const newRecord = await client.query(
     `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-    [replyContent,"",userid,req.body.postId]
-   ) 
-   
+    [replyContent, "", userid, req.body.postId]
+  );
 
-    res.status(200).json({
-      success: true,
-      result: true,
-      message: "success",
-    });
+  res.status(200).json({
+    success: true,
+    result: true,
+    message: "success",
   });
- 
-
+});
+app.get(
+  "/checkLike/:id",
+  async (req: express.Request, res: express.Response) => {
+    const check = await client.query(
+      "SELECT user_id FROM post_likes where user_id = $1 AND post_id=$2",
+      [req.session.user?.id, req.params.id]
+    );
+    if (check.rowCount > 0) {
+      res.status(200).json({
+        success: true,
+        result: true,
+        color: true,
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        result: true,
+        color: false,
+      });
+    }
+  }
+);
 // app.post("/reply", async (req: express.Request, res: express.Response)=> {
-  
-    //check user login -> or if doesn't log it reply button display none
-    //mark replying user id and name 
-    //create new comments box
-    //show comments box content
 
-
-    
+//check user login -> or if doesn't log it reply button display none
+//mark replying user id and name
+//create new comments box
+//show comments box content
 
 // });
-   
 
 /////////////////////////////////////////////////////////////////////
 // app.get(
