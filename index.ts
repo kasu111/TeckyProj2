@@ -308,10 +308,12 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 
 //輸入新comment到database TESTING NOT CONFIrM
 app.post("/reply", async (req: express.Request, res: express.Response) => {
+
     const userid = req.session.user?.id || "1";
     const replyContent = req.body.replyContent;
+    // console.log(replyContent);
    //how to track which post i am replying?
-   const newRecord = await client.query(
+   await client.query(
     `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
     [replyContent,"",userid,req.body.postId]
    ) 
