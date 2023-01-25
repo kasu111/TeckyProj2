@@ -1,15 +1,21 @@
 // history.go(-1)
 // import { format, formatDistance, formatRelative, subDays } from "date-fns";
 
+// const { json } = require("stream/consumers")
+
 // const moment = require("moment");
 
 
-
+// const 
 const part1 = document.querySelector(".part1")//未login
 const part2 = document.querySelector(".part2")//未login
 const part3 = document.querySelector(".part3")//login
 const Showname = document.querySelector(".Showname")
 const signin = document.querySelector('#signin')
+const reply = document.querySelector("#replyComment")
+const replyBox = document.querySelector("#replyBox")
+const closeReplyBox = document.querySelector("#closeReplyBox")
+const isreply = document.querySelector(".recomm")
 let islogin = false;
 
 
@@ -76,7 +82,7 @@ async function loadpost() {
           <div class="postSet">
             <div class="postMenu">
               <div class="postName ${obj.meta}">${obj.name}</div>
-              <div class="like">
+              <div class="like postLike_${obj.id}">
                 <i class="fa-regular fa-thumbs-up"></i>
                 <div data-like="${obj.id}">${obj.like}</div>
               </div>
@@ -99,7 +105,8 @@ async function loadpost() {
             </div>
           </div>
         </div>`
-      }).join("")
+      }).join("");
+    // await checkLike(id)
 
     for (let i = 0; i < comments.length; i++) {
       // const comments = postLine.children
@@ -114,8 +121,14 @@ async function loadpost() {
         const json = await res.json();
         const title = document.querySelector(".titletext");
         const commPlace = document.querySelector(".commentsWall");
+
         if (json.result) {
-          // console.log("suifgsafkjs");
+          if (islogin) {
+            isreply.classList.remove("none")
+
+          }
+
+          console.log("suifgsafkjs");
           title.innerText = json.allData.map(obj =>
             obj.title).join("");
           commPlace.innerHTML = await json.allData.map((obj, index) =>
@@ -150,11 +163,9 @@ async function loadpost() {
                 </div>
               </div>
             </div>`).join('');
-
-            document.querySelector("#replyComment").classList = [`post-${json.allData[0].id}`]
-            document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
-            //console.log(document.querySelector('.submitBTN').classList[1])
-
+          ///////////////////////////////////////改動了(25/6)
+          document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
+          // console.log(document.querySelector('.submitBTN').classList[1])
           const clickLike = document.querySelector(`.like_${id}`)
           clickLike.addEventListener("click", async () => {
             if (islogin) {
@@ -170,30 +181,31 @@ async function loadpost() {
           })
 
         };
-
+        await checkLike(id)
       })
+
     }
 
   }
-  /////////////////////////////////////////////////////////////
-  // for (let i = 0; i < comments.length; i++) {
-  //   const comment = comments[i]
-  //   const id = comment.getAttribute("data-like")
-  //   await checkLike(id)
-  //   async function checkLike(ids) {
-  //     const res = await fetch(`/showLike/${ids}`, {
-  //       method: "GET",
-  //       // headers: {
-  //       //   "Content-Type": "application/json"
-  //       // },
-  //       // body: JSON.stringify({ ids }),
-  //     })
-  //     json = await res.json()
-  //     id.innerHTML = await json.postlike.map((obj) => {
-  //       obj.like;
-  //     })
-  //   }
-  // }
+}
+/////////////////////////////////////////////////////////////
+
+async function checkLike(id) {
+  const postColor = document.querySelector(`.postLike_${id}`)
+  const color = document.querySelector(`.like_${id}`)
+  const res = await fetch(`/checkLike/${id}`, {
+    method: "GET",
+  })
+  const json = await res.json()
+
+  if (json.color) {
+    postColor.classList.add("isLiked")
+    color.classList.add("isLiked")
+  } else {
+    postColor.classList.remove("isLiked")
+    color.classList.remove("isLiked")
+  }
+
 }
 
 //////////////////////////CARLOS//////////////
@@ -217,6 +229,7 @@ signin.addEventListener("submit", async event => {
   const result = await res.json();//result = (success:true)
   if (result.success) {
     islogin = true;
+
     window.location = "/"
   } else {
     islogin = false;
@@ -231,8 +244,7 @@ async function checkUserLogin() {
   // const userDiv = document.querySelector("div#user")
   if (sessionResult.id === null) {
     islogin = false;
-    // userDiv.innerHTML = "";
-    // form.classList.remove("none")
+    isreply.classList.add("none")
     part1.classList.remove("none")
     part2.classList.remove("none")
     part3.classList.add("none")
@@ -249,10 +261,15 @@ async function checkUserLogin() {
 }
 const logout = document.getElementById("logout")
 logout.addEventListener("click", async () => {
+  const colorAll = document.querySelector(`.likePlace`)
+  const postColor = document.querySelector(`.like`)
   islogin = false;
   part1.classList.remove("none")
   part2.classList.remove("none")
   part3.classList.add("none")
+  isreply.classList.add("none")
+  colorAll.classList.remove("isLiked")
+  postColor.classList.remove("isLiked")
   await fetch("/logout", {
     method: "GET",
   })
@@ -285,9 +302,7 @@ document.querySelector('#signup').addEventListener("submit", async event => {
 });
 
 //reply box open /close
-const reply = document.querySelector("#replyComment")
-const replyBox = document.querySelector("#replyBox")
-const closeReplyBox = document.querySelector("#closeReplyBox")
+
 
 
 reply.addEventListener("click", async () => {
