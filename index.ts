@@ -318,11 +318,20 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 
 //輸入新comment到database TESTING NOT CONFIrM
 app.post("/reply", async (req: express.Request, res: express.Response) => {
+  let formResult: any = await formidable_promise(req);
+  let obj: any = transfer_formidable_into_obj(formResult);
+
+  console.log(obj.files);
+  
 
     const userid = req.session.user?.id || "1";
     const replyContent = req.body.replyContent;
-    // console.log(replyContent);
-   //how to track which post i am replying?
+    if (obj.hasOwnProperty("image")) {
+      const newRecord: any = await client.query(
+        `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
+        [replyContent,obj.files,userid,req.body.postId]
+       ) }
+       else{
    await client.query(
     `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
     [replyContent,"",userid,req.body.postId]
@@ -334,7 +343,7 @@ app.post("/reply", async (req: express.Request, res: express.Response) => {
       result: true,
       message: "success",
     });
-  });
+  }});
  
 
 // app.post("/reply", async (req: express.Request, res: express.Response)=> {

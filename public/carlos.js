@@ -105,7 +105,11 @@
 //     replyBox.classList.add("none")
 // })
 
+
+////^^^ already in index.js
+
 //new comments fetching TESTING NOT CONFIRM
+
 document.querySelector('#reply').addEventListener("submit", async event => {
     event.preventDefault();
     const form = event.target;
@@ -128,12 +132,25 @@ document.querySelector('#reply').addEventListener("submit", async event => {
     }
 });
 
-//reply button track post id
-//document.querySelector("#replyComment").classList = [`post-${json.allData[0].id}`]
-//document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
-//console.log(document.querySelector('.submitBTN').classList[1])
+
+// upload files button
+const backdrop = document.querySelector("#backdrop")
+const uploadFiles = document.querySelector("#uploadFiles")
+const uploadFilesClick = document.querySelector("#uploadFilesClick")
+
+uploadFilesClick.addEventListener("click",async event =>{
+    
+   setTimeout(() => {
+    backdrop.classList.remove("none")
+}, 500); 
+})
 
 
+const closeBox = document.querySelector(".closeBtn")
+
+closeBox.addEventListener("click", async event =>{
+    backdrop.classList.add("none")
+})
 
 
 
