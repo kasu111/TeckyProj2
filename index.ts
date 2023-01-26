@@ -316,32 +316,32 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 //reply a post (commentsssss)
 
 //輸入新comment到database TESTING NOT CONFIrM
-app.post("/reply", async (req: express.Request, res: express.Response) => {
+app.post("/reply/:post_Id", async (req: express.Request, res: express.Response) => {
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
 
-  console.log(obj.files);
-  
+  console.log(obj);
+  // console.log(obj.fields);
+  const userid = req.session.user?.id || "1";
+  // const replyContent = req.body.replyContent;
+  if (obj.hasOwnProperty("image")) {
+    const newRecord: any = await client.query(
+      `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
+      [obj.replyContent, obj.files, userid, req.params.post_Id]
+    );
+  } else {
+    await client.query(
+      `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
+      [obj.replyContent, "", userid, req.params.post_Id]
+    );
 
-    const userid = req.session.user?.id || "1";
-    const replyContent = req.body.replyContent;
-    if (obj.hasOwnProperty("image")) {
-      const newRecord: any = await client.query(
-        `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-        [replyContent,obj.files,userid,req.body.postId]
-       ) }
-       else{
-   await client.query(
-    `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-    [replyContent, "", userid, req.body.postId]
-  );
-
-  res.status(200).json({
-    success: true,
-    result: true,
-    message: "success",
-  });
-}});
+    res.status(200).json({
+      success: true,
+      result: true,
+      message: "success",
+    });
+  }
+});
 
 app.get(
   "/checkLike/:id",
@@ -398,8 +398,10 @@ app.get(
 // );
 
 let o = path.join(__dirname, "public");
+let k = path.join(__dirname, "uploads");
 
 app.use(express.static(o));
+app.use(express.static(k));
 
 server.listen(8000, () => {
   console.log("running port localhost:8000");

@@ -5,6 +5,7 @@
 // const signin = document.querySelector('#signin')
 // let islogin = false;
 
+
 // signin.addEventListener("submit", async event => {
 //     event.preventDefault();
 //     const form = event.target;
@@ -110,19 +111,27 @@
 
 //new comments fetching TESTING NOT CONFIRM
 
+function formToJson(formData){
+    let obj = {}
+    formData.forEach((value,key)=>{
+        obj[key] =value
+    })
+    return JSON.stringify(obj)
+}
+
 document.querySelector('#reply').addEventListener("submit", async event => {
     event.preventDefault();
     const form = event.target;
-    const body = {
-        replyContent: form.replyContent.value,
-        postId: document.querySelector(".submitBTN").classList[1].substring(5)
-    }
-    const res = await fetch("/reply", {
+    const formData = new FormData(form);
+   
+    // const body = {
+    //     replyContent: form.replyContent.value,
+    //     postId: document.querySelector(".submitBTN").classList[1].substring(5)
+    // }
+
+    const res = await fetch(`/reply/${document.querySelector(".submitBTN").classList[1].substring(5)}` ,{
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
+        body: formData
     });
     const result = await res.json();//result = (success:true)
     if (result.success) {
@@ -133,7 +142,7 @@ document.querySelector('#reply').addEventListener("submit", async event => {
 });
 
 
-// upload files button
+// upload files interface create and close
 const backdrop = document.querySelector("#backdrop")
 const uploadFiles = document.querySelector("#uploadFiles")
 const uploadFilesClick = document.querySelector("#uploadFilesClick")
@@ -145,13 +154,11 @@ uploadFilesClick.addEventListener("click",async event =>{
 }, 500); 
 })
 
-
 const closeBox = document.querySelector(".closeBtn")
 
 closeBox.addEventListener("click", async event =>{
     backdrop.classList.add("none")
 })
-
 
 
 

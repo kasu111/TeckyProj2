@@ -244,7 +244,7 @@ textarea {
 }
 
 #uploadFiles{
-
+    /* transition: all 1s; */
     width:400px;
     height:50%;
     background: #292827;
@@ -257,10 +257,90 @@ textarea {
 
 #closeBar{
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .closeBtn{
     padding:10px;
     margin-right:5px;
+}
+
+.uploadBox{
+    height: 100%;
+    
+}
+
+.uploadAreaOuter{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height:80%;
+    background-color: #292827;
+    position: relative;
+    
+}
+
+.uploadArea{
+    margin: 10px;
+    border: 2px dotted grey;
+    background-color: #202020;
+    width: 100%;
+ 
+}
+
+
+.dragClickPhoto{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#selectUploadFile{
+    cursor: pointer;
+    opacity: 0;
+    z-index: 99999;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+}
+
+.closeHeader{
+    padding:10px;
+    margin-left:10px;
+}
+
+.uploadText{
+    
+    color: gray;
+    padding: 5px;
+}
+
+
+.submitPhoto{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.photoBTN{
+   margin:2px 15px ;
+   width:150px;
+}
+
+#blah{
+    max-width:380px;
+    max-height:380px;
+    min-width:fit-content;
+    min-height:fit-content;
+  
+}
+
+.uploadFilesBtn {
+    width: 380px;
 }
