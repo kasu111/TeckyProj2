@@ -111,35 +111,32 @@
 
 //new comments fetching TESTING NOT CONFIRM
 
-function formToJson(formData){
+function formToJson(formData) {
     let obj = {}
-    formData.forEach((value,key)=>{
-        obj[key] =value
+    formData.forEach((value, key) => {
+        obj[key] = value
     })
     return JSON.stringify(obj)
 }
 
-document.querySelector('#reply').addEventListener("submit", async event => {
-    event.preventDefault();
-    const form = event.target;
-    const formData = new FormData(form);
-   
-    // const body = {
-    //     replyContent: form.replyContent.value,
-    //     postId: document.querySelector(".submitBTN").classList[1].substring(5)
-    // }
+// document.querySelector('#reply').addEventListener("submit", async event => {
 
-    const res = await fetch(`/reply/${document.querySelector(".submitBTN").classList[1].substring(5)}` ,{
-        method: "POST",
-        body: formData
-    });
-    const result = await res.json();//result = (success:true)
-    if (result.success) {
-        window.location = "/"
-    } else {
-        document.querySelector("div#reply").innerHTML = result.msg;
-    }
-});
+//     event.preventDefault();
+//     const form = event.target;
+//     const formData = new FormData(form);
+
+
+//     const res = await fetch(`/reply/${document.querySelector(".submitBTN").classList[1].substring(5)}`, {
+//         method: "POST",
+//         body: formData
+//     });
+//     const result = await res.json();//result = (success:true)
+//     if (result.success) {
+//         window.location = "/"
+//     } else {
+//         document.querySelector("div#reply").innerHTML = result.msg;
+//     }
+// });
 
 
 // upload files interface create and close
@@ -147,16 +144,16 @@ const backdrop = document.querySelector("#backdrop")
 const uploadFiles = document.querySelector("#uploadFiles")
 const uploadFilesClick = document.querySelector("#uploadFilesClick")
 
-uploadFilesClick.addEventListener("click",async event =>{
-    
-   setTimeout(() => {
-    backdrop.classList.remove("none")
-}, 500); 
+uploadFilesClick.addEventListener("click", async event => {
+
+    setTimeout(() => {
+        backdrop.classList.remove("none")
+    }, 500);
 })
 
 const closeBox = document.querySelector(".closeBtn")
 
-closeBox.addEventListener("click", async event =>{
+closeBox.addEventListener("click", async event => {
     backdrop.classList.add("none")
 })
 

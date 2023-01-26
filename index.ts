@@ -6,7 +6,7 @@ import formidable from "formidable";
 import { Client, Query } from "pg";
 import dotenv from "dotenv";
 import http from "http";
-import moment from "moment";
+// import moment from "moment";
 import { hashPassword } from "./hash";
 import { checkPassword } from "./hash";
 import session from "express-session";
@@ -92,40 +92,40 @@ function transfer_formidable_into_obj(form_result: formResult) {
 }
 //////////////////////////////////////////////////////
 //輸入新post到database
-app.post("/addPost", async (req: express.Request, res: express.Response) => {
+app.post("/addpost", async (req: express.Request, res: express.Response) => {
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
   const user = req.session.user;
   const userid = user?.id;
 
-  if (obj.hasOwnProperty("image")) {
-    const newRecord: any = await client.query(
-      `INSERT INTO posts (title,user_id) VALUES ($1,$2) RETURNING id`,
-      [obj.title, userid]
-    );
-    await client.query(
-      `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
-      [obj.posttext, userid, newRecord.rows[0].id]
-    );
-  } else {
-    const newRecord: any = await client.query(
-      `INSERT INTO posts (title,user_id) VALUES ($1,$2) RETURNING id`,
-      [obj.title, userid]
-    );
-    await client.query(
-      `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
-      [obj.posttext, userid, newRecord.rows[0].id]
-    );
-  }
+  // if (obj.hasOwnProperty("image")) {
+  // const newRecord: any = await client.query(
+  //   `INSERT INTO posts (title,user_id) VALUES ($1,$2)`,
+  //   [obj.title, userid]
+  // );
+  // await client.query(
+  //   `INSERT INTO comments (body,user_id,posts.title) VALUES ($1,$2,(SELECT posts.title from posts))`,
+  //   [obj.posttext, userid, obj.title]
+  // );
+  // } else {
+  const newRecord: any = await client.query(
+    `INSERT INTO posts (title,user_id) VALUES ($1,$2) RETURNING id`,
+    [obj.title, userid]
+  );
+  await client.query(
+    `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
+    [obj.posttext, userid, newRecord.rows[0].id]
+  );
+  // }
   res.status(200).json({
     success: true,
     result: true,
     message: "success",
   });
 });
-function timetype(time: any) {
-  return moment(time, "YYMMDD,h:mm").fromNow();
-}
+// function timetype(time: any) {
+//   return moment(time, "YYMMDD,h:mm").fromNow();
+// }
 app.get(
   "/addPostCommemt/:id",
   async (req: express.Request, res: express.Response) => {
@@ -135,18 +135,19 @@ app.get(
 
     const id = req.params.id;
     const comments = await client.query(
-      `SELECT sex,posts.id,title,name,body,write_at FROM comments join posts on comments.post_id = posts.id join users on posts.user_id = users.id where posts.id=$1`,
+      `SELECT comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at desc limit 10 `,
       [id]
     );
+
     let allData = comments.rows;
-    allData = allData.map((obj) =>
-      Object.assign(obj, { write_at: timetype(obj.write_at) })
-    );
+    // allData = allData.map((obj) =>
+    //   Object.assign(obj, { write_at: timetype(obj.write_at) })
+    // );
 
     allData = await Promise.all(
       allData.map(async (obj) => {
         const postlikes = await client.query(
-          "SELECT user_id FROM post_likes where post_id = $1",
+          "SELECT user_id FROM comment_like where comment_id = $1",
           [obj.id]
         );
         let like = postlikes.rows.length;
@@ -167,48 +168,76 @@ app.get(
     });
   }
 );
-//post new title到左邊column
+//get title到左邊column
 app.get("/getPost", async (req: express.Request, res: express.Response) => {
   const posttitle = await client.query(
-    "SELECT posts.id,users.name,posts.title,users.sex,created_at FROM posts join users on posts.user_id = users.id"
+    "SELECT users.name,users.sex,posts.id,posts.title,posts.created_at from(SELECT posts.id,posts.title,posts.created_at,posts.user_id FROM posts order by created_at desc limit 10 )as posts inner join users on posts.user_id = users.id"
   );
-  // const posttitle = await client.query(
-  //   "SELECT posts.id,users.name,posts.title,users.sex,posts.created_at FROM post_likes join users on posts.user_id = users.id"
+
+  // let asd = a123.rows;
+  let postData = posttitle.rows;
+  let sql_val = postData.map((obj) => obj.id);
+  let sql_param = postData.map((obj, idx) => "$" + (idx + 1) + ",").join("");
+  sql_param = sql_param.slice(0, -1);
+  sql_param = "(" + sql_param + ")";
+
+  // console.log("1234567890", sql_param);
+
+  let commid = await client.query(
+    `SELECT comments.id FROM comments where post_id IN ${sql_param}`,
+    sql_val
+  );
+  let commlike = commid.rows;
+  let comm_val = commlike.map((obj) => obj.id);
+  let comm_param = commlike.map((obj, idx) => "$" + (idx + 1) + ",").join("");
+  comm_param = comm_param.slice(0, -1);
+  comm_param = "(" + comm_param + ")";
+  // console.log(comm_val);
+
+  // postData = await Promise.all(
+  //////////////////////////////////////////
+  // popo.rows.map(async (obj) => {
+  const postlikes = await client.query(
+    `SELECT user_id FROM comment_like WHERE comment_id IN ${comm_param}`, //order by comment_like asc
+    comm_val
+  );
+  // const postlikes = await client.query(
+  //   `SELECT user_id FROM comment_like WHERE comment_id = $1`, //order by comment_like asc
+  //   [commid.rows[0].id]
+  // );
+  // console.log(postlikes.rows);
+
+  // const liked = postlikes.rows;
+  let like = postlikes.rows.length;
+  // postData = await Promise.all(
+  postData = postData.map((obj) => Object.assign(obj, { like: like }));
+  // );
+  //   return Object.assign(obj, { like: like });
+  // });
   // );
 
-  let postData = posttitle.rows;
-
-  postData = await Promise.all(
-    postData.map(async (obj) => {
-      const postlikes = await client.query(
-        "SELECT user_id FROM post_likes where post_id = $1",
-        [obj.id]
-      );
-      let like = postlikes.rows.length;
-      return Object.assign(obj, { like: like });
-    })
-  );
-
-  postData = postData.map((obj) =>
-    Object.assign(obj, {
-      created_at: timetype(obj.created_at),
-    })
-  );
+  // postData = postData.map((obj) =>
+  //   Object.assign(obj, {
+  //     created_at: timetype(obj.created_at),
+  //   })
+  // );
   postData = postData.map((obj) =>
     obj.sex
       ? Object.assign(obj, { meta: "bluecolor" })
       : Object.assign(obj, { meta: "redcolor" })
   );
+  console.log(postData);
+
   res.status(200).json({
     result: true,
     message: "success",
     postData,
   });
 });
-
+//////////////////////////////////
 app.post("/clickLike", async (req: express.Request, res: express.Response) => {
   const showlike = await client.query(
-    "SELECT post_id,user_id FROM post_likes WHERE post_id = $1 AND user_id = $2",
+    "SELECT comment_id,user_id FROM comment_like WHERE comment_id = $1 AND user_id = $2",
     [req.body.id, req.session.user?.id]
   );
   if (showlike.rowCount > 0) {
@@ -218,7 +247,7 @@ app.post("/clickLike", async (req: express.Request, res: express.Response) => {
     });
   }
   const likepost = await client.query(
-    `INSERT INTO post_likes (user_id,post_id) VALUES ($1,$2) RETURNING post_id`,
+    `INSERT INTO comment_like (user_id,comment_id) VALUES ($1,$2) RETURNING comment_id`,
     [req.session.user?.id, req.body.id]
   );
 
@@ -241,8 +270,6 @@ app.get("/user", async (req: express.Request, res: express.Response) => {
 app.post("/login", async (req: express.Request, res: express.Response) => {
   const username = req.body.username;
   const password = req.body.password;
-  // console.log(username)
-  // console.log(password)
 
   // 1.Login Success
   // 2. Wrong User Name
@@ -316,23 +343,21 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 //reply a post (commentsssss)
 
 //輸入新comment到database TESTING NOT CONFIrM
-app.post("/reply/:post_Id", async (req: express.Request, res: express.Response) => {
+app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
 
-  console.log(obj);
-  // console.log(obj.fields);
-  const userid = req.session.user?.id || "1";
+  const userid = req.session.user?.id;
   // const replyContent = req.body.replyContent;
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(
       `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-      [obj.replyContent, obj.files, userid, req.params.post_Id]
+      [obj.replyContent, obj.files, userid, req.params.id]
     );
   } else {
     await client.query(
       `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-      [obj.replyContent, "", userid, req.params.post_Id]
+      [obj.replyContent, "", userid, req.params.id]
     );
 
     res.status(200).json({
