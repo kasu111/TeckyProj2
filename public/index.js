@@ -3,9 +3,9 @@
 
 // const { json } = require("stream/consumers")
 
-// const moment = require("moment");
+// const moment = require('moment')
 
-
+// const moment = require('moment')
 // const 
 const part1 = document.querySelector(".part1")//未login
 const part2 = document.querySelector(".part2")//未login
@@ -18,6 +18,9 @@ const closeReplyBox = document.querySelector("#closeReplyBox")
 const isreply = document.querySelector(".recomm")
 let islogin = false;
 
+function timetype(time) {
+  return moment(time).fromNow();
+}
 
 const checkpass = document
   .getElementById("checkpass")
@@ -53,7 +56,7 @@ postPost.addEventListener("submit", async (event) => {
   // formData.append("title", form.title.value);
   // formData.append("posttext", form.posttext.value)
   // console.log(formData);
-  const res = await fetch("/addPost", {
+  const res = await fetch("/addpost", {
     method: "POST",
     body: formData,
   });
@@ -74,7 +77,12 @@ async function loadpost() {
   const postLine = document.querySelector(".postLine");
   // const toptitle = document.querySelector(".titletext")
   const comments = postLine.children
-
+  const time = post.created_at;
+  // console.log("asfgyuihasfgyisagf", time);
+  // post = post.map((obj) => Object.assign(obj, {
+  //   created_at: timetype(obj.created_at),
+  // })
+  // )
   if (json.result) {
     postLine.innerHTML = post
       .map((obj) => {
@@ -82,12 +90,12 @@ async function loadpost() {
           <div class="postSet">
             <div class="postMenu">
               <div class="postName ${obj.meta}">${obj.name}</div>
-              <div class="like postLike_${obj.id}">
+              <div class="like postLike_${post[0].id}">
                 <i class="fa-regular fa-thumbs-up"></i>
                 <div data-like="${obj.id}">${obj.like}</div>
               </div>
               <div>
-              <div class="time">${obj.created_at}</div>
+              <div class="time">${timetype(obj.created_at)}</div>
             </div>
             </div>
             <div>
@@ -113,7 +121,6 @@ async function loadpost() {
       const comment = comments[i];
 
       const id = comment.getAttribute("data-id");
-
       comment.addEventListener("click", async () => {
         const res = await fetch(`/addPostCommemt/${id}`, {
           method: "GET",
@@ -125,12 +132,9 @@ async function loadpost() {
         if (json.result) {
           if (islogin) {
             isreply.classList.remove("none")
-
           }
 
-          console.log("suifgsafkjs");
-          title.innerText = json.allData.map(obj =>
-            obj.title).join("");
+          title.innerText = json.allData[0].title
           commPlace.innerHTML = await json.allData.map((obj, index) =>
             `<div class="commentBox">
               <div class="bar">
@@ -138,7 +142,7 @@ async function loadpost() {
                   <div id="CommentID">#${index + 1}</div>
                   <div class="TKGusername ${obj.meta}">${obj.name}</div>
                   <div class="DOTDOTDOT">•</div>
-                  <div class="PostedDate" currentitem="false">${obj.write_at}</div>
+                  <div class="PostedDate" currentitem="false">${timetype(obj.write_at)}</div>
 
                   <i class="fa-solid fa-eye none"></i>
 
@@ -154,7 +158,7 @@ async function loadpost() {
               <div class="CommentContent">${obj.body}</div>
               <div class="likeDislike">
                 <div class="likeArea">
-                  <div class="likePlace like_${id}">
+                  <div class="likePlace like_${obj.id}">
                     <div><i class="fa-regular fa-thumbs-up"></i>${obj.like}</div>
                   </div>
                 </div>
@@ -163,25 +167,47 @@ async function loadpost() {
                 </div>
               </div>
             </div>`).join('');
+          // async function checkLike(id) {
+          //   const postColor = document.querySelector(`.postLike_${id}`)
+          //   const color = document.querySelector(`.like_${obj.id}`)
+          //   const res = await fetch(`/checkLike/${obj.id}`, {
+          //     method: "GET",
+          //   })
+          //   const json = await res.json()
+
+          //   if (json.color) {
+          //     postColor.classList.add("isLiked")
+          //     color.classList.add("isLiked")
+          //   } else {
+          //     postColor.classList.remove("isLiked")
+          //     color.classList.remove("isLiked")
+          //   }
+
+          // }
           ///////////////////////////////////////改動了(25/6)
           document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
           // console.log(document.querySelector('.submitBTN').classList[1])
-          const clickLike = document.querySelector(`.like_${id}`)
-          clickLike.addEventListener("click", async () => {
-            if (islogin) {
-              const res = await fetch("/clickLike", {
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                method: "POST",
-                body: JSON.stringify({ id })
-              })
-              await res.json()
-            }
+          await json.allData.map((obj) => {
+            const clickLike = document.querySelector(`.like_${obj.id}`)
+            // console.log("121823239872894782", obj.id);
+            clickLike.addEventListener("click", async () => {
+              let id = obj.id
+              // console.log("121823239872894782", id);
+              if (islogin) {
+                const res = await fetch("/clickLike", {
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  method: "POST",
+                  body: JSON.stringify({ id })
+                })
+                await res.json()
+              }
+            })
           })
 
-        };
-        await checkLike(id)
+        }
+        // await checkLike(id)
       })
 
     }
@@ -190,23 +216,23 @@ async function loadpost() {
 }
 /////////////////////////////////////////////////////////////
 
-async function checkLike(id) {
-  const postColor = document.querySelector(`.postLike_${id}`)
-  const color = document.querySelector(`.like_${id}`)
-  const res = await fetch(`/checkLike/${id}`, {
-    method: "GET",
-  })
-  const json = await res.json()
+// async function checkLike(id) {
+//   const postColor = document.querySelector(`.postLike_${id}`)
+//   const color = document.querySelector(`.like_${id}`)
+//   const res = await fetch(`/checkLike/${id}`, {
+//     method: "GET",
+//   })
+//   const json = await res.json()
 
-  if (json.color) {
-    postColor.classList.add("isLiked")
-    color.classList.add("isLiked")
-  } else {
-    postColor.classList.remove("isLiked")
-    color.classList.remove("isLiked")
-  }
+//   if (json.color) {
+//     postColor.classList.add("isLiked")
+//     color.classList.add("isLiked")
+//   } else {
+//     postColor.classList.remove("isLiked")
+//     color.classList.remove("isLiked")
+//   }
 
-}
+// }
 
 //////////////////////////CARLOS//////////////
 

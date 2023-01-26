@@ -6,7 +6,7 @@ import formidable from "formidable";
 import { Client, Query } from "pg";
 import dotenv from "dotenv";
 import http from "http";
-import moment from "moment";
+// import moment from "moment";
 import { hashPassword } from "./hash";
 import { checkPassword } from "./hash";
 import session from "express-session";
@@ -92,40 +92,40 @@ function transfer_formidable_into_obj(form_result: formResult) {
 }
 //////////////////////////////////////////////////////
 //輸入新post到database
-app.post("/addPost", async (req: express.Request, res: express.Response) => {
+app.post("/addpost", async (req: express.Request, res: express.Response) => {
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
   const user = req.session.user;
   const userid = user?.id;
 
-  if (obj.hasOwnProperty("image")) {
-    const newRecord: any = await client.query(
-      `INSERT INTO posts (title,user_id) VALUES ($1,$2) RETURNING id`,
-      [obj.title, userid]
-    );
-    await client.query(
-      `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
-      [obj.posttext, userid, newRecord.rows[0].id]
-    );
-  } else {
-    const newRecord: any = await client.query(
-      `INSERT INTO posts (title,user_id) VALUES ($1,$2) RETURNING id`,
-      [obj.title, userid]
-    );
-    await client.query(
-      `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
-      [obj.posttext, userid, newRecord.rows[0].id]
-    );
-  }
+  // if (obj.hasOwnProperty("image")) {
+  // const newRecord: any = await client.query(
+  //   `INSERT INTO posts (title,user_id) VALUES ($1,$2)`,
+  //   [obj.title, userid]
+  // );
+  // await client.query(
+  //   `INSERT INTO comments (body,user_id,posts.title) VALUES ($1,$2,(SELECT posts.title from posts))`,
+  //   [obj.posttext, userid, obj.title]
+  // );
+  // } else {
+  const newRecord: any = await client.query(
+    `INSERT INTO posts (title,user_id) VALUES ($1,$2) RETURNING id`,
+    [obj.title, userid]
+  );
+  await client.query(
+    `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
+    [obj.posttext, userid, newRecord.rows[0].id]
+  );
+  // }
   res.status(200).json({
     success: true,
     result: true,
     message: "success",
   });
 });
-function timetype(time: any) {
-  return moment(time, "YYMMDD,h:mm").fromNow();
-}
+// function timetype(time: any) {
+//   return moment(time, "YYMMDD,h:mm").fromNow();
+// }
 app.get(
   "/addPostCommemt/:id",
   async (req: express.Request, res: express.Response) => {
@@ -135,18 +135,21 @@ app.get(
 
     const id = req.params.id;
     const comments = await client.query(
-      `SELECT sex,posts.id,title,name,body,write_at FROM comments join posts on comments.post_id = posts.id join users on posts.user_id = users.id where posts.id=$1`,
+      `SELECT comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at desc limit 10 `,
       [id]
     );
+
+    // console.log("1112321345143tec", comments.rows);
+
     let allData = comments.rows;
-    allData = allData.map((obj) =>
-      Object.assign(obj, { write_at: timetype(obj.write_at) })
-    );
+    // allData = allData.map((obj) =>
+    //   Object.assign(obj, { write_at: timetype(obj.write_at) })
+    // );
 
     allData = await Promise.all(
       allData.map(async (obj) => {
         const postlikes = await client.query(
-          "SELECT user_id FROM post_likes where post_id = $1",
+          "SELECT user_id FROM comment_like where comment_id = $1",
           [obj.id]
         );
         let like = postlikes.rows.length;
@@ -167,33 +170,36 @@ app.get(
     });
   }
 );
-//post new title到左邊column
+//get title到左邊column
 app.get("/getPost", async (req: express.Request, res: express.Response) => {
   const posttitle = await client.query(
-    "SELECT posts.id,users.name,posts.title,users.sex,created_at FROM posts join users on posts.user_id = users.id"
+    "SELECT comid,users.name,users.sex,posts.id,posts.title,posts.created_at,body from(SELECT comments.id as comid,comments.body,posts.id,posts.title,posts.created_at,posts.user_id FROM posts inner join comments on comments.post_id = posts.id order by created_at desc limit 10 )as posts inner join users on posts.user_id = users.id"
   );
-  // const posttitle = await client.query(
-  //   "SELECT posts.id,users.name,posts.title,users.sex,posts.created_at FROM post_likes join users on posts.user_id = users.id"
-  // );
-
   let postData = posttitle.rows;
 
   postData = await Promise.all(
+    //////////////////////////////////////////
     postData.map(async (obj) => {
       const postlikes = await client.query(
-        "SELECT user_id FROM post_likes where post_id = $1",
-        [obj.id]
+        "SELECT user_id FROM comment_like WHERE comment_like.comment_id=$1 order by comment_like asc",
+        [obj.comid]
       );
+      // console.log("231rtehgew", postlikes.fields[0]);
+
+      // const liked = postlikes.rows;
       let like = postlikes.rows.length;
+      // postData = await Promise.all(
+      // (postData = Object.assign(postData, { like: liked }))
+      // );
       return Object.assign(obj, { like: like });
     })
   );
 
-  postData = postData.map((obj) =>
-    Object.assign(obj, {
-      created_at: timetype(obj.created_at),
-    })
-  );
+  // postData = postData.map((obj) =>
+  //   Object.assign(obj, {
+  //     created_at: timetype(obj.created_at),
+  //   })
+  // );
   postData = postData.map((obj) =>
     obj.sex
       ? Object.assign(obj, { meta: "bluecolor" })
@@ -205,10 +211,12 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
     postData,
   });
 });
-
+//////////////////////////////////
 app.post("/clickLike", async (req: express.Request, res: express.Response) => {
+  console.log("agfuahfihwiofhdsiohfis");
+
   const showlike = await client.query(
-    "SELECT post_id,user_id FROM post_likes WHERE post_id = $1 AND user_id = $2",
+    "SELECT comment_id,user_id FROM comment_like WHERE comment_id = $1 AND user_id = $2",
     [req.body.id, req.session.user?.id]
   );
   if (showlike.rowCount > 0) {
@@ -218,7 +226,7 @@ app.post("/clickLike", async (req: express.Request, res: express.Response) => {
     });
   }
   const likepost = await client.query(
-    `INSERT INTO post_likes (user_id,post_id) VALUES ($1,$2) RETURNING post_id`,
+    `INSERT INTO comment_like (user_id,comment_id) VALUES ($1,$2) RETURNING comment_id`,
     [req.session.user?.id, req.body.id]
   );
 
@@ -317,7 +325,7 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 
 //輸入新comment到database TESTING NOT CONFIrM
 app.post("/reply", async (req: express.Request, res: express.Response) => {
-  const userid = req.session.user?.id || "1";
+  const userid = req.session.user?.id;
   const replyContent = req.body.replyContent;
   // console.log(replyContent);
   //how to track which post i am replying?
