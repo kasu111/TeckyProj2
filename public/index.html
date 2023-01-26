@@ -320,7 +320,9 @@
           </div>
           <div class="FunctionsSoMany">
             <div><i class="fa-regular fa-face-smile"></i></div>
-            <div><i class="fa-regular fa-image"></i></div>
+            <div id="uploadFilesClick">
+              <i class="fa-regular fa-image"></i>
+            </div>
             <div><i class="fa-solid fa-link"></i></div>
             <div><i class="fa-solid fa-palette"></i></div>
             <div></div>
@@ -339,7 +341,7 @@
                 <input type="submit" class="submitBTN post-" value="回覆" />
               </div>
             </form>
-            <div id="reply"></div>
+            <div id="reply2"></div>
           </div>
           <!-- <div class="sumbitCol"> -->
           <!-- <form action="submitForm">
@@ -349,6 +351,38 @@
         </div>
       </div>
     </div>
+    <div id="backdrop" class="backdrop none">
+      <div id="uploadFiles">
+        <div id="closeBar">
+          <div class="closeHeader">插入圖片</div>
+          <div class="closeBtn"><i class="fa-solid fa-xmark"></i></div>
+        </div>
+        <div class="uploadBox">
+          <div class="uploadAreaOuter">
+            <div class="uploadArea">
+              <div>
+                <img class="uploadFilesBtn" src="" alt="your image" id="blah" />
+                <input
+                  id="selectUploadFile"
+                  type="file"
+                  class="uploadFilesBtn"
+                  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])"
+                />
+              </div>
+            </div>
+            <div class="dragClickPhoto">
+              <i class="fa-solid fa-cloud-arrow-up uploadText"></i>
+              <span class="uploadText">點擊或拖放圖片到此處</span>
+            </div>
+          </div>
+          <div class="submitPhoto">
+            <input type="submit" class="photoBTN post-" value="送出" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- /////////////////////////////////////////////// -->
     <div id="resetPass" class="none">
       <div class="animate__animated animate__flash boxPost">
         <header>

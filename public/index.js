@@ -74,6 +74,7 @@ async function loadpost() {
   });
   let json = await res.json();
   post = json.postData;
+  console.log(post);
   const postLine = document.querySelector(".postLine");
   // const toptitle = document.querySelector(".titletext")
   const comments = postLine.children
@@ -135,8 +136,8 @@ async function loadpost() {
           }
 
           title.innerText = json.allData[0].title
-          commPlace.innerHTML = await json.allData.map((obj, index) =>
-            `<div class="commentBox">
+          commPlace.innerHTML = await json.allData.map((obj, index) => {
+            return `<div data-post_id=${id} class="commentBox">
               <div class="bar">
                 <div>
                   <div id="CommentID">#${index + 1}</div>
@@ -166,7 +167,7 @@ async function loadpost() {
                   <i class="fa-solid fa-comments"></i>0
                 </div>
               </div>
-            </div>`).join('');
+            </div>`}).join('');
           // async function checkLike(id) {
           //   const postColor = document.querySelector(`.postLike_${id}`)
           //   const color = document.querySelector(`.like_${obj.id}`)
@@ -185,7 +186,7 @@ async function loadpost() {
 
           // }
           ///////////////////////////////////////改動了(25/6)
-          document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
+          // document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
           // console.log(document.querySelector('.submitBTN').classList[1])
           await json.allData.map((obj) => {
             const clickLike = document.querySelector(`.like_${obj.id}`)
@@ -204,13 +205,35 @@ async function loadpost() {
                 await res.json()
               }
             })
+
+
+
           })
+
 
         }
         // await checkLike(id)
       })
 
     }
+    document.querySelector('#reply').addEventListener("submit", async event => {
+      const id = document.querySelector('.commentBox').getAttribute("data-post_id")
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+
+
+      const res = await fetch(`/reply/${id}`, {
+        method: "POST",
+        body: formData
+      });
+      const result = await res.json();//result = (success:true)
+      if (result.success) {
+        // window.location = "/"
+      } else {
+        document.querySelector("div#reply").innerHTML = result.msg;
+      }
+    });
 
   }
 }

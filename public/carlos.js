@@ -5,6 +5,7 @@
 // const signin = document.querySelector('#signin')
 // let islogin = false;
 
+
 // signin.addEventListener("submit", async event => {
 //     event.preventDefault();
 //     const form = event.target;
@@ -105,36 +106,56 @@
 //     replyBox.classList.add("none")
 // })
 
+
+////^^^ already in index.js
+
 //new comments fetching TESTING NOT CONFIRM
-document.querySelector('#reply').addEventListener("submit", async event => {
-    event.preventDefault();
-    const form = event.target;
-    const body = {
-        replyContent: form.replyContent.value,
-        postId: document.querySelector(".submitBTN").classList[1].substring(5)
-    }
-    const res = await fetch("/reply", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    });
-    const result = await res.json();//result = (success:true)
-    if (result.success) {
-        window.location = "/"
-    } else {
-        document.querySelector("div#reply").innerHTML = result.msg;
-    }
-});
 
-//reply button track post id
-//document.querySelector("#replyComment").classList = [`post-${json.allData[0].id}`]
-//document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
-//console.log(document.querySelector('.submitBTN').classList[1])
+function formToJson(formData) {
+    let obj = {}
+    formData.forEach((value, key) => {
+        obj[key] = value
+    })
+    return JSON.stringify(obj)
+}
+
+// document.querySelector('#reply').addEventListener("submit", async event => {
+
+//     event.preventDefault();
+//     const form = event.target;
+//     const formData = new FormData(form);
 
 
+//     const res = await fetch(`/reply/${document.querySelector(".submitBTN").classList[1].substring(5)}`, {
+//         method: "POST",
+//         body: formData
+//     });
+//     const result = await res.json();//result = (success:true)
+//     if (result.success) {
+//         window.location = "/"
+//     } else {
+//         document.querySelector("div#reply").innerHTML = result.msg;
+//     }
+// });
 
+
+// upload files interface create and close
+const backdrop = document.querySelector("#backdrop")
+const uploadFiles = document.querySelector("#uploadFiles")
+const uploadFilesClick = document.querySelector("#uploadFilesClick")
+
+uploadFilesClick.addEventListener("click", async event => {
+
+    setTimeout(() => {
+        backdrop.classList.remove("none")
+    }, 500);
+})
+
+const closeBox = document.querySelector(".closeBtn")
+
+closeBox.addEventListener("click", async event => {
+    backdrop.classList.add("none")
+})
 
 
 
