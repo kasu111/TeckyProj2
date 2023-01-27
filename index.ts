@@ -46,7 +46,7 @@ const form = formidable({
   uploadDir,
   keepExtensions: true,
   maxFiles: 1,
-  maxFileSize: 400 * 200 ** 2, // the default limit is 200MB
+  maxFileSize: 400 * 1024 * 1024, // the default limit is 200MB
   filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
 let formidable_promise = (req: express.Request) => {
@@ -78,6 +78,7 @@ type formResult = {
   files?: any;
 };
 function transfer_formidable_into_obj(form_result: formResult) {
+  console.log(form_result)
   let result = {};
 
   if (form_result.hasOwnProperty("fields")) {
@@ -85,7 +86,7 @@ function transfer_formidable_into_obj(form_result: formResult) {
   }
   if (form_result.hasOwnProperty("files")) {
     result = Object.assign(result, {
-      image: form_result.files.image.newFilename,
+      image: form_result.files.files.newFilename,
     });
   }
   return result;
@@ -135,7 +136,7 @@ app.get(
 
     const id = req.params.id;
     const comments = await client.query(
-      `SELECT comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at asc limit 10 `,
+      `SELECT comments.id,sex,title,name,body,photo,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at asc limit 5 `,
       [id]
     );
 
@@ -355,19 +356,25 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
-
+  console.log(obj);
+  console.log(obj.image);
+  
+  
   const userid = req.session.user?.id;
   // const replyContent = req.body.replyContent;
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(
       `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-      [obj.replyContent, obj.files, userid, req.params.id]
+      [obj.replyContent, obj.image, userid, req.params.id]
     );
   } else {
     await client.query(
       `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
       [obj.replyContent, "", userid, req.params.id]
     );
+
+   
+   
 
     res.status(200).json({
       success: true,

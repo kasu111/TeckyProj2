@@ -119,13 +119,21 @@ function formToJson(formData) {
     return JSON.stringify(obj)
 }
 
+const uploadedImg = document.querySelector('#uploadedImg')
 
 document.querySelector(".photoBTN").addEventListener("click", async event=>{
  
     let cloneSrc = document.getElementById('blah').src
-    document.querySelector('#uploadedImg').src = cloneSrc
+    uploadedImg.src = cloneSrc
     backdrop.classList.add("none");
 })
+
+
+
+
+
+
+
 
 // const closeBox = document.querySelector(".closeBtn")
 

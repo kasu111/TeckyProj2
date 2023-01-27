@@ -19,7 +19,9 @@ const isreply = document.querySelector(".recomm")
 const backdrop = document.querySelector("#backdrop")
 const uploadFiles = document.querySelector("#uploadFiles")
 const uploadFilesClick = document.querySelector("#uploadFilesClick")
+const submitBTN = document.querySelector(".submitBTN")
 let islogin = false;
+let image;
 
 function timetype(time) {
   return moment(time).fromNow();
@@ -89,7 +91,7 @@ async function loadpost() {
   });
   let json = await res.json();
   post = json.postData;
-  console.log(post);
+  console.log(json.result);
   const postLine = document.querySelector(".postLine");
   // const toptitle = document.querySelector(".titletext")
   const comments = postLine.children
@@ -150,6 +152,14 @@ async function loadpost() {
             isreply.classList.remove("none")
           }
 
+function isPhoto(obj){
+  if(obj){
+    return `<img src='http://localhost:8000/${obj}' width='150'/> `
+  }else{
+    return '<span></span>' 
+  }
+}
+
           title.innerText = json.allData[0].title
           commPlace.innerHTML = await json.allData.map((obj, index) => {
             return `<div data-post_id=${id} class="commentBox">
@@ -171,7 +181,7 @@ async function loadpost() {
                   <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
                 </div>
               </div>
-              <div class="CommentContent">${obj.body}</div>
+              <div class="CommentContent">${obj.body}${isPhoto(obj.photo)}</div>
               <div class="likeDislike">
                 <div class="likeArea">
                   <div class="likePlace like_${obj.id}">
@@ -237,6 +247,7 @@ async function loadpost() {
       event.preventDefault();
       const form = event.target;
       const formData = new FormData(form);
+      formData.append("files",image)
 
 
       const res = await fetch(`/reply/${id}`, {
@@ -275,7 +286,10 @@ async function loadpost() {
 // }
 
 //////////////////////////CARLOS//////////////
-
+document.querySelector("input#selectUploadFile").addEventListener("change",(event)=>{
+  document.getElementById('blah').src = window.URL.createObjectURL(event.target.files[0]);
+  image = event.target.files[0];
+})
 
 
 signin.addEventListener("submit", async event => {
@@ -379,6 +393,11 @@ closeReplyBox.addEventListener("click", async () => {
   // console.log("replyBox is closed");
   replyBox.classList.add("none")
 })
+
+submitBTN.addEventListener("click",async event=>{
+  replyBox.classList.add("none");
+})
+
 
 window.onload = async function () {
   await checkUserLogin();
