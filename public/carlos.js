@@ -119,6 +119,21 @@ function formToJson(formData) {
     return JSON.stringify(obj)
 }
 
+
+document.querySelector(".photoBTN").addEventListener("click", async event=>{
+ 
+    let cloneSrc = document.getElementById('blah').src
+    document.querySelector('#uploadedImg').src = cloneSrc
+    backdrop.classList.add("none");
+})
+
+// const closeBox = document.querySelector(".closeBtn")
+
+// closeBox.addEventListener("click", async event => {
+//     backdrop.classList.add("none")
+// })
+
+
 // document.querySelector('#reply').addEventListener("submit", async event => {
 
 //     event.preventDefault();
@@ -151,11 +166,6 @@ function formToJson(formData) {
 //     }, 500);
 // })
 
-// const closeBox = document.querySelector(".closeBtn")
-
-// closeBox.addEventListener("click", async event => {
-//     backdrop.classList.add("none")
-// })
 
 
 //upload file preview go to reply box

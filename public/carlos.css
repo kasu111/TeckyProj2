@@ -181,7 +181,7 @@
 
 .ReplyTextPlace{
     width:100%;
-    min-height:577px;
+    min-height:450px;
     color:#191919;
 
 }
@@ -333,10 +333,9 @@ textarea {
 }
 
 #blah{
-    max-width:380px;
-    max-height:380px;
-    min-width:fit-content;
-    min-height:fit-content;
+    max-width:100px;
+    max-height:100px;
+
   
 }
 

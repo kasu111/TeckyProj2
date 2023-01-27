@@ -16,7 +16,7 @@ const reply = document.querySelector("#replyComment")
 const replyBox = document.querySelector("#replyBox")
 const closeReplyBox = document.querySelector("#closeReplyBox")
 const isreply = document.querySelector(".recomm")
-const backdrop = document.querySelector("#replyBox")
+const backdrop = document.querySelector("#backdrop")
 const uploadFiles = document.querySelector("#uploadFiles")
 const uploadFilesClick = document.querySelector("#uploadFilesClick")
 let islogin = false;
@@ -78,7 +78,7 @@ postPost.addEventListener("submit", async (event) => {
   await res.json();
   postPost.reset();
   newPost.classList.add("none");
-  await loadpost();
+
 });
 loadpost();
 
