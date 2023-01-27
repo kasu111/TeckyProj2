@@ -16,12 +16,27 @@ const reply = document.querySelector("#replyComment")
 const replyBox = document.querySelector("#replyBox")
 const closeReplyBox = document.querySelector("#closeReplyBox")
 const isreply = document.querySelector(".recomm")
+const backdrop = document.querySelector("#replyBox")
+const uploadFiles = document.querySelector("#uploadFiles")
+const uploadFilesClick = document.querySelector("#uploadFilesClick")
 let islogin = false;
 
 function timetype(time) {
   return moment(time).fromNow();
 }
 
+uploadFilesClick.addEventListener("click", async event => {
+
+  setTimeout(() => {
+    backdrop.classList.remove("none")
+  }, 500);
+})
+
+const closeBox = document.querySelector(".closeBtn")
+
+closeBox.addEventListener("click", async event => {
+  backdrop.classList.add("none")
+})
 const checkpass = document
   .getElementById("checkpass")
   .addEventListener("click", () => {
@@ -229,7 +244,8 @@ async function loadpost() {
       });
       const result = await res.json();//result = (success:true)
       if (result.success) {
-        // window.location = "/"
+        backdrop.classList.add("none")
+        window.location = "/"
       } else {
         document.querySelector("div#reply").innerHTML = result.msg;
       }

@@ -140,22 +140,22 @@ function formToJson(formData) {
 
 
 // upload files interface create and close
-const backdrop = document.querySelector("#backdrop")
-const uploadFiles = document.querySelector("#uploadFiles")
-const uploadFilesClick = document.querySelector("#uploadFilesClick")
+// const backdrop = document.querySelector("#backdrop")
+// const uploadFiles = document.querySelector("#uploadFiles")
+// const uploadFilesClick = document.querySelector("#uploadFilesClick")
 
-uploadFilesClick.addEventListener("click", async event => {
+// uploadFilesClick.addEventListener("click", async event => {
 
-    setTimeout(() => {
-        backdrop.classList.remove("none")
-    }, 500);
-})
+//     setTimeout(() => {
+//         backdrop.classList.remove("none")
+//     }, 500);
+// })
 
-const closeBox = document.querySelector(".closeBtn")
+// const closeBox = document.querySelector(".closeBtn")
 
-closeBox.addEventListener("click", async event => {
-    backdrop.classList.add("none")
-})
+// closeBox.addEventListener("click", async event => {
+//     backdrop.classList.add("none")
+// })
 
 
 

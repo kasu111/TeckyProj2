@@ -113,8 +113,8 @@ app.post("/addpost", async (req: express.Request, res: express.Response) => {
     [obj.title, userid]
   );
   await client.query(
-    `INSERT INTO comments (body,user_id,post_id) VALUES ($1,$2,$3)`,
-    [obj.posttext, userid, newRecord.rows[0].id]
+    `INSERT INTO comments (body,user_id,post_id,is_first_comment) VALUES ($1,$2,$3,$4)`,
+    [obj.posttext, userid, newRecord.rows[0].id, true]
   );
   // }
   res.status(200).json({
@@ -135,7 +135,7 @@ app.get(
 
     const id = req.params.id;
     const comments = await client.query(
-      `SELECT comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at desc limit 10 `,
+      `SELECT comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at asc limit 10 `,
       [id]
     );
 
@@ -182,25 +182,34 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
   sql_param = "(" + sql_param + ")";
 
   // console.log("1234567890", sql_param);
-
-  let commid = await client.query(
-    `SELECT comments.id FROM comments where post_id IN ${sql_param}`,
-    sql_val
+  // console.log("1234567890", sql_val);
+  ///////////////////////////////////////////////////////////工程⚠️中/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // let commid = await client.query(
+  //   `SELECT comment_like.user_id FROM comments where post_id IN ${sql_param} and is_first_comment = true inner join comment_like on comments.id = comment_like.comment_id`,
+  //   sql_val
+  // );
+  let likecount = await client.query(
+    `select comment_like.user_id,com.postid  from (select posts.id as postid,comments.id as comid from posts inner join comments on posts.id = comments.post_id where is_first_comment =true limit 10)as com inner join comment_like on comment_like.comment_id =com.comid` // where com.postid IN ${sql_param}
+    // sql_val
   );
-  let commlike = commid.rows;
-  let comm_val = commlike.map((obj) => obj.id);
-  let comm_param = commlike.map((obj, idx) => "$" + (idx + 1) + ",").join("");
-  comm_param = comm_param.slice(0, -1);
-  comm_param = "(" + comm_param + ")";
+  console.log("0987654567890", likecount.rows);
+
+  // console.log("commidcommidcommidcommidcommid", commid);
+  ///////////////////////////////////////////////////////////工程⚠️中///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // let commlike = commid.rows;
+  // let comm_val = commlike.map((obj) => obj.id);
+  // let comm_param = commlike.map((obj, idx) => "$" + (idx + 1) + ",").join("");
+  // comm_param = comm_param.slice(0, -1);
+  // comm_param = "(" + comm_param + ")";
   // console.log(comm_val);
 
   // postData = await Promise.all(
   //////////////////////////////////////////
   // popo.rows.map(async (obj) => {
-  const postlikes = await client.query(
-    `SELECT user_id FROM comment_like WHERE comment_id IN ${comm_param}`, //order by comment_like asc
-    comm_val
-  );
+  // const postlikes = await client.query(
+  //   `SELECT user_id FROM comment_like WHERE comment_id IN ${comm_param}`, //order by comment_like asc
+  //   comm_val
+  // );
   // const postlikes = await client.query(
   //   `SELECT user_id FROM comment_like WHERE comment_id = $1`, //order by comment_like asc
   //   [commid.rows[0].id]
@@ -208,9 +217,9 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
   // console.log(postlikes.rows);
 
   // const liked = postlikes.rows;
-  let like = postlikes.rows.length;
+  // let like = postlikes.rows.length;
   // postData = await Promise.all(
-  postData = postData.map((obj) => Object.assign(obj, { like: like }));
+  // postData = postData.map((obj) => Object.assign(obj, { like: like }));
   // );
   //   return Object.assign(obj, { like: like });
   // });
@@ -226,7 +235,7 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
       ? Object.assign(obj, { meta: "bluecolor" })
       : Object.assign(obj, { meta: "redcolor" })
   );
-  console.log(postData);
+  // console.log(postData);
 
   res.status(200).json({
     result: true,
@@ -323,7 +332,7 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
     const sex = req.body.sex;
 
     const newRecord = await client.query(
-      `insert into users (name,password,sex,status_admin,vip) values($1,$2,$3, $4, $5) RETURNING id`,
+      `insert into users (name,password,sex,status_admin,vip) values($1,$2,$3,$4,$5) RETURNING id`,
       [username, hashedPassword, sex, false, false]
     );
 
