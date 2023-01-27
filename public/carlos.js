@@ -159,9 +159,7 @@ closeBox.addEventListener("click", async event => {
 
 
 //upload file preview go to reply box
-document.getElementById('blah').addEventListener("change",event=>{
-   document.querySelector(".uploadedFile").classList.remove("hidden")
-})
+
 
 
 

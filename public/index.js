@@ -216,6 +216,7 @@ async function loadpost() {
       })
 
     }
+    
     document.querySelector('#reply').addEventListener("submit", async event => {
       const id = document.querySelector('.commentBox').getAttribute("data-post_id")
       event.preventDefault();
