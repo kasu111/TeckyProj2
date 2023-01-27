@@ -16,12 +16,7 @@ CREATE TABLE comments (
     user_id SERIAL NOT NULL,
     post_id SERIAL NOT NULL,
     write_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-CREATE TABLE post_likes (
-    id SERIAL NOT NULL,
-    user_id SERIAL NOT NULL,
-    post_id SERIAL NOT NULL,
+    is_first_comment BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );
 CREATE TABLE posts (
@@ -29,6 +24,7 @@ CREATE TABLE posts (
     title TEXT NOT NULL,
     user_id SERIAL NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL,
     PRIMARY KEY (id)
 );
 CREATE TABLE REF_notification_users_post (
@@ -47,16 +43,12 @@ CREATE TABLE users (
     VIP BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );
-ALTER TABLE post_likes
-ADD CONSTRAINT FK_users_TO_post_likes FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE posts
 ADD CONSTRAINT FK_users_TO_posts FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE comments
 ADD CONSTRAINT FK_users_TO_comments FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE comments
 ADD CONSTRAINT FK_posts_TO_comments FOREIGN KEY (post_id) REFERENCES posts (id);
-ALTER TABLE post_likes
-ADD CONSTRAINT FK_posts_TO_post_likes FOREIGN KEY (post_id) REFERENCES posts (id);
 ALTER TABLE comment_like
 ADD CONSTRAINT FK_users_TO_comment_like FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE comment_like
