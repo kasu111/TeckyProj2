@@ -159,9 +159,9 @@ function formToJson(formData) {
 
 
 //upload file preview go to reply box
-document.getElementById('blah').addEventListener("change",event=>{
-   document.querySelector(".uploadedFile").classList.remove("hidden")
-})
+// document.getElementById('blah').addEventListener("change", event => {
+//     document.querySelector(".uploadedFile").classList.remove("hidden")
+// })
 
 
 

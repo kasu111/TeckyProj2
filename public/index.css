@@ -68,6 +68,9 @@ height: 27px;
 .none{
     display: none !important;
 }
+.hidden{
+    visibility:hidden !important;
+}
 .flex1{
     flex:1;
 }
@@ -362,11 +365,14 @@ background-color:#404941;
     box-shadow: 0 0 15px rgba(171, 255, 227, 0.719);
 }
 .commentsWall{
+    overflow:auto;
+    overflow-x: unset;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 .isLiked{
+    font-size: 20px;
     color:rgb(49, 255, 166);
     text-shadow: 0 0 2px rgba(255, 255, 255, 0.783);
 }

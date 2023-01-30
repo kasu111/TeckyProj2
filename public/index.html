@@ -185,7 +185,7 @@
         <!-- ////////////////////////////////////////////////////////////////// -->
         <div class="part3 flex1 addPage jusbet none">
           <div>
-            <div class="dropdown">
+            <div class="dropdown WOWso">
               <button
                 class="btn btn-secondary -toggle"
                 type="button"
@@ -194,24 +194,27 @@
               >
                 <i class="fa-solid fa-bars"></i>
               </button>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu" >
                 <li>
                   <button
                     id="clickReset"
-                    class="dropdown-item Chpass"
+                    class="dropdown-item Chpass" 
                     type="button"
                   >
-                    <i class="fa-solid fa-repeat"></i>
-                    change Password
+                    <i class="fa-solid fa-repeat textmm" style="color:rgba(49, 255, 166, 0.717) !important;
+                    text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);"> change Password</i>
+                    
                   </button>
                 </li>
                 <li>
                   <button id="logout" class="dropdown-item" type="button">
-                    <i class="fa-solid fa-right-from-bracket"></i>Logout
+                    <i class="fa-solid fa-right-from-bracket textmm" style="color:rgba(49, 255, 166, 0.717) !important;
+    text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);"> Logout</i>
                   </button>
                 </li>
                 <li>
-                  <button class="dropdown-item" type="button">
+                  <button class="dropdown-item" style="color:rgba(49, 255, 166, 0.717) !important;
+    text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);" type="button">
                     Something else here
                   </button>
                 </li>
@@ -269,14 +272,14 @@
       </div>
       <div>
         <div class="nextPage">
-          <div>上一頁</div>
-          <div>第幾頁</div>
-          <div>下一頁</div>
+          <div id="back" class="forPage">上一頁</div>
+          <div id="changePage" class="forPage">第幾頁</div>
+          <div id="next" class="forPage">下一頁</div>
         </div>
         <!-- 開comments -->
         <div class="commentsWall">
           <!-- //////////////////////////////////////////////////////////// -->
-          <div class="commentBox none">
+          <!-- <div class="commentBox none">
             <div class="bar">
               <div>
                 <div id="CommentID">#1</div>
@@ -306,7 +309,7 @@
                 <i class="fa-solid fa-comments"></i>0
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- ////////////////////////////////////////////// -->
         <div id="replyBox" class="ReplyBox none">
