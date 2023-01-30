@@ -159,6 +159,9 @@ function isPhoto(obj){
     return '<span></span>' 
   }
 }
+const replyTitle = document.querySelector(".closePage")
+
+replyTitle.innerText = `回覆 : ${json.allData[0].title}`
 
           title.innerText = json.allData[0].title
           commPlace.innerHTML = await json.allData.map((obj, index) => {
@@ -242,12 +245,15 @@ function isPhoto(obj){
 
     }
     
+    
     document.querySelector('#reply').addEventListener("submit", async event => {
       const id = document.querySelector('.commentBox').getAttribute("data-post_id")
       event.preventDefault();
       const form = event.target;
       const formData = new FormData(form);
       formData.append("files",image)
+
+ 
 
 
       const res = await fetch(`/reply/${id}`, {
@@ -397,6 +403,7 @@ closeReplyBox.addEventListener("click", async () => {
 submitBTN.addEventListener("click",async event=>{
   replyBox.classList.add("none");
 })
+
 
 
 window.onload = async function () {

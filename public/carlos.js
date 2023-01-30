@@ -121,6 +121,24 @@ function formToJson(formData) {
 
 const uploadedImg = document.querySelector('#uploadedImg')
 
+const emojiBtn = document.querySelector(".emojiBtn")
+
+const emojis = document.querySelectorAll(".emojis");
+for(let i = 0; i< emojis.length; i++){
+    const emoji = emojis[i]
+
+    emojis[i].addEventListener("click",async e=>{
+        // console.log(emojis.innerHTML);
+        // console.log(ReplyTextPlace1.value)
+        console.log(emoji.innerHTML);
+        ReplyTextPlace1.value += emoji.innerHTML; 
+       
+    })
+}
+
+const ReplyTextPlace1 = document.querySelector("#ReplyTextPlace1")
+
+
 document.querySelector(".photoBTN").addEventListener("click", async event=>{
  
     let cloneSrc = document.getElementById('blah').src
@@ -128,6 +146,13 @@ document.querySelector(".photoBTN").addEventListener("click", async event=>{
     backdrop.classList.add("none");
 })
 
+emojiBtn.addEventListener("click", async event =>{
+    classlist.remove("none");
+})
+
+
+//2. after typing cant input emoji anymore
+//1. too many emoji need queryselectorall
 
 
 

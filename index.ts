@@ -373,9 +373,6 @@ app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
       [obj.replyContent, "", userid, req.params.id]
     );
 
-   
-   
-
     res.status(200).json({
       success: true,
       result: true,
@@ -407,6 +404,10 @@ app.get(
     }
   }
 );
+
+//add emoji in reply box
+
+
 // app.post("/reply", async (req: express.Request, res: express.Response)=> {
 
 //check user login -> or if doesn't log it reply button display none
