@@ -22,6 +22,7 @@ const forPage = document.querySelectorAll(".forPage")
 const back = document.getElementById("back")
 const next = document.getElementById("next")
 const pageLine = document.querySelector(".nextPage")
+const submitBTN = document.querySelector(".submitBTN")
 back.classList.add("hidden")
 next.classList.add("hidden")
 let page = 0;
@@ -31,6 +32,7 @@ let page = 0;
 // const forPage3 = document.querySelector(".forPage3")
 
 let islogin = false;
+let image;
 
 
 
@@ -148,7 +150,11 @@ async function loadpost() {
       event.preventDefault();
       const form = event.target;
       const formData = new FormData(form);
-      // console.log("eventeventeventeventevent", event);
+      formData.append("files", image)
+
+
+
+
       const res = await fetch(`/reply/${id}`, {
         method: "POST",
         body: formData
@@ -187,8 +193,11 @@ const changePage = document.getElementById("changePage")
 // })
 
 
-//////////////////////////工程進行中//////////////////////////
-
+//////////////////////////CARLOS//////////////
+document.querySelector("input#selectUploadFile").addEventListener("change", (event) => {
+  document.getElementById('blah').src = window.URL.createObjectURL(event.target.files[0]);
+  image = event.target.files[0];
+})
 
 
 
@@ -368,6 +377,9 @@ const reload = async function (id, page) {
     if (islogin) {
       isreply.classList.remove("none")
     }
+    const replyTitle = document.querySelector(".closePage")
+
+    replyTitle.innerText = `回覆 : ${json.allData[0].title}`
 
     title.innerText = json.allData[0].title
     commPlace.innerHTML = await json.allData.map((obj, index) => {
@@ -390,7 +402,7 @@ const reload = async function (id, page) {
           <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
         </div>
       </div>
-      <div class="CommentContent">${obj.body}</div>
+      <div class="CommentContent">${obj.body}${isPhoto(obj.photo)}</div>
       <div class="likeDislike">
         <div class="likeArea">
           <div class="likePlace like_${obj.id}">
@@ -429,6 +441,12 @@ const reload = async function (id, page) {
 //////////////////////////已完成//////////////////////////
 
 
+submitBTN.addEventListener("click", async event => {
+  replyBox.classList.add("none");
+})
+
+
+
 window.onload = async function () {
   await checkUserLogin();
   await loadpost();
@@ -436,3 +454,10 @@ window.onload = async function () {
 }
 
 
+function isPhoto(obj) {
+  if (obj) {
+    return `<img src='http://localhost:8000/${obj}' width='150'/> `
+  } else {
+    return '<span></span>'
+  }
+}

@@ -28,7 +28,6 @@
       referrerpolicy="no-referrer"
     ></script>
 
-    <!-- <link rel="stylesheet" href="./index.css" /> -->
     <link rel="stylesheet" href="./carlos.css" />
     <link rel="stylesheet" href="./index.css" />
     <link rel="stylesheet" href="./kevin.css" />
@@ -194,27 +193,46 @@
               >
                 <i class="fa-solid fa-bars"></i>
               </button>
-              <ul class="dropdown-menu" >
+              <ul class="dropdown-menu">
                 <li>
                   <button
                     id="clickReset"
-                    class="dropdown-item Chpass" 
+                    class="dropdown-item Chpass"
                     type="button"
                   >
-                    <i class="fa-solid fa-repeat textmm" style="color:rgba(49, 255, 166, 0.717) !important;
-                    text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);"> change Password</i>
-                    
+                    <i
+                      class="fa-solid fa-repeat textmm"
+                      style="
+                        color: rgba(49, 255, 166, 0.717) !important;
+                        text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
+                      "
+                    >
+                      change Password</i
+                    >
                   </button>
                 </li>
                 <li>
                   <button id="logout" class="dropdown-item" type="button">
-                    <i class="fa-solid fa-right-from-bracket textmm" style="color:rgba(49, 255, 166, 0.717) !important;
-    text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);"> Logout</i>
+                    <i
+                      class="fa-solid fa-right-from-bracket textmm"
+                      style="
+                        color: rgba(49, 255, 166, 0.717) !important;
+                        text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
+                      "
+                    >
+                      Logout</i
+                    >
                   </button>
                 </li>
                 <li>
-                  <button class="dropdown-item" style="color:rgba(49, 255, 166, 0.717) !important;
-    text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);" type="button">
+                  <button
+                    class="dropdown-item"
+                    style="
+                      color: rgba(49, 255, 166, 0.717) !important;
+                      text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
+                    "
+                    type="button"
+                  >
                     Something else here
                   </button>
                 </li>
@@ -279,7 +297,7 @@
         <!-- 開comments -->
         <div class="commentsWall">
           <!-- //////////////////////////////////////////////////////////// -->
-          <!-- <div class="commentBox none">
+          <div class="commentBox none">
             <div class="bar">
               <div>
                 <div id="CommentID">#1</div>
@@ -309,20 +327,21 @@
                 <i class="fa-solid fa-comments"></i>0
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
         <!-- ////////////////////////////////////////////// -->
         <div id="replyBox" class="ReplyBox none">
           <div class="ReplyTopic">
-            <div class="closePage">回覆：美國最新型機械人面世</div>
+            <div class="closePage titletext"></div>
             <div class="closePage2">
               <div id="closeReplyBox">
                 <i class="fa-solid fa-xmark"></i>
               </div>
             </div>
+            -->
           </div>
           <div class="FunctionsSoMany">
-            <div><i class="fa-regular fa-face-smile"></i></div>
+            <div class="emojiBtn"><i class="fa-regular fa-face-smile"></i></div>
             <div id="uploadFilesClick">
               <i class="fa-regular fa-image"></i>
             </div>
@@ -336,56 +355,115 @@
             <div></div>
           </div>
           <div class="ReplyTextPlace">
-            <form id="reply" class="ReplyForm" action="">
-              <textarea name="replyContent" id="ReplyTextPlace1" required>
-              <!-- <img class="hidden uploadedFile" src="document.getElementById('blah')" alt=""> -->
-            </textarea>
+            <form id="reply" class="ReplyForm" enctype="multipart/form-data">
+              <textarea
+                contenteditable="true"
+                name="replyContent"
+                id="ReplyTextPlace1"
+                required
+              ></textarea>
               <div class="replySubmit">
-                <span><i class="fa-solid fa-paper-plane"></i></span>
+                <img src="" id="uploadedImg" alt="" width="100" name="files" />
 
+                <span><i class="fa-solid fa-paper-plane"></i></span>
                 <input type="submit" class="submitBTN post-" value="回覆" />
               </div>
             </form>
             <div id="reply2"></div>
           </div>
-          <!-- <div class="sumbitCol"> -->
-          <!-- <form action="submitForm">
-              
-            </form> -->
-        <!-- </div> -->
+          <div class="emojiBox">
+            <div class="emojiBar">預覧表情符號</div>
+            <div class="emojiArea">
+              <div class="emojiInBox">
+                <span class="partying-face emojis">🥳</span>
+
+                <span class="woozy-face emojis">🥴</span>
+
+                <span class="pleading-face emojis">🥺</span>
+
+                <span class="sad-but-relieved-face emojis">😥</span>
+
+                <span class="face-with-tears-of-joy emojis">😂</span>
+
+                <span class="money-mouth-face emojis">🤑</span>
+
+                <span class="grinning-face emojis">😀</span>
+
+                <span class="smiling-face-with-halo emojis">😇</span>
+
+                <span class="blushing-face emojis">😊</span>
+
+                <span class="smiling-face-with-heart-eyes emojis">😍</span>
+
+                <span class="rolling-on-the-floor-laughing emojis">🤣</span>
+
+                <span class="winking-face emojis">😉</span>
+
+                <span class="star-struck emojis">🤩</span>
+
+                <span class="thinking-face emojis">🤔</span>
+
+                <span class="zipper-mouth-face emojis">🤐</span>
+
+                <span class="hushed-face emojis">😯</span>
+
+                <span class="shushing-face emojis">🤫</span>
+
+                <span class="zany-face emojis">🤪</span>
+
+                <span class="fearful-face emojis">😨</span>
+
+                <span class="weary-face emojis">😩</span>
+
+                <span class="frowning-face emojis">😔</span>
+
+                <span class="disappointed-face emojis">😞</span>
+
+                <span class="red-heart emojis">❤️</span>
+
+                <span class="broken-heart emojis">💔</span>
+
+                <span class="party-popper emojis">🎉</span>
+
+                <span class="fire emojis">🔥</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div id="backdrop" class="backdrop none">
-    <div id="uploadFiles">
-      <div id="closeBar">
-        <div class="closeHeader">插入圖片</div>
-        <div class="closeBtn"> <i class="fa-solid fa-xmark "></i></div>
-
-      </div>
-      <div class="uploadBox">
-        <div class="uploadAreaOuter">
-          <div class="uploadArea">
-            
-           <div>
-            <img class="uploadFilesBtn " src="" alt="your image" id="blah">
-            <input id="selectUploadFile" type="file" class="uploadFilesBtn"
-            onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-          </div>
-          </div>
-          <div class="dragClickPhoto">
+    <div id="backdrop" class="backdrop none">
+      <div id="uploadFiles">
+        <div id="closeBar">
+          <div class="closeHeader">插入圖片</div>
+          <div class="closeBtn"><i class="fa-solid fa-xmark"></i></div>
+        </div>
+        <div class="uploadBox">
+          <div class="uploadAreaOuter">
+            <div class="uploadArea">
+              <div>
+                <img class="uploadFilesBtn" src="" alt="your image" id="blah" />
+                <input
+                  id="selectUploadFile"
+                  type="file"
+                  class="uploadFilesBtn"
+                />
+                <!-- onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" -->
+              </div>
+            </div>
+            <!-- <div class="dragClickPhoto">
           <i class="fa-solid fa-cloud-arrow-up uploadText"></i>
           <span class="uploadText">點擊或拖放圖片到此處</span>
-        </div>
-        </div>
-        <div class="submitPhoto">
-          
-            <input type="submit" class="photoBTN post-" value="送出" />
-          
+        </div> -->
+          </div>
+          <div class="submitPhoto">
+            <button class="photoBTN post-">Submit</button>
+          </div>
         </div>
       </div>
-
     </div>
+
+    <!-- emoji box -->
 
     <!-- /////////////////////////////////////////////// -->
     <div id="resetPass" class="none">

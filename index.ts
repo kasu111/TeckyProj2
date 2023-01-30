@@ -47,7 +47,7 @@ const form = formidable({
   uploadDir,
   keepExtensions: true,
   maxFiles: 1,
-  maxFileSize: 400 * 200 ** 2, // the default limit is 200MB
+  maxFileSize: 10 * 1024 * 1024, // the default limit is 10MB
   filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
 let formidable_promise = (req: express.Request) => {
@@ -79,6 +79,7 @@ type formResult = {
   files?: any;
 };
 function transfer_formidable_into_obj(form_result: formResult) {
+  console.log(form_result);
   let result = {};
 
   if (form_result.hasOwnProperty("fields")) {
@@ -351,13 +352,15 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
+  console.log(obj);
+  console.log(obj.image);
 
   const userid = req.session.user?.id;
   // const replyContent = req.body.replyContent;
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(
       `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-      [obj.replyContent, obj.files, userid, req.params.id]
+      [obj.replyContent, obj.image, userid, req.params.id]
     );
   } else {
     await client.query(
@@ -395,6 +398,8 @@ app.get(
     }
   }
 );
+
+//add emoji in reply box
 
 // app.post("/reply", async (req: express.Request, res: express.Response)=> {
 
