@@ -25,6 +25,7 @@ const pageLine = document.querySelector(".nextPage")
 const submitBTN = document.querySelector(".submitBTN")
 const whatPage = document.querySelector(".whatPage")
 const changePage = document.getElementById("changePage")
+const Pp = document.querySelectorAll(".Pp")
 
 back.classList.add("hidden")
 next.classList.add("hidden")
@@ -149,12 +150,12 @@ async function loadpost() {
           whatPage.innerHTML = ""
           for (let i = 0; i < numOfPage; i++) {
             const wtPage = document.createElement("div")
-            wtPage.classList.add("flex")
+            wtPage.classList.add("flex", "Pp")
             if (i + 1 == numOfPage) {
-              wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+              wtPage.innerHTML = `<div class="pAp wtp-${i + 1}">${i + 1}</div>`
             }
             else {
-              wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+              wtPage.innerHTML = `<div class="pAp wtp-${i + 1}">${i + 1}</div> <div>,</div>`
             }
             wtPage.dataset.p = i + 1
 
@@ -216,17 +217,6 @@ async function loadpost() {
 
   }
 }
-
-
-
-
-
-
-changePage.addEventListener("click", async () => {
-  const id = pageLine.getAttribute("data-page")
-  page = page + 1
-})
-
 
 
 //////////////////////////CARLOS//////////////
@@ -474,9 +464,14 @@ const reload = async function (id, page) {
     })
   }
 }
-//////////////////////////已完成//////////////////////////
-
-
+//////////////////////////工程中//////////////////////////
+changePage.addEventListener("click", async () => {
+  const Pp = document.querySelectorAll(".Pp")
+  const id = Pp.dataset.p;
+  console.log("pppppppppppppp", id);
+  // page = page + 1
+})
+//////////////////////////工程中//////////////////////////
 submitBTN.addEventListener("click", async event => {
   replyBox.classList.add("none");
 })
