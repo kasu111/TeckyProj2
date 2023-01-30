@@ -135,6 +135,8 @@ async function loadpost() {
       const numOfPage = json.numOfPage;
       comment.addEventListener("click", async () => {
         page = 0
+        resetReply.reset();
+        replyBox.classList.add("none");
         if (numOfPage == 1) {
           next.classList.add("hidden")
         } else { next.classList.remove("hidden") }

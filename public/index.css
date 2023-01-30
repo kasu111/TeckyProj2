@@ -19,6 +19,10 @@ body{
     display: flex;
     justify-content: center;
 }
+.resubmit{
+    width: 100px;
+    height: 30px;
+}
 h3{
     color: rgb(223, 231, 2);
     margin: 0;
