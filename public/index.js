@@ -23,6 +23,9 @@ const back = document.getElementById("back")
 const next = document.getElementById("next")
 const pageLine = document.querySelector(".nextPage")
 const submitBTN = document.querySelector(".submitBTN")
+const whatPage = document.querySelector(".whatPage")
+const changePage = document.getElementById("changePage")
+
 back.classList.add("hidden")
 next.classList.add("hidden")
 let page = 0;
@@ -139,7 +142,45 @@ async function loadpost() {
         replyBox.classList.add("none");
         if (numOfPage == 1) {
           next.classList.add("hidden")
-        } else { next.classList.remove("hidden") }
+          changePage.classList.add("hidden")
+        } else {
+          changePage.classList.remove("hidden")
+          next.classList.remove("hidden")
+          whatPage.innerHTML = ""
+          for (let i = 0; i < numOfPage; i++) {
+            const wtPage = document.createElement("div")
+            wtPage.classList.add("flex")
+            if (i + 1 == numOfPage) {
+              wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+            }
+            else {
+              wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+            }
+            wtPage.dataset.p = i + 1
+
+            whatPage.appendChild(wtPage)
+          }
+        }
+        //////////////////////////////////////////////////////工程進行中//////////////////////////////////////////////////////////////
+        // const memoWall = document.querySelector(".memo-wall")
+        // memoWall.innerHTML = "";
+        // for (let i = datab.length - 1; i >= 0; i--) {
+        //     const id = datab[i].id
+        //     const memo = document.createElement("form");
+        //     memo.classList.add("setare");
+        //     memoWall.appendChild(memo);
+        //     const text = document.createElement("textarea")
+        //     text.textContent = datab[i].content
+        //     text.classList.add("yellow", `id-${id}`);
+        //     memo.appendChild(text);
+        //     text.readOnly = true
+        //     const div = document.createElement("div");
+        //     div.classList.add("rubbish", "posset")
+        //     memo.appendChild(div)
+        //     const trash = document.createElement("i")
+        //     trash.classList.add("fa-solid", "fa-trash")
+        //     div.appendChild(trash)
+        ////////////////////////////////////////////////////////工程進行中////////////////////////////////////////////////////////////
         back.classList.add("hidden")
 
         await reload(id, page)
@@ -176,23 +217,16 @@ async function loadpost() {
   }
 }
 
-//////////////////////////工程進行中//////////////////////////
 
 
 
-const changePage = document.getElementById("changePage")
 
-// const nextPage = document.getElementById("next").addEventListener("click", async () => {
-//   page = page + 1
-//   const id = pageLine.getAttribute("data-page");
-//   // console.log(id);
-//   await fetch((`/addPostCommemt/${id}/${page}`, {
-//     method: "GET",
-//     body: id,
-//   })
 
-//   )
-// })
+changePage.addEventListener("click", async () => {
+  const id = pageLine.getAttribute("data-page")
+  page = page + 1
+})
+
 
 
 //////////////////////////CARLOS//////////////

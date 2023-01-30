@@ -291,7 +291,11 @@
       <div>
         <div class="nextPage">
           <div id="back" class="forPage">上一頁</div>
-          <div id="changePage" class="forPage">第幾頁</div>
+          <div id="changePage" class="forPage flex">
+            第
+            <div class="whatPage flex"></div>
+            頁
+          </div>
           <div id="next" class="forPage">下一頁</div>
         </div>
         <!-- 開comments -->
@@ -362,7 +366,14 @@
                 required
               ></textarea>
               <div class="replySubmit">
-                <img src="" id="uploadedImg" alt="" width="100" name="files" />
+                <img
+                  src=""
+                  id="uploadedImg"
+                  alt=""
+                  width="50"
+                  height="50"
+                  name="files"
+                />
 
                 <span><i class="fa-solid fa-paper-plane"></i></span>
                 <input

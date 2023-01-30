@@ -362,6 +362,14 @@ width: 93%;
 height: 35px;
 background-color:#404941;
 }
+#changePage{
+    justify-content: center;
+    width: 60%;
+}
+.pAp{
+    width: 20px;
+    margin-left: 5px;
+}
 .add:hover{
     border: 1px solid rgba(171, 255, 227, 0.719);
     background-color:#6d87707e;
