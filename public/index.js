@@ -18,7 +18,7 @@ const closeReplyBox = document.querySelector("#closeReplyBox")
 const isreply = document.querySelector(".recomm")
 const backdrop = document.querySelector("#backdrop")
 const uploadFiles = document.querySelector("#uploadFiles")
-const uploadFilesClick = document.querySelector("#uploadFilesClick")
+const uploadBtn = document.querySelector("#uploadBtn")
 const submitBTN = document.querySelector(".submitBTN")
 let islogin = false;
 let image;
@@ -27,7 +27,7 @@ function timetype(time) {
   return moment(time).fromNow();
 }
 
-uploadFilesClick.addEventListener("click", async event => {
+uploadBtn.addEventListener("click", async event => {
 
   setTimeout(() => {
     backdrop.classList.remove("none")
@@ -162,7 +162,7 @@ function isPhoto(obj){
 const replyTitle = document.querySelector(".closePage")
 
 replyTitle.innerText = `回覆 : ${json.allData[0].title}`
-
+//回覆按鈕/* <i class="fa-solid fa-reply post-${json.allData[0].id}"></i> */
           title.innerText = json.allData[0].title
           commPlace.innerHTML = await json.allData.map((obj, index) => {
             return `<div data-post_id=${id} class="commentBox">
@@ -175,7 +175,7 @@ replyTitle.innerText = `回覆 : ${json.allData[0].title}`
 
                   <i class="fa-solid fa-eye none"></i>
 
-                  <i class="fa-solid fa-reply post-${json.allData[0].id}"></i>
+                 
                 </div>
 
                 <div class="MultiFunction">
