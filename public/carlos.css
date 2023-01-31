@@ -137,8 +137,6 @@
 
 }
 
-
-
 .closePage{
     padding:12px;
 }
@@ -335,7 +333,6 @@
 }
 
 .photoBTN{
-
    margin:2px 15px ;
    width:150px;
 }
@@ -453,5 +450,83 @@
     padding:5px;
 }
 
+.openAnimate{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00000080;
+    z-index: 9999;
+}
+
+.chairIcon{
+    position: absolute;
+    left:-30%;
+        filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(90deg) brightness(100%) contrast(100%);  
+    width: 600px;
+}
+
+.chairIcon2{
+    position: absolute;
+    right:25%;
+    transform: rotate(30deg);
+        filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(90deg) brightness(100%) contrast(100%);  
+    width: 500px;
+}
+
+.leg{
+    font-size: 300px;
+    position: relative;
+    right:25%;
+}
 
 
+.spin2{
+    -webkit-animation: rotate-scale-up 1.5s ease ;
+    animation: rotate-scale-up 1.5s ease ;
+}
+
+@-webkit-keyframes rotate-scale-up {
+    0% {
+        -webkit-transform: scale(1) rotateZ(0);
+                transform: scale(1) rotateZ(0);
+                transform: translateX(0vh) scale(3) rotateZ(0deg)
+      }
+  
+      50% {
+          -webkit-transform: scale(1.5) rotateZ(720deg);
+                  transform: scale(1.5) rotateZ(720deg);
+                  transform: translateX(50vh) scale(2) rotateZ(720deg)
+        }
+  
+  
+      100% {
+        -webkit-transform: scale(1) rotateZ(1440deg);
+                transform: scale(1) rotateZ(1440deg);
+                transform: translateX(120vh) scale(1) rotateZ(1440deg);
+      }
+  }
+  @keyframes rotate-scale-up {
+    0% {
+        -webkit-transform: scale(1) rotateZ(0);
+                transform: scale(1) rotateZ(0);
+                transform: translateX(0vh) scale(3) rotateZ(0deg)
+      }
+  
+      50% {
+          -webkit-transform: scale(1.5) rotateZ(720deg);
+                  transform: scale(1.5) rotateZ(720deg);
+                  transform: translateX(50vh) scale(2) rotateZ(720deg)
+        }
+  
+  
+      100% {
+        -webkit-transform: scale(1) rotateZ(1440deg);
+                transform: scale(1) rotateZ(1440deg);
+                transform: translateX(120vh) scale(1) rotateZ(1440deg);
+      }
+  }
