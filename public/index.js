@@ -25,8 +25,8 @@ const pageLine = document.querySelector(".nextPage")
 const submitBTN = document.querySelector(".submitBTN")
 const whatPage = document.querySelector(".whatPage")
 const changePage = document.getElementById("changePage")
-const Pp = document.querySelectorAll(".Pp")
-
+// const Pp = document.querySelectorAll(".Pp")
+changePage.classList.add("hidden")
 back.classList.add("hidden")
 next.classList.add("hidden")
 let page = 0;
@@ -148,16 +148,15 @@ async function loadpost() {
           changePage.classList.remove("hidden")
           next.classList.remove("hidden")
           whatPage.innerHTML = ""
-          for (let i = 0; i < numOfPage; i++) {
+          for (let i = page; i < numOfPage; i++) {
             const wtPage = document.createElement("div")
             wtPage.classList.add("flex", "Pp")
             if (i + 1 == numOfPage) {
-              wtPage.innerHTML = `<div class="pAp wtp-${i + 1}">${i + 1}</div>`
+              wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
             }
             else {
-              wtPage.innerHTML = `<div class="pAp wtp-${i + 1}">${i + 1}</div> <div>,</div>`
+              wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
             }
-            wtPage.dataset.p = i + 1
 
             whatPage.appendChild(wtPage)
           }
@@ -365,6 +364,32 @@ next.addEventListener("click", async () => {
   }
   back.classList.remove("hidden")
 })
+//////////////////////////工程中//////////////////////////
+changePage.addEventListener("click", async (obj) => {
+
+  if (!obj.target.classList.contains("pAp")) return;
+  const pages = obj.target.innerText - 1
+  const id = pageLine.getAttribute("data-page");
+  const res = await fetch(`/addPostCommemt/${id}/${pages}`, {
+    method: "GET",
+  });
+  page = pages
+  const json = await res.json();
+  const numOfPage = json.numOfPage;
+  next.classList.remove("hidden")
+  back.classList.remove("hidden")
+  if (pages <= 0) {
+    page = 0
+    back.classList.add("hidden")
+    next.classList.remove("hidden")
+  } else if (pages + 1 >= numOfPage) {
+    next.classList.add("hidden")
+    back.classList.remove("hidden")
+  } else { }
+  console.log(page);
+  await reload(id, pages)
+})
+//////////////////////////工程中//////////////////////////
 back.addEventListener("click", async () => {
   const id = pageLine.getAttribute("data-page");
   const res = await fetch(`/addPostCommemt/${id}/${page}`, {
@@ -464,14 +489,7 @@ const reload = async function (id, page) {
     })
   }
 }
-//////////////////////////工程中//////////////////////////
-changePage.addEventListener("click", async () => {
-  const Pp = document.querySelectorAll(".Pp")
-  const id = Pp.dataset.p;
-  console.log("pppppppppppppp", id);
-  // page = page + 1
-})
-//////////////////////////工程中//////////////////////////
+
 submitBTN.addEventListener("click", async event => {
   replyBox.classList.add("none");
 })
@@ -492,3 +510,4 @@ function isPhoto(obj) {
     return '<span></span>'
   }
 }
+// //check 點錯字
