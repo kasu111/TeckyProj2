@@ -39,12 +39,6 @@ next.addEventListener("click", async () => {
 })
 //////////////////////////工程中//////////////////////////
 changePage.addEventListener("click", async (obj) => {
-    // console.log(typeof obj);
-    //console.log(obj.target.classList.contains("pAp"))
-    let delbug = obj.target.innerText
-    let test = Number(delbug)
-    console.log("098765467890", typeof test, parseInt(test));
-    //if (delbug == "NaN" || delbug == "," || delbug.substr(0, 1) == "第" || delbug.substr(length - 1, 1) == "頁") { return }
     if (!obj.target.classList.contains("pAp")) return;
     const pages = obj.target.innerText - 1
     const id = pageLine.getAttribute("data-page");
