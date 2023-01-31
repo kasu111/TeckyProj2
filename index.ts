@@ -10,7 +10,9 @@ import http from "http";
 import { hashPassword } from "./hash";
 import { checkPassword } from "./hash";
 import session from "express-session";
-// import { format, formatDistance, formatRelative, subDays } from "date-fns";
+import { Server as SocketIO } from "socket.io";
+import { Socket } from "dgram";
+
 let page: number = 0;
 dotenv.config();
 export const client = new Client({
@@ -21,7 +23,7 @@ export const client = new Client({
 client.connect();
 const app = express();
 const server = new http.Server(app);
-// const io = new SocketIO(server);
+const io = new SocketIO(server);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
@@ -40,6 +42,9 @@ declare module "express-session" {
     };
   }
 }
+io.on("connection", function (socket) {
+  console.log(socket);
+});
 
 const uploadDir = "uploads";
 fs.mkdirSync(uploadDir, { recursive: true });
@@ -94,6 +99,7 @@ function transfer_formidable_into_obj(form_result: formResult) {
 //////////////////////////////////////////////////////
 //輸入新post到database
 app.post("/addpost", async (req: express.Request, res: express.Response) => {
+  io.emit("getPosted", "getPosted");
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
   const user = req.session.user;
@@ -151,12 +157,8 @@ async function callpage(id: number) {
 app.get(
   "/addPostCommemt/:id/:page",
   async (req: express.Request, res: express.Response) => {
-    // const post = await client.query(
-    //   "SELECT posts.title,users.name FROM posts join users on posts.user_id = users.id"
-    // );
-
+    io.emit("getComment", "get new comment");
     const id = Number(req.params.id);
-    // console.log(id);
 
     const next = Number(req.params.page);
     const numOfPage = await callpage(id);
@@ -235,33 +237,41 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
     postData,
   });
 });
+
 //////////////////////////////////
-app.post("/clickLike", async (req: express.Request, res: express.Response) => {
-  const showlike = await client.query(
-    "SELECT comment_id,user_id FROM comment_like WHERE comment_id = $1 AND user_id = $2",
-    [req.body.id, req.session.user?.id]
-  );
-  if (showlike.rowCount > 0) {
-    await client.query(
-      "DELETE FROM comment_like where user_id = $1 and comment_id =$2",
+app.post(
+  "/clickLike/:page",
+  async (req: express.Request, res: express.Response) => {
+    io.emit("liked", "have liked");
+    // res.json({ updated: 1 });
+    const showlike = await client.query(
+      "SELECT comment_id,user_id FROM comment_like WHERE comment_id = $1 AND user_id = $2",
+      [req.body.id, req.session.user?.id]
+    );
+    if (showlike.rowCount > 0) {
+      await client.query(
+        "DELETE FROM comment_like where user_id = $1 and comment_id =$2",
+        [req.session.user?.id, req.body.id]
+      );
+      return res.status(200).json({
+        result: true,
+        message: "Del liked",
+        liked: false,
+      });
+    }
+    // Socket.on(`clickliked`, () => {});
+    const likepost = await client.query(
+      `INSERT INTO comment_like (user_id,comment_id) VALUES ($1,$2) RETURNING comment_id`,
       [req.session.user?.id, req.body.id]
     );
-    return res.status(200).json({
+    res.status(200).json({
       result: true,
-      message: "Del liked",
+      message: "success",
+      likepost,
+      liked: true,
     });
   }
-  const likepost = await client.query(
-    `INSERT INTO comment_like (user_id,comment_id) VALUES ($1,$2) RETURNING comment_id`,
-    [req.session.user?.id, req.body.id]
-  );
-
-  res.status(200).json({
-    result: true,
-    message: "success",
-    likepost,
-  });
-});
+);
 
 //check user login or not
 app.get("/user", async (req: express.Request, res: express.Response) => {
@@ -349,6 +359,7 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 
 //輸入新comment到database TESTING NOT CONFIrM
 app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
+  io.emit("newcomm", "have new commet");
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
 

@@ -83,7 +83,9 @@ height: 27px;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border-color: black;
 }
-
+.commentBox{
+    margin-bottom: 3px;
+}
 .mainLine{
     position: relative;
     background-color: rgb(30, 30, 30);
