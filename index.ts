@@ -11,6 +11,7 @@ import { hashPassword } from "./hash";
 import { checkPassword } from "./hash";
 import session from "express-session";
 // import { format, formatDistance, formatRelative, subDays } from "date-fns";
+let page: number = 0;
 dotenv.config();
 export const client = new Client({
   database: process.env.DB_NAME,
@@ -46,7 +47,7 @@ const form = formidable({
   uploadDir,
   keepExtensions: true,
   maxFiles: 1,
-  maxFileSize: 10 * 1024 * 1024, // the default limit is 10MB
+  maxFileSize: 400 * 200 ** 2, // the default limit is 200MB
   filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
 let formidable_promise = (req: express.Request) => {
@@ -78,7 +79,6 @@ type formResult = {
   files?: any;
 };
 function transfer_formidable_into_obj(form_result: formResult) {
-  console.log(form_result)
   let result = {};
 
   if (form_result.hasOwnProperty("fields")) {
@@ -127,17 +127,52 @@ app.post("/addpost", async (req: express.Request, res: express.Response) => {
 // function timetype(time: any) {
 //   return moment(time, "YYMMDD,h:mm").fromNow();
 // }
+async function callpage(id: number) {
+  const countPost = await client.query(
+    `SELECT count(*) from comments where post_id=$1`,
+    [id]
+  );
+  return Math.ceil(countPost.rows[0].count / 5);
+}
+/////////////////////////////////工程中////////////////////////////////////
+// app.get(
+//   "next/:id/:page",
+//   async (req: express.Request, res: express.Response) => {
+//     const id = Number(req.params.id);
+//     const page = Number(req.params.page);
+//     const next = await callpage(id);
+//     await client.query(
+//       `SELECT comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at asc limit 5 OFFSET $2`,
+//       [id]
+//     );
+//   }
+// );
+/////////////////////////////////工程中////////////////////////////////////
 app.get(
-  "/addPostCommemt/:id",
+  "/addPostCommemt/:id/:page",
   async (req: express.Request, res: express.Response) => {
     // const post = await client.query(
     //   "SELECT posts.title,users.name FROM posts join users on posts.user_id = users.id"
     // );
 
-    const id = req.params.id;
+    const id = Number(req.params.id);
+    // console.log(id);
+
+    const next = Number(req.params.page);
+    const numOfPage = await callpage(id);
+
+    if (next <= 0) {
+      page = 0;
+    } else if (next >= numOfPage) {
+      page = numOfPage;
+    } else {
+      page = next;
+    }
+    // console.log(numOfPage);
+
     const comments = await client.query(
-      `SELECT comments.id,sex,title,name,body,photo,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at asc limit 5 `,
-      [id]
+      `SELECT comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at asc limit $2 OFFSET $3`,
+      [id, 5, page * 5] //page
     );
 
     let allData = comments.rows;
@@ -166,77 +201,33 @@ app.get(
       result: true,
       message: "success",
       allData,
+      numOfPage: Number(numOfPage),
     });
   }
 );
 //get title到左邊column
 app.get("/getPost", async (req: express.Request, res: express.Response) => {
   const posttitle = await client.query(
-    "SELECT users.name,users.sex,posts.id,posts.title,posts.created_at from(SELECT posts.id,posts.title,posts.created_at,posts.user_id FROM posts order by created_at desc limit 10 )as posts inner join users on posts.user_id = users.id"
+    "SELECT users.name,users.sex,posts.id,posts.title,posts.created_at from(SELECT posts.id,posts.title,posts.created_at,posts.user_id FROM posts limit 10 )as posts inner join users on posts.user_id = users.id order by created_at desc"
   );
 
   // let asd = a123.rows;
   let postData = posttitle.rows;
-  let sql_val = postData.map((obj) => obj.id);
-  let sql_param = postData.map((obj, idx) => "$" + (idx + 1) + ",").join("");
-  sql_param = sql_param.slice(0, -1);
-  sql_param = "(" + sql_param + ")";
-
-  // console.log("1234567890", sql_param);
-  // console.log("1234567890", sql_val);
-  ///////////////////////////////////////////////////////////工程⚠️中/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // let commid = await client.query(
-  //   `SELECT comment_like.user_id FROM comments where post_id IN ${sql_param} and is_first_comment = true inner join comment_like on comments.id = comment_like.comment_id`,
-  //   sql_val
-  // );
-  let likecount = await client.query(
-    `select comment_like.user_id,com.postid  from (select posts.id as postid,comments.id as comid from posts inner join comments on posts.id = comments.post_id where is_first_comment =true limit 10)as com inner join comment_like on comment_like.comment_id =com.comid` // where com.postid IN ${sql_param}
-    // sql_val
+  postData = await Promise.all(
+    postData.map(async (obj) => {
+      let likecount = await client.query(
+        `select comment_like.user_id  from (select posts.id as postid,comments.id as comid from posts inner join comments on posts.id = comments.post_id where is_first_comment =true limit 10)as com inner join comment_like on comment_like.comment_id =com.comid where com.postid = $1`, // where com.postid IN ${sql_param}
+        [obj.id]
+      );
+      let like = likecount.rows.length;
+      return Object.assign(obj, { like: like });
+    })
   );
-  console.log("0987654567890", likecount.rows);
-
-  // console.log("commidcommidcommidcommidcommid", commid);
-  ///////////////////////////////////////////////////////////工程⚠️中///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // let commlike = commid.rows;
-  // let comm_val = commlike.map((obj) => obj.id);
-  // let comm_param = commlike.map((obj, idx) => "$" + (idx + 1) + ",").join("");
-  // comm_param = comm_param.slice(0, -1);
-  // comm_param = "(" + comm_param + ")";
-  // console.log(comm_val);
-
-  // postData = await Promise.all(
-  //////////////////////////////////////////
-  // popo.rows.map(async (obj) => {
-  // const postlikes = await client.query(
-  //   `SELECT user_id FROM comment_like WHERE comment_id IN ${comm_param}`, //order by comment_like asc
-  //   comm_val
-  // );
-  // const postlikes = await client.query(
-  //   `SELECT user_id FROM comment_like WHERE comment_id = $1`, //order by comment_like asc
-  //   [commid.rows[0].id]
-  // );
-  // console.log(postlikes.rows);
-
-  // const liked = postlikes.rows;
-  // let like = postlikes.rows.length;
-  // postData = await Promise.all(
-  // postData = postData.map((obj) => Object.assign(obj, { like: like }));
-  // );
-  //   return Object.assign(obj, { like: like });
-  // });
-  // );
-
-  // postData = postData.map((obj) =>
-  //   Object.assign(obj, {
-  //     created_at: timetype(obj.created_at),
-  //   })
-  // );
   postData = postData.map((obj) =>
     obj.sex
       ? Object.assign(obj, { meta: "bluecolor" })
       : Object.assign(obj, { meta: "redcolor" })
   );
-  // console.log(postData);
 
   res.status(200).json({
     result: true,
@@ -251,9 +242,13 @@ app.post("/clickLike", async (req: express.Request, res: express.Response) => {
     [req.body.id, req.session.user?.id]
   );
   if (showlike.rowCount > 0) {
+    await client.query(
+      "DELETE FROM comment_like where user_id = $1 and comment_id =$2",
+      [req.session.user?.id, req.body.id]
+    );
     return res.status(200).json({
       result: true,
-      message: "liked already",
+      message: "Del liked",
     });
   }
   const likepost = await client.query(
@@ -356,16 +351,13 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
-  console.log(obj);
-  console.log(obj.image);
-  
-  
+
   const userid = req.session.user?.id;
   // const replyContent = req.body.replyContent;
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(
       `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-      [obj.replyContent, obj.image, userid, req.params.id]
+      [obj.replyContent, obj.files, userid, req.params.id]
     );
   } else {
     await client.query(
@@ -381,12 +373,11 @@ app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
   }
 });
 
-
 app.get(
   "/checkLike/:id",
   async (req: express.Request, res: express.Response) => {
     const check = await client.query(
-      "SELECT user_id FROM post_likes where user_id = $1 AND post_id=$2",
+      "SELECT user_id FROM comment_like where user_id = $1 AND comment_id = $2",
       [req.session.user?.id, req.params.id]
     );
     if (check.rowCount > 0) {
@@ -404,9 +395,6 @@ app.get(
     }
   }
 );
-
-//add emoji in reply box
-
 
 // app.post("/reply", async (req: express.Request, res: express.Response)=> {
 
