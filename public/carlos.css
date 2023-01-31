@@ -1,3 +1,10 @@
+.mainLine{
+    overflow: scroll;
+}
+.titleLine{
+    overflow: scroll;
+}
+
 .commentsWall{
     width:cover;
     display: block;
@@ -14,7 +21,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    margin-top: 3px;
+   
 }
 
 
@@ -99,7 +106,9 @@
     color: #aaa;
 }
 
-
+#reply > textarea{
+    font-size:25px;
+}
 
 .ReplyBox{
     position: sticky;
@@ -332,8 +341,8 @@
 }
 
 #blah{
-    max-width:500px;
-    max-height:600px;
+    max-width:380px;
+    max-height:280px;
 }
 
 
@@ -351,13 +360,17 @@
     position: absolute;
     top: 340px;
     width:100%;
-    height:300px;
+    height:0px;
     background:#222222;
+    transition: height 0.3s ;
+    overflow:hidden;
 
 }
 
+
+
 .emojiArea{
-        display: flex;
+    display: flex;
     justify-content: center;
     
 }
@@ -390,4 +403,64 @@
     cursor: pointer;
     padding:5px;
 }
+
+
+
+/* gifBox */
+.gifBox{
+    
+    position: absolute;
+    top: 340px;
+    width:100%;
+    height:0px;
+    background:#222222;
+    transition: height 0.3s ;
+    overflow:hidden;
+
+}
+
+
+
+.gifArea{
+    display: flex;
+    justify-content: center;
+    
+}
+
+.gifBar{
+    width: 100%;
+    background:#222222;
+    height: 32px;
+    display: flex;
+    align-items: flex-end;
+    padding-left:10px;
+    color: rgba(255, 255, 255, 0.292);
+    
+}
+
+.gifInBox{
+    width: 96%;
+    height: 250px;
+    background-color: #191919;
+    margin: 2%;
+    font-size: 30px;
+    padding: 10px;
+    cursor: default;
+    overflow: scroll;
+
+}
+
+.gifInBox > img{
+    width:150px;
+    
+}
+
+.gifs:hover{
+    background: #aaa;
+    border-radius: 10%;
+    cursor: pointer;
+    padding:5px;
+}
+
+
 

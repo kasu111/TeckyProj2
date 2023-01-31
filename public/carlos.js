@@ -5,7 +5,6 @@
 // const signin = document.querySelector('#signin')
 // let islogin = false;
 
-
 // signin.addEventListener("submit", async event => {
 //     event.preventDefault();
 //     const form = event.target;
@@ -64,7 +63,6 @@
 //     })
 // })
 
-
 // //signup Fetching
 // document.querySelector('#signup').addEventListener("submit", async event => {
 //     event.preventDefault();
@@ -96,7 +94,6 @@
 // const replyBox = document.querySelector("#replyBox")
 // const closeReplyBox = document.querySelector("#closeReplyBox")
 
-
 // reply.addEventListener("click", async () => {
 //     // console.log("replyBox is clicked");
 //     replyBox.classList.remove("none")
@@ -106,59 +103,89 @@
 //     replyBox.classList.add("none")
 // })
 
-
 ////^^^ already in index.js
 
 //new comments fetching TESTING NOT CONFIRM
 
 function formToJson(formData) {
-    let obj = {}
-    formData.forEach((value, key) => {
-        obj[key] = value
-    })
-    return JSON.stringify(obj)
+  let obj = {};
+  formData.forEach((value, key) => {
+    obj[key] = value;
+  });
+  return JSON.stringify(obj);
 }
 
-const uploadedImg = document.querySelector('#uploadedImg')
+const uploadedImg = document.querySelector("#uploadedImg");
 
-const emojiBtn = document.querySelector(".emojiBtn")
+const emojiBtn = document.querySelector(".emojiBtn");
+
+const ReplyTextPlace1 = document.querySelector("#ReplyTextPlace1");
+
+
+const gifBtn = document.querySelector(".gifBtn");
+
+const gifBox = document.querySelector(".gifBox");
 
 const emojis = document.querySelectorAll(".emojis");
 for (let i = 0; i < emojis.length; i++) {
-    const emoji = emojis[i]
+  const emoji = emojis[i];
 
-    emojis[i].addEventListener("click", async e => {
-        // console.log(emojis.innerHTML);
-        // console.log(ReplyTextPlace1.value)
-        console.log(emoji.innerHTML);
-        ReplyTextPlace1.value += emoji.innerHTML;
-
-    })
+  emoji.addEventListener("click", async (e) => {
+    // console.log(emojis.innerHTML);
+    // console.log(ReplyTextPlace1.value)
+    console.log(emoji.innerHTML);
+    ReplyTextPlace1.value += emoji.innerHTML;
+  });
 }
 
-const ReplyTextPlace1 = document.querySelector("#ReplyTextPlace1")
+document.querySelector(".photoBTN").addEventListener("click", async (event) => {
+  let cloneSrc = document.getElementById("blah").src;
+  uploadedImg.src = cloneSrc;
+  backdrop.classList.add("none");
+});
+
+const emojiBox = document.querySelector(".emojiBox");
+
+emojiBtn.addEventListener("click", async (event) => {
+  if (emojiBox.style.height === "300px") {
+    emojiBox.style.height = "0";
+  } 
+  else if (gifBox.style.height > "0px") {
+    gifBox.style.height = "0";
+    emojiBox.style.height = "300px"
+  } 
+  else {
+    emojiBox.style.height = "300px";
+    
+  }
+});
 
 
-document.querySelector(".photoBTN").addEventListener("click", async event => {
+gifBtn.addEventListener("click", async (event) => {
+  if (gifBox.style.height > "0px") {
+    gifBox.style.height = "0";
+  } else if (emojiBox.style.height === "300px") {
+    emojiBox.style.height = "0";
+    gifBox.style.height = "300px";
+  } else {
+    gifBox.style.height = "300px";
+  }
+});
 
-    let cloneSrc = document.getElementById('blah').src
-    uploadedImg.src = cloneSrc
-    backdrop.classList.add("none");
-})
 
-emojiBtn.addEventListener("click", async event => {
-    classlist.remove("none");
-})
+const gifs = document.querySelectorAll(".gifs");
+for (let i = 0; i < gifs.length; i++) {
+  const gif = gifs[i];
 
+  gif.addEventListener("click", async (e) => {
+  
+    // console.log(gif.src);
+    ReplyTextPlace1.value += `<img src='${gif.src}' width='150'/> `
+  });
+}
 
 //2. after typing cant input emoji anymore
 //1. too many emoji need queryselectorall
-
-
-
-
-
-
 
 // const closeBox = document.querySelector(".closeBtn")
 
@@ -166,13 +193,11 @@ emojiBtn.addEventListener("click", async event => {
 //     backdrop.classList.add("none")
 // })
 
-
 // document.querySelector('#reply').addEventListener("submit", async event => {
 
 //     event.preventDefault();
 //     const form = event.target;
 //     const formData = new FormData(form);
-
 
 //     const res = await fetch(`/reply/${document.querySelector(".submitBTN").classList[1].substring(5)}`, {
 //         method: "POST",
@@ -186,27 +211,19 @@ emojiBtn.addEventListener("click", async event => {
 //     }
 // });
 
-
 // upload files interface create and close
 // const backdrop = document.querySelector("#backdrop")
 // const uploadFiles = document.querySelector("#uploadFiles")
-// const uploadFilesClick = document.querySelector("#uploadFilesClick")
+// const uploadBtn = document.querySelector("#uploadBtn")
 
-// uploadFilesClick.addEventListener("click", async event => {
+// uploadBtn.addEventListener("click", async event => {
 
 //     setTimeout(() => {
 //         backdrop.classList.remove("none")
 //     }, 500);
 // })
 
-
-
 //upload file preview go to reply box
-// document.getElementById('blah').addEventListener("change", event => {
-//     document.querySelector(".uploadedFile").classList.remove("hidden")
-// })
-
-
 
 // window.onload = async function () {
 //     await checkUserLogin();
