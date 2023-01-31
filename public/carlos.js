@@ -179,7 +179,7 @@ for (let i = 0; i < gifs.length; i++) {
 
   gif.addEventListener("click", async (e) => {
   
-    // console.log(gif.src);
+    console.log(gif);
     ReplyTextPlace1.value += `<img src='${gif.src}' width='150'/> `
   });
 }
