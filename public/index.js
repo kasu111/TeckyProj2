@@ -17,7 +17,7 @@ const postPost = document.querySelector("#postform");
 const postClose = document.getElementById("postClose");
 const addNewPost = document.getElementById("addPost");
 const closeBox = document.querySelector(".closeBtn")
-const resetReply = document.querySelector('.ReplyForm')
+const resetReply = document.getElementById('reply')
 const forPage = document.querySelectorAll(".forPage")
 const back = document.getElementById("back")
 const next = document.getElementById("next")
@@ -37,6 +37,10 @@ let image;
 socket.on("liked", async (data) => {
   loadpost()
 });
+socket.on("getPosted", async (data) => {
+  loadpost()
+});
+
 
 
 uploadBtn.addEventListener("click", async event => {
@@ -84,6 +88,7 @@ postPost.addEventListener("submit", async (event) => {
 });
 
 async function loadpost() {
+
   let post = [];
   const res = await fetch("/getPost", {
     method: "GET",
@@ -159,34 +164,16 @@ async function loadpost() {
             whatPage.appendChild(wtPage)
           }
         }
-        //////////////////////////////////////////////////////工程進行中//////////////////////////////////////////////////////////////
-        // const memoWall = document.querySelector(".memo-wall")
-        // memoWall.innerHTML = "";
-        // for (let i = datab.length - 1; i >= 0; i--) {
-        //     const id = datab[i].id
-        //     const memo = document.createElement("form");
-        //     memo.classList.add("setare");
-        //     memoWall.appendChild(memo);
-        //     const text = document.createElement("textarea")
-        //     text.textContent = datab[i].content
-        //     text.classList.add("yellow", `id-${id}`);
-        //     memo.appendChild(text);
-        //     text.readOnly = true
-        //     const div = document.createElement("div");
-        //     div.classList.add("rubbish", "posset")
-        //     memo.appendChild(div)
-        //     const trash = document.createElement("i")
-        //     trash.classList.add("fa-solid", "fa-trash")
-        //     div.appendChild(trash)
-        ////////////////////////////////////////////////////////工程進行中////////////////////////////////////////////////////////////
         back.classList.add("hidden")
 
         await reload(id, page)
         socket.on("liked", async (data) => {
           reload(id, page)
         });
+        socket.on("newcomm", async (data) => {
+          reload(id, page)
+        });
       })
-
     }
 
     resetReply.addEventListener("submit", async event => {
@@ -208,7 +195,6 @@ async function loadpost() {
 
         resetReply.reset();
         replyBox.classList.add("none")
-        window.location = "/"
 
       } else {
         document.querySelector("div#reply").innerHTML = result.msg;
@@ -337,30 +323,15 @@ async function checkLike(json) {
 
     if (json.color && islogin) {
       color.classList.add("isLiked")
-    } else {
+    } else if (!json.color && islogin) {
       color.classList.remove("isLiked")
     }
   })
 }
-async function checkLike2(json) {
-  await json.allData.map(async (obj) => {
-    const color = document.querySelector(`.like_${obj.id}`)
-    const res = await fetch(`/checkLike/${obj.id}`, {
-      method: "GET",
-    })
-    const json = await res.json()
-    color.classList.remove("isLiked")
-  })
-}
 
-//////////////////////////工程中//////////////////////////
-
-//////////////////////////工程中//////////////////////////
 
 const reload = async function (id, page) {
-
   pageLine.dataset.page = id;
-
   const res = await fetch(`/addPostCommemt/${id}/${page}`, {
     method: "GET",
   });
@@ -411,30 +382,9 @@ const reload = async function (id, page) {
     </div>`}).join('');
     checkLike(json)
     socket.on("liked", async (data) => {
-      checkLike2(json)
+      checkLike(json)
     });
 
-
-    // socket.on("new-user", (data) => {
-    //   const clickLike = document.querySelector(`.like_${obj.id}`)
-
-    //   clickLike.addEventListener("click", async () => {
-    //     let id = data.id
-
-    //     if (islogin) {
-    //       const res = await fetch("/clickLike", {
-    //         headers: {
-    //           "Content-Type": "application/json"
-    //         },
-    //         method: "POST",
-    //         body: JSON.stringify({ id })
-    //       })
-    //       await res.json()
-
-    //     }
-    //   })
-
-    // });
     await json.allData.map((obj) => {
 
       const clickLike = document.querySelector(`.like_${obj.id}`)
@@ -469,10 +419,11 @@ submitBTN.addEventListener("click", async event => {
 window.onload = async function () {
   await checkUserLogin();
   await loadpost();
-
 }
 
-
+// socket.on("getPosted", async (data) => {
+//   await loadpost();
+// });
 function isPhoto(obj) {
   if (obj) {
     return `<img src='http://localhost:8000/${obj}' width='150'/> `
@@ -481,3 +432,53 @@ function isPhoto(obj) {
   }
 }
 // history.go(-1)
+
+
+
+async function loadpost2() {
+
+  let post = [];
+  const res = await fetch("/getPost", {
+    method: "GET",
+  });
+  let json = await res.json();
+  post = json.postData;
+  // console.log(post);
+  const postLine = document.querySelector(".postLine");
+  // const toptitle = document.querySelector(".titletext")
+  const comments = postLine.children
+  const time = post.created_at;
+
+  if (json.result) {
+    postLine.innerHTML = post
+      .map((obj) => {
+        return `<div class="post" data-id="${obj.id}">
+          <div class="postSet">
+            <div class="postMenu">
+              <div class="postName ${obj.meta}">${obj.name}</div>
+              
+              <div class="like postLike_${post[0].id}">
+                <i class="fa-regular fa-thumbs-up"></i>
+                <div data-like="${obj.id}">${obj.like}</div>
+              </div>
+              <div class="flex1">
+            </div>
+              <div>
+              <div class="time">${timetype(obj.created_at)}</div>
+            </div>
+            </div>
+            <div>
+            </div>
+          </div>
+          <div class="postTitle">
+            <div class="Red"></div>
+            <div class="mainTitle">
+              <h4>
+                ${obj.title}
+              </h4>
+            </div>
+          </div>
+        </div>`
+      }).join("");
+  }
+}
