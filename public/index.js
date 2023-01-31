@@ -1,4 +1,4 @@
-// history.go(-1)
+
 const part1 = document.querySelector(".part1")//未login
 const part2 = document.querySelector(".part2")//未login
 const part3 = document.querySelector(".part3")//login
@@ -34,7 +34,9 @@ const socket = io.connect()
 let islogin = false;
 let image;
 
-
+socket.on("liked", async (data) => {
+  loadpost()
+});
 
 
 uploadBtn.addEventListener("click", async event => {
@@ -180,6 +182,9 @@ async function loadpost() {
         back.classList.add("hidden")
 
         await reload(id, page)
+        socket.on("liked", async (data) => {
+          reload(id, page)
+        });
       })
 
     }
@@ -330,13 +335,21 @@ async function checkLike(json) {
     })
     const json = await res.json()
 
-    if (json.color) {
-      // postColor.classList.add("isLiked")
+    if (json.color && islogin) {
       color.classList.add("isLiked")
     } else {
-      // postColor.classList.remove("isLiked")
       color.classList.remove("isLiked")
     }
+  })
+}
+async function checkLike2(json) {
+  await json.allData.map(async (obj) => {
+    const color = document.querySelector(`.like_${obj.id}`)
+    const res = await fetch(`/checkLike/${obj.id}`, {
+      method: "GET",
+    })
+    const json = await res.json()
+    color.classList.remove("isLiked")
   })
 }
 
@@ -397,23 +410,50 @@ const reload = async function (id, page) {
       </div>
     </div>`}).join('');
     checkLike(json)
+    socket.on("liked", async (data) => {
+      checkLike2(json)
+    });
 
+
+    // socket.on("new-user", (data) => {
+    //   const clickLike = document.querySelector(`.like_${obj.id}`)
+
+    //   clickLike.addEventListener("click", async () => {
+    //     let id = data.id
+
+    //     if (islogin) {
+    //       const res = await fetch("/clickLike", {
+    //         headers: {
+    //           "Content-Type": "application/json"
+    //         },
+    //         method: "POST",
+    //         body: JSON.stringify({ id })
+    //       })
+    //       await res.json()
+
+    //     }
+    //   })
+
+    // });
     await json.allData.map((obj) => {
+
       const clickLike = document.querySelector(`.like_${obj.id}`)
 
       clickLike.addEventListener("click", async () => {
         let id = obj.id
 
         if (islogin) {
-          const res = await fetch("/clickLike", {
+          const res = await fetch(`/clickLike/${page}`, {
             headers: {
               "Content-Type": "application/json"
             },
             method: "POST",
             body: JSON.stringify({ id })
           })
-          await res.json()
-
+          const json = await res.json()
+          if (json.liked) {
+            clickLike.classList.add("isLiked")
+          } else { clickLike.classList.remove("isLiked") }
         }
       })
 
@@ -440,4 +480,4 @@ function isPhoto(obj) {
     return '<span></span>'
   }
 }
-// //check 點錯字
+// history.go(-1)

@@ -11,6 +11,7 @@ import { hashPassword } from "./hash";
 import { checkPassword } from "./hash";
 import session from "express-session";
 import { Server as SocketIO } from "socket.io";
+import { Socket } from "dgram";
 
 let page: number = 0;
 dotenv.config();
@@ -41,6 +42,9 @@ declare module "express-session" {
     };
   }
 }
+io.on("connection", function (socket) {
+  console.log(socket);
+});
 
 const uploadDir = "uploads";
 fs.mkdirSync(uploadDir, { recursive: true });
@@ -236,33 +240,41 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
     postData,
   });
 });
+
 //////////////////////////////////
-app.post("/clickLike", async (req: express.Request, res: express.Response) => {
-  const showlike = await client.query(
-    "SELECT comment_id,user_id FROM comment_like WHERE comment_id = $1 AND user_id = $2",
-    [req.body.id, req.session.user?.id]
-  );
-  if (showlike.rowCount > 0) {
-    await client.query(
-      "DELETE FROM comment_like where user_id = $1 and comment_id =$2",
+app.post(
+  "/clickLike/:page",
+  async (req: express.Request, res: express.Response) => {
+    io.emit("liked", "have liked");
+    // res.json({ updated: 1 });
+    const showlike = await client.query(
+      "SELECT comment_id,user_id FROM comment_like WHERE comment_id = $1 AND user_id = $2",
+      [req.body.id, req.session.user?.id]
+    );
+    if (showlike.rowCount > 0) {
+      await client.query(
+        "DELETE FROM comment_like where user_id = $1 and comment_id =$2",
+        [req.session.user?.id, req.body.id]
+      );
+      return res.status(200).json({
+        result: true,
+        message: "Del liked",
+        liked: false,
+      });
+    }
+    // Socket.on(`clickliked`, () => {});
+    const likepost = await client.query(
+      `INSERT INTO comment_like (user_id,comment_id) VALUES ($1,$2) RETURNING comment_id`,
       [req.session.user?.id, req.body.id]
     );
-    return res.status(200).json({
+    res.status(200).json({
       result: true,
-      message: "Del liked",
+      message: "success",
+      likepost,
+      liked: true,
     });
   }
-  const likepost = await client.query(
-    `INSERT INTO comment_like (user_id,comment_id) VALUES ($1,$2) RETURNING comment_id`,
-    [req.session.user?.id, req.body.id]
-  );
-
-  res.status(200).json({
-    result: true,
-    message: "success",
-    likepost,
-  });
-});
+);
 
 //check user login or not
 app.get("/user", async (req: express.Request, res: express.Response) => {
