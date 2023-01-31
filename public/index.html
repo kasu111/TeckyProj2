@@ -1,542 +1,424 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.0/moment.min.js"
-      integrity="sha512-lMkd3Y03vWd6SXDKGLaPgbco+3VNI4xtwiuADZvr29hzHhxIdonDcZQF0k/eAf6/1vI4b2eNqkkIm42Hjxiz6A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
 
-    <link rel="stylesheet" href="./carlos.css" />
-    <link rel="stylesheet" href="./index.css" />
-    <link rel="stylesheet" href="./kevin.css" />
-    <title>Project2</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.0/moment.min.js"
+    integrity="sha512-lMkd3Y03vWd6SXDKGLaPgbco+3VNI4xtwiuADZvr29hzHhxIdonDcZQF0k/eAf6/1vI4b2eNqkkIm42Hjxiz6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <body>
-    <div id="newPost" class="none">
-      <div class="animate__animated animate__flash boxPost">
-        <header>
-          <div></div>
+  <link rel="stylesheet" href="./carlos.css" />
+  <link rel="stylesheet" href="./index.css" />
+  <link rel="stylesheet" href="./kevin.css" />
+  <title>Project2</title>
+</head>
+
+<body>
+  <div id="newPost" class="none">
+    <div class="animate__animated animate__flash boxPost">
+      <header>
+        <div></div>
+        <div>
+          <h3>發表主題</h3>
+        </div>
+        <div id="postClose"><i class="fa-solid fa-xmark"></i></div>
+      </header>
+      <main>
+        <form name="postform" id="postform" enctype="multipart/form-data">
           <div>
-            <h3>發表主題</h3>
+            <input name="title" type="text" class="writeTitle" placeholder="請輸入主題" required />
+            <div></div>
           </div>
-          <div id="postClose"><i class="fa-solid fa-xmark"></i></div>
-        </header>
-        <main>
-          <form name="postform" id="postform" enctype="multipart/form-data">
-            <div>
-              <input
-                name="title"
-                type="text"
-                class="writeTitle"
-                placeholder="請輸入主題"
-                required
-              />
-              <div></div>
-            </div>
-            <textarea
-              name="posttext"
-              class="writeText"
-              placeholder="請輸入內文"
-              required
-            ></textarea>
-            <div class="subadd">
-              <input type="submit" class="add" />
-            </div>
-          </form>
-        </main>
-      </div>
+          <textarea name="posttext" class="writeText" placeholder="請輸入內文" required></textarea>
+          <div class="subadd">
+            <input type="submit" class="add" />
+          </div>
+        </form>
+      </main>
     </div>
-    <div class="mainLine">
-      <div class="topLine topleft">
-        <!-- /////////////////////////////////////////////////////////////// -->
-        <div class="dropdown part1">
-          <button
-            type="button"
-            class="btn btn-secondary toggle boxShadow"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            data-bs-auto-close="outside"
-          >
-            <i class="fa-solid fa-user-plus"></i>
-          </button>
-          <form
-            id="signup"
-            action="/signup"
-            class="dropdown-menu p-4 dropdown-bcolor"
-          >
-            <div class="mb-3">
-              <label for="username" class="form-label" maxlength="20"
-                >username:</label
-              >
-              <input
-                type="text"
-                name="username"
-                class="form-control"
-                id="username"
-                placeholder="請輸入名稱"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleDropdownFormPassword2" class="form-label"
-                >Password:</label
-              >
-              <input
-                type="password"
-                name="password"
-                class="form-control"
-                id="exampleDropdownFormPassword2"
-                placeholder="請輸入密碼"
-                minlength="8"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <div class="form-check jusbet">
-                <div>
-                  <input
-                    class="form-check-input"
-                    id="checkpass"
-                    type="checkbox"
-                  />
-                  <label class="form-check-label" for="checkpass">
-                    顯示密碼
-                  </label>
-                </div>
-                <div>
-                  <input type="radio" name="sex" id="male" value="true" />
-                  <label for="male">男姓</label>
-                  <input
-                    type="radio"
-                    name="sex"
-                    id="female"
-                    value="false"
-                    required
-                  />
-                  <label for="female">女姓</label>
-                </div>
+  </div>
+  <div class="mainLine">
+    <div class="topLine topleft">
+      <!-- /////////////////////////////////////////////////////////////// -->
+      <div class="dropdown part1">
+        <button type="button" class="btn btn-secondary toggle boxShadow" data-bs-toggle="dropdown" aria-expanded="false"
+          data-bs-auto-close="outside">
+          <i class="fa-solid fa-user-plus"></i>
+        </button>
+        <form id="signup" action="/signup" class="dropdown-menu p-4 dropdown-bcolor">
+          <div class="mb-3">
+            <label for="username" class="form-label" maxlength="20">username:</label>
+            <input type="text" name="username" class="form-control" id="username" placeholder="請輸入名稱" required />
+          </div>
+          <div class="mb-3">
+            <label for="exampleDropdownFormPassword2" class="form-label">Password:</label>
+            <input type="password" name="password" class="form-control" id="exampleDropdownFormPassword2"
+              placeholder="請輸入密碼" minlength="8" required />
+          </div>
+          <div class="mb-3">
+            <div class="form-check jusbet">
+              <div>
+                <input class="form-check-input" id="checkpass" type="checkbox" />
+                <label class="form-check-label" for="checkpass">
+                  顯示密碼
+                </label>
+              </div>
+              <div>
+                <input type="radio" name="sex" id="male" value="true" />
+                <label for="male">男姓</label>
+                <input type="radio" name="sex" id="female" value="false" required />
+                <label for="female">女姓</label>
               </div>
             </div>
-            <button
-              type="submit"
-              class="btn btn-secondary toggle icon boxShadow"
-            >
-              註冊
-            </button>
-            <button
-              type="reset"
-              class="btn btn-secondary toggle icon boxShadow"
-            >
-              Reset
-            </button>
-          </form>
-        </div>
-        <!-- //////////////////////////////////////////////////////////////// -->
-        <div class="loginDiv part2">
-          <form id="signin" method="POST" class="flex loginForm">
-            <div>
-              <label for="username">會員 : </label>
-              <input
-                type="text"
-                name="username"
-                class="username"
-                placeholder="請輸入名稱"
-                required
-              />
-            </div>
-            <div>
-              <label for="password">密碼 : </label>
-              <input
-                type="password"
-                name="password"
-                class="password"
-                placeholder="請輸入密碼"
-                required
-              />
-            </div>
-            <input type="submit" class="loginSubmit" />
-          </form>
-          <div id="user"></div>
-        </div>
-        <!-- ////////////////////////////////////////////////////////////////// -->
-        <div class="part3 flex1 addPage jusbet none">
+          </div>
+          <button type="submit" class="btn btn-secondary toggle icon boxShadow">
+            註冊
+          </button>
+          <button type="reset" class="btn btn-secondary toggle icon boxShadow">
+            Reset
+          </button>
+        </form>
+      </div>
+      <!-- //////////////////////////////////////////////////////////////// -->
+      <div class="loginDiv part2">
+        <form id="signin" method="POST" class="flex loginForm">
           <div>
-            <div class="dropdown WOWso">
-              <button
-                class="btn btn-secondary -toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="fa-solid fa-bars"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <button
-                    id="clickReset"
-                    class="dropdown-item Chpass"
-                    type="button"
-                  >
-                    <i
-                      class="fa-solid fa-repeat textmm"
-                      style="
+            <label for="username">會員 : </label>
+            <input type="text" name="username" class="username" placeholder="請輸入名稱" required />
+          </div>
+          <div>
+            <label for="password">密碼 : </label>
+            <input type="password" name="password" class="password" placeholder="請輸入密碼" required />
+          </div>
+          <input type="submit" class="loginSubmit" />
+        </form>
+        <div id="user"></div>
+      </div>
+      <!-- ////////////////////////////////////////////////////////////////// -->
+      <div class="part3 flex1 addPage jusbet none">
+        <div>
+          <div class="dropdown WOWso">
+            <button class="btn btn-secondary -toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <button id="clickReset" class="dropdown-item Chpass" type="button">
+                  <i class="fa-solid fa-repeat textmm" style="
                         color: rgba(49, 255, 166, 0.717) !important;
                         text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
-                      "
-                    >
-                      change Password</i
-                    >
-                  </button>
-                </li>
-                <li>
-                  <button id="logout" class="dropdown-item" type="button">
-                    <i
-                      class="fa-solid fa-right-from-bracket textmm"
-                      style="
+                      ">
+                    change Password</i>
+                </button>
+              </li>
+              <li>
+                <button id="logout" class="dropdown-item" type="button">
+                  <i class="fa-solid fa-right-from-bracket textmm" style="
                         color: rgba(49, 255, 166, 0.717) !important;
                         text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
-                      "
-                    >
-                      Logout</i
-                    >
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    style="
+                      ">
+                    Logout</i>
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" style="
                       color: rgba(49, 255, 166, 0.717) !important;
                       text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
-                    "
-                    type="button"
-                  >
-                    Something else here
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="test1 Showname"></div>
-          <div id="addPost" class="btn btn-secondary toggle boxShadow">
-            <i class="fa-solid fa-file-circle-plus"></i>
+                    " type="button">
+                  Something else here
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
+        <div class="test1 Showname"></div>
+        <div id="addPost" class="btn btn-secondary toggle boxShadow">
+          <i class="fa-solid fa-file-circle-plus"></i>
+        </div>
       </div>
-      <div class="title">
-        <div>TA</div>
-      </div>
-      <!-- 開posts -->
-      <div class="postLine">
-        <div class="post">
-          <div class="postSet">
-            <div class="postMenu">
-              <div class="postName">IDNAME</div>
-              <div>
-                <i class="fa-regular fa-thumbs-up"></i>
-                <div>0</div>
-              </div>
-              <div>time</div>
-            </div>
+    </div>
+    <div class="title">
+      <div>TA</div>
+    </div>
+    <!-- 開posts -->
+    <div class="postLine">
+      <div class="post">
+        <div class="postSet">
+          <div class="postMenu">
+            <div class="postName">IDNAME</div>
             <div>
-              <select name="titlePage" id="titlePage">
-                <option value="">第一頁</option>
-              </select>
+              <i class="fa-regular fa-thumbs-up"></i>
+              <div>0</div>
+            </div>
+            <div>time</div>
+          </div>
+          <div>
+            <select name="titlePage" id="titlePage">
+              <option value="">第一頁</option>
+            </select>
+          </div>
+        </div>
+        <div class="postTitle">
+          <div class="Red"></div>
+          <div class="mainTitle">
+            <h4>test</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="titleLine">
+    <div class="topLine topRight">
+      <div><i class="fa-solid fa-chevron-left"></i></div>
+      <div class="titletext"></div>
+      <div class="flex alitem">
+        <div class="isreply">
+          <div id="replyComment">
+            <i class="fa-solid fa-comment-medical recomm none"></i>
+          </div>
+        </div>
+        <div><i class="fa-solid fa-heart"></i></div>
+      </div>
+    </div>
+    <div>
+      <div class="nextPage">
+        <div id="back" class="forPage">上一頁</div>
+        <div id="changePage" class="forPage flex">
+          第
+          <div class="whatPage flex"></div>
+          頁
+        </div>
+        <div id="next" class="forPage">下一頁</div>
+      </div>
+      <!-- 開comments -->
+      <div class="commentsWall">
+        <!-- //////////////////////////////////////////////////////////// -->
+        <div class="commentBox none">
+          <div class="bar">
+            <div>
+              <div id="CommentID">#1</div>
+              <div class="TKGusername">先生唔好打交</div>
+              <div class="DOTDOTDOT">•</div>
+              <div class="PostedDate" currentitem="false">48 分鐘前</div>
+
+              <i class="fa-solid fa-eye none"></i>
+
+              <i class="fa-solid fa-reply"></i>
+            </div>
+
+            <div class="MultiFunction">
+              <i class="fa-solid fa-share-nodes flexEnd none"></i>
+
+              <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
             </div>
           </div>
-          <div class="postTitle">
-            <div class="Red"></div>
-            <div class="mainTitle">
-              <h4>test</h4>
+          <div class="CommentContent">#內文#</div>
+          <div class="likeDislike">
+            <div class="likeArea">
+              <div class="likePlace">
+                <div><i class="fa-regular fa-thumbs-up"></i> 0</div>
+              </div>
+            </div>
+            <div class="quoteArea none">
+              <i class="fa-solid fa-comments"></i>0
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ////////////////////////////////////////////// -->
+      <div id="replyBox" class="ReplyBox none">
+        <div class="ReplyTopic">
+          <div class="closePage titletext"></div>
+          <div class="closePage2">
+            <div id="closeReplyBox">
+              <i class="fa-solid fa-xmark"></i>
+            </div>
+          </div>
+        </div>
+        <div class="FunctionsSoMany">
+          <div class="emojiBtn"><i class="fa-regular fa-face-smile"></i></div>
+          <div class="gifBtn"><i class="fa-regular fa-image"></i></div>
+          <div id="uploadBtn">
+            <i class="fa-solid fa-file-arrow-up"></i>
+          </div>
+          
+          <!-- <div><i class="fa-solid fa-palette"></i></div> -->
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="ReplyTextPlace">
+          <form id="reply" class="ReplyForm" enctype="multipart/form-data">
+            <textarea contenteditable="true" name="replyContent" id="ReplyTextPlace1" required></textarea>
+            <div class="replySubmit">
+              <img src="" id="uploadedImg" alt="" width="50" height="50" name="files" />
+
+              <span><i class="fa-solid fa-paper-plane"></i></span>
+              <input type="submit" class="resubmit submitBTN post-" value="回覆" />
+            </div>
+          </form>
+          <div id="reply2"></div>
+        </div>
+        <div class="emojiBox">
+          <div class="emojiBar">預覧表情符號</div>
+          <div class="emojiArea">
+            <div class="emojiInBox">
+              <span class="partying-face emojis">🥳</span>
+
+              <span class="woozy-face emojis">🥴</span>
+
+              <span class="pleading-face emojis">🥺</span>
+
+              <span class="sad-but-relieved-face emojis">😥</span>
+
+              <span class="face-with-tears-of-joy emojis">😂</span>
+
+              <span class="money-mouth-face emojis">🤑</span>
+
+              <span class="grinning-face emojis">😀</span>
+
+              <span class="smiling-face-with-halo emojis">😇</span>
+
+              <span class="blushing-face emojis">😊</span>
+
+              <span class="smiling-face-with-heart-eyes emojis">😍</span>
+
+              <span class="rolling-on-the-floor-laughing emojis">🤣</span>
+
+              <span class="winking-face emojis">😉</span>
+
+              <span class="star-struck emojis">🤩</span>
+
+              <span class="thinking-face emojis">🤔</span>
+
+              <span class="zipper-mouth-face emojis">🤐</span>
+
+              <span class="hushed-face emojis">😯</span>
+
+              <span class="shushing-face emojis">🤫</span>
+
+              <span class="zany-face emojis">🤪</span>
+
+              <span class="fearful-face emojis">😨</span>
+
+              <span class="weary-face emojis">😩</span>
+
+              <span class="frowning-face emojis">😔</span>
+
+              <span class="disappointed-face emojis">😞</span>
+
+              <span class="red-heart emojis">❤️</span>
+
+              <span class="broken-heart emojis">💔</span>
+
+              <span class="party-popper emojis">🎉</span>
+
+              <span class="fire emojis">🔥</span>
+            </div>
+          </div>
+        </div>
+        <div class="gifBox">
+
+          <div class="gifBar"> 預覧gif圖案</div>
+          <div class="gifArea">
+            <div class="gifInBox">
+              <img class="gifs" src="btr_shy.gif" alt="">
+              <img class="gifs" src="btr_cry.gif" alt="">
+              <img class="gifs" src="btr_faint.gif" alt="">
+              <img class="gifs" src="btr_ezez.gif" alt="">
+              <img class="gifs" src="btr_nice.gif" alt="">
+              <img class="gifs" src="btr_notdoingthing.gif" alt="">
+              <img class="gifs" src="btr_planets.gif" alt="">
+              <img class="gifs" src="btr_trash.gif" alt="">
+              <img class="gifs" src="btr_mumumu.gif" alt="">
+              <img class="gifs" src="btr_yayaya.gif" alt="">
+              <img class="gifs" src="btr_ohshit.gif" alt="">
+              <img class="gifs" src="btr_rockkkkk.gif" alt="">
+              <img class="gifs" src="btr_guruguru.gif" alt="">
+              <img class="gifs" src="btr_shootalot.gif" alt="">
+              <img class="gifs" src="btr_welldone.gif" alt="">
+          
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="titleLine">
-      <div class="topLine topRight">
-        <div><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="titletext"></div>
-        <div class="flex alitem">
-          <div class="isreply">
-            <div id="replyComment">
-              <i class="fa-solid fa-comment-medical recomm none"></i>
-            </div>
-          </div>
-          <div><i class="fa-solid fa-heart"></i></div>
-        </div>
+  </div>
+  <div id="backdrop" class="backdrop none">
+    <div id="uploadFiles">
+      <div id="closeBar">
+        <div class="closeHeader">插入圖片</div>
+        <div class="closeBtn"><i class="fa-solid fa-xmark"></i></div>
       </div>
-      <div>
-        <div class="nextPage">
-          <div id="back" class="forPage">上一頁</div>
-          <div id="changePage" class="forPage flex">
-            第
-            <div class="whatPage flex"></div>
-            頁
-          </div>
-          <div id="next" class="forPage">下一頁</div>
-        </div>
-        <!-- 開comments -->
-        <div class="commentsWall">
-          <!-- //////////////////////////////////////////////////////////// -->
-          <div class="commentBox none">
-            <div class="bar">
-              <div>
-                <div id="CommentID">#1</div>
-                <div class="TKGusername">先生唔好打交</div>
-                <div class="DOTDOTDOT">•</div>
-                <div class="PostedDate" currentitem="false">48 分鐘前</div>
-
-                <i class="fa-solid fa-eye none"></i>
-
-                <i class="fa-solid fa-reply"></i>
-              </div>
-
-              <div class="MultiFunction">
-                <i class="fa-solid fa-share-nodes flexEnd none"></i>
-
-                <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
-              </div>
-            </div>
-            <div class="CommentContent">#內文#</div>
-            <div class="likeDislike">
-              <div class="likeArea">
-                <div class="likePlace">
-                  <div><i class="fa-regular fa-thumbs-up"></i> 0</div>
-                </div>
-              </div>
-              <div class="quoteArea none">
-                <i class="fa-solid fa-comments"></i>0
-              </div>
+      <div class="uploadBox">
+        <div class="uploadAreaOuter">
+          <div class="uploadArea">
+            <div>
+              <img class="uploadFilesBtn" src="" alt="your image" id="blah" />
+              <input id="selectUploadFile" type="file" class="uploadFilesBtn" />
+              <!-- onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" -->
             </div>
           </div>
-        </div>
-        <!-- ////////////////////////////////////////////// -->
-        <div id="replyBox" class="ReplyBox none">
-          <div class="ReplyTopic">
-            <div class="closePage titletext"></div>
-            <div class="closePage2">
-              <div id="closeReplyBox">
-                <i class="fa-solid fa-xmark"></i>
-              </div>
-            </div>
-          </div>
-          <div class="FunctionsSoMany">
-            <div class="emojiBtn"><i class="fa-regular fa-face-smile"></i></div>
-            <div id="uploadFilesClick">
-              <i class="fa-regular fa-image"></i>
-            </div>
-            <div><i class="fa-solid fa-link"></i></div>
-            <div><i class="fa-solid fa-palette"></i></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-          <div class="ReplyTextPlace">
-            <form id="reply" class="ReplyForm" enctype="multipart/form-data">
-              <textarea
-                contenteditable="true"
-                name="replyContent"
-                id="ReplyTextPlace1"
-                required
-              ></textarea>
-              <div class="replySubmit">
-                <img
-                  src=""
-                  id="uploadedImg"
-                  alt=""
-                  width="50"
-                  height="50"
-                  name="files"
-                />
-
-                <span><i class="fa-solid fa-paper-plane"></i></span>
-                <input
-                  type="submit"
-                  class="resubmit submitBTN post-"
-                  value="回覆"
-                />
-              </div>
-            </form>
-            <div id="reply2"></div>
-          </div>
-          <div class="emojiBox">
-            <div class="emojiBar">預覧表情符號</div>
-            <div class="emojiArea">
-              <div class="emojiInBox">
-                <span class="partying-face emojis">🥳</span>
-
-                <span class="woozy-face emojis">🥴</span>
-
-                <span class="pleading-face emojis">🥺</span>
-
-                <span class="sad-but-relieved-face emojis">😥</span>
-
-                <span class="face-with-tears-of-joy emojis">😂</span>
-
-                <span class="money-mouth-face emojis">🤑</span>
-
-                <span class="grinning-face emojis">😀</span>
-
-                <span class="smiling-face-with-halo emojis">😇</span>
-
-                <span class="blushing-face emojis">😊</span>
-
-                <span class="smiling-face-with-heart-eyes emojis">😍</span>
-
-                <span class="rolling-on-the-floor-laughing emojis">🤣</span>
-
-                <span class="winking-face emojis">😉</span>
-
-                <span class="star-struck emojis">🤩</span>
-
-                <span class="thinking-face emojis">🤔</span>
-
-                <span class="zipper-mouth-face emojis">🤐</span>
-
-                <span class="hushed-face emojis">😯</span>
-
-                <span class="shushing-face emojis">🤫</span>
-
-                <span class="zany-face emojis">🤪</span>
-
-                <span class="fearful-face emojis">😨</span>
-
-                <span class="weary-face emojis">😩</span>
-
-                <span class="frowning-face emojis">😔</span>
-
-                <span class="disappointed-face emojis">😞</span>
-
-                <span class="red-heart emojis">❤️</span>
-
-                <span class="broken-heart emojis">💔</span>
-
-                <span class="party-popper emojis">🎉</span>
-
-                <span class="fire emojis">🔥</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="backdrop" class="backdrop none">
-      <div id="uploadFiles">
-        <div id="closeBar">
-          <div class="closeHeader">插入圖片</div>
-          <div class="closeBtn"><i class="fa-solid fa-xmark"></i></div>
-        </div>
-        <div class="uploadBox">
-          <div class="uploadAreaOuter">
-            <div class="uploadArea">
-              <div>
-                <img class="uploadFilesBtn" src="" alt="your image" id="blah" />
-                <input
-                  id="selectUploadFile"
-                  type="file"
-                  class="uploadFilesBtn"
-                />
-                <!-- onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" -->
-              </div>
-            </div>
-            <!-- <div class="dragClickPhoto">
+          <!-- <div class="dragClickPhoto">
           <i class="fa-solid fa-cloud-arrow-up uploadText"></i>
           <span class="uploadText">點擊或拖放圖片到此處</span>
         </div> -->
-          </div>
-          <div class="submitPhoto">
-            <button class="resubmit photoBTN post-">Submit</button>
-          </div>
+        </div>
+        <div class="submitPhoto">
+          <button class="resubmit photoBTN post-">Submit</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- emoji box -->
+  <!-- emoji box -->
 
-    <!-- /////////////////////////////////////////////// -->
-    <div id="resetPass" class="none">
-      <div class="animate__animated animate__flash boxPost">
-        <header>
-          <div></div>
+  <!-- /////////////////////////////////////////////// -->
+  <div id="resetPass" class="none">
+    <div class="animate__animated animate__flash boxPost">
+      <header>
+        <div></div>
+        <div>
+          <h3>更換密碼</h3>
+        </div>
+        <div id="resetClose"><i class="fa-solid fa-xmark"></i></div>
+      </header>
+      <main>
+        <form name="resetPassword" id="resetForm" enctype="multipart/form-data">
           <div>
-            <h3>更換密碼</h3>
+            <input name="password" type="text" class="writeTitle" placeholder="請輸入舊密碼" required />
           </div>
-          <div id="resetClose"><i class="fa-solid fa-xmark"></i></div>
-        </header>
-        <main>
-          <form
-            name="resetPassword"
-            id="resetForm"
-            enctype="multipart/form-data"
-          >
-            <div>
-              <input
-                name="password"
-                type="text"
-                class="writeTitle"
-                placeholder="請輸入舊密碼"
-                required
-              />
-            </div>
-            <div>
-              <input
-                name="newpassword"
-                type="text"
-                class="writeTitle"
-                placeholder="請輸入新密碼"
-                required
-              />
-            </div>
-            <div>
-              <input
-                name="newpassword"
-                type="text"
-                class="writeTitle"
-                placeholder="請再輸入新密碼"
-                required
-              />
-            </div>
+          <div>
+            <input name="newpassword" type="text" class="writeTitle" placeholder="請輸入新密碼" required />
+          </div>
+          <div>
+            <input name="newpassword" type="text" class="writeTitle" placeholder="請再輸入新密碼" required />
+          </div>
 
-            <div class="subadd">
-              <input type="submit" class="add" />
-            </div>
-          </form>
-        </main>
-      </div>
+          <div class="subadd">
+            <input type="submit" class="add" />
+          </div>
+        </form>
+      </main>
     </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-      crossorigin="anonymous"
-    ></script>
-    <script src="./carlos.js"></script>
-    <script src="./index.js"></script>
-    <script src="./kevin.js"></script>
-  </body>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <script src="./carlos.js"></script>
+  <script src="./index.js"></script>
+  <script src="./kevin.js"></script>
+</body>
+
 </html>
