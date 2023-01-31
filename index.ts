@@ -10,7 +10,8 @@ import http from "http";
 import { hashPassword } from "./hash";
 import { checkPassword } from "./hash";
 import session from "express-session";
-// import { format, formatDistance, formatRelative, subDays } from "date-fns";
+import { Server as SocketIO } from "socket.io";
+
 let page: number = 0;
 dotenv.config();
 export const client = new Client({
@@ -21,7 +22,7 @@ export const client = new Client({
 client.connect();
 const app = express();
 const server = new http.Server(app);
-// const io = new SocketIO(server);
+const io = new SocketIO(server);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
