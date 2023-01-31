@@ -1,12 +1,4 @@
 // history.go(-1)
-// import { format, formatDistance, formatRelative, subDays } from "date-fns";
-
-// const { json } = require("stream/consumers")
-
-// const moment = require('moment')
-
-// const moment = require('moment')
-// const 
 const part1 = document.querySelector(".part1")//未login
 const part2 = document.querySelector(".part2")//未login
 const part3 = document.querySelector(".part3")//login
@@ -16,29 +8,46 @@ const reply = document.querySelector("#replyComment")
 const replyBox = document.querySelector("#replyBox")
 const closeReplyBox = document.querySelector("#closeReplyBox")
 const isreply = document.querySelector(".recomm")
-const backdrop = document.querySelector("#backdrop")
 const uploadFiles = document.querySelector("#uploadFiles")
-const uploadBtn = document.querySelector("#uploadBtn")
+const uploadFilesClick = document.querySelector("#uploadFilesClick")
+const newPost = document.querySelector("#newPost");
+const backdrop = document.querySelector("#backdrop")
+const logout = document.getElementById("logout")
+const postPost = document.querySelector("#postform");
+const postClose = document.getElementById("postClose");
+const addNewPost = document.getElementById("addPost");
+const closeBox = document.querySelector(".closeBtn")
+const resetReply = document.querySelector('.ReplyForm')
+const forPage = document.querySelectorAll(".forPage")
+const back = document.getElementById("back")
+const next = document.getElementById("next")
+const pageLine = document.querySelector(".nextPage")
 const submitBTN = document.querySelector(".submitBTN")
+const whatPage = document.querySelector(".whatPage")
+const changePage = document.getElementById("changePage")
+// const Pp = document.querySelectorAll(".Pp")
+changePage.classList.add("hidden")
+back.classList.add("hidden")
+next.classList.add("hidden")
+let page = 0;
+// console.log(forPage);
+// const forPage1 = document.querySelector(".forPage1")
+// const forPage2 = document.querySelector(".forPage2")
+// const forPage3 = document.querySelector(".forPage3")
+
 let islogin = false;
 let image;
 
-function timetype(time) {
-  return moment(time).fromNow();
-}
 
-uploadBtn.addEventListener("click", async event => {
+
+
+uploadFilesClick.addEventListener("click", async event => {
 
   setTimeout(() => {
     backdrop.classList.remove("none")
   }, 500);
 })
 
-const closeBox = document.querySelector(".closeBtn")
-
-closeBox.addEventListener("click", async event => {
-  backdrop.classList.add("none")
-})
 const checkpass = document
   .getElementById("checkpass")
   .addEventListener("click", () => {
@@ -49,18 +58,10 @@ const checkpass = document
       password.type = "password";
     }
   }); //
-const newPost = document.querySelector("#newPost");
-const addNewPost = document.getElementById("addPost");
+
+
 addNewPost.addEventListener("click", () => {
   newPost.classList.remove("none");
-});
-const postPost = document.querySelector("#postform");
-const postClose = document.getElementById("postClose");
-postClose.addEventListener("click", () => {
-  const newPost = document.querySelector("#newPost");
-
-  postPost.reset();
-  newPost.classList.add("none");
 });
 
 postPost.addEventListener("submit", async (event) => {
@@ -80,9 +81,9 @@ postPost.addEventListener("submit", async (event) => {
   await res.json();
   postPost.reset();
   newPost.classList.add("none");
-
+  // await loadpost();
+  window.location = "/"
 });
-loadpost();
 
 async function loadpost() {
   let post = [];
@@ -91,16 +92,12 @@ async function loadpost() {
   });
   let json = await res.json();
   post = json.postData;
-  console.log(json.result);
+  // console.log(post);
   const postLine = document.querySelector(".postLine");
   // const toptitle = document.querySelector(".titletext")
   const comments = postLine.children
   const time = post.created_at;
-  // console.log("asfgyuihasfgyisagf", time);
-  // post = post.map((obj) => Object.assign(obj, {
-  //   created_at: timetype(obj.created_at),
-  // })
-  // )
+
   if (json.result) {
     postLine.innerHTML = post
       .map((obj) => {
@@ -108,18 +105,18 @@ async function loadpost() {
           <div class="postSet">
             <div class="postMenu">
               <div class="postName ${obj.meta}">${obj.name}</div>
+              
               <div class="like postLike_${post[0].id}">
                 <i class="fa-regular fa-thumbs-up"></i>
                 <div data-like="${obj.id}">${obj.like}</div>
               </div>
+              <div class="flex1">
+            </div>
               <div>
               <div class="time">${timetype(obj.created_at)}</div>
             </div>
             </div>
             <div>
-              <select name="titlePage" id="titlePage">
-                <option value="">第一頁</option>
-              </select>
             </div>
           </div>
           <div class="postTitle">
@@ -132,128 +129,73 @@ async function loadpost() {
           </div>
         </div>`
       }).join("");
-    // await checkLike(id)
-
     for (let i = 0; i < comments.length; i++) {
-      // const comments = postLine.children
       const comment = comments[i];
-
       const id = comment.getAttribute("data-id");
+      const res = await fetch(`/addPostCommemt/${id}/${page}`, {
+        method: "GET",
+      });
+      const json = await res.json();
+      const numOfPage = json.numOfPage;
       comment.addEventListener("click", async () => {
-        const res = await fetch(`/addPostCommemt/${id}`, {
-          method: "GET",
-        });
-        const json = await res.json();
-        const title = document.querySelector(".titletext");
-        const commPlace = document.querySelector(".commentsWall");
+        page = 0
+        resetReply.reset();
+        replyBox.classList.add("none");
+        if (numOfPage == 1) {
+          next.classList.add("hidden")
+          changePage.classList.add("hidden")
+        } else {
+          changePage.classList.remove("hidden")
+          next.classList.remove("hidden")
+          whatPage.innerHTML = ""
+          for (let i = page; i < numOfPage; i++) {
+            const wtPage = document.createElement("div")
+            wtPage.classList.add("flex", "Pp")
+            if (i + 1 == numOfPage) {
+              wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+            }
+            else {
+              wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+            }
 
-        if (json.result) {
-          if (islogin) {
-            isreply.classList.remove("none")
+            whatPage.appendChild(wtPage)
           }
-
-function isPhoto(obj){
-  if(obj){
-    return `<img src='http://localhost:8000/${obj}' width='150'/> `
-  }else{
-    return '<span></span>' 
-  }
-}
-const replyTitle = document.querySelector(".closePage")
-
-replyTitle.innerText = `回覆 : ${json.allData[0].title}`
-//回覆按鈕/* <i class="fa-solid fa-reply post-${json.allData[0].id}"></i> */
-          title.innerText = json.allData[0].title
-          commPlace.innerHTML = await json.allData.map((obj, index) => {
-            return `<div data-post_id=${id} class="commentBox">
-              <div class="bar">
-                <div>
-                  <div id="CommentID">#${index + 1}</div>
-                  <div class="TKGusername ${obj.meta}">${obj.name}</div>
-                  <div class="DOTDOTDOT">•</div>
-                  <div class="PostedDate" currentitem="false">${timetype(obj.write_at)}</div>
-
-                  <i class="fa-solid fa-eye none"></i>
-
-                 
-                </div>
-
-                <div class="MultiFunction">
-                  <i class="fa-solid fa-share-nodes flexEnd none"></i>
-
-                  <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
-                </div>
-              </div>
-              <div class="CommentContent">${obj.body}${isPhoto(obj.photo)}</div>
-              <div class="likeDislike">
-                <div class="likeArea">
-                  <div class="likePlace like_${obj.id}">
-                    <div><i class="fa-regular fa-thumbs-up"></i>${obj.like}</div>
-                  </div>
-                </div>
-                <div class="quoteArea none">
-                  <i class="fa-solid fa-comments"></i>0
-                </div>
-              </div>
-            </div>`}).join('');
-          // async function checkLike(id) {
-          //   const postColor = document.querySelector(`.postLike_${id}`)
-          //   const color = document.querySelector(`.like_${obj.id}`)
-          //   const res = await fetch(`/checkLike/${obj.id}`, {
-          //     method: "GET",
-          //   })
-          //   const json = await res.json()
-
-          //   if (json.color) {
-          //     postColor.classList.add("isLiked")
-          //     color.classList.add("isLiked")
-          //   } else {
-          //     postColor.classList.remove("isLiked")
-          //     color.classList.remove("isLiked")
-          //   }
-
-          // }
-          ///////////////////////////////////////改動了(25/6)
-          // document.querySelector('.submitBTN').classList = ["submitBTN " + `post-${json.allData[0].id}`]
-          // console.log(document.querySelector('.submitBTN').classList[1])
-          await json.allData.map((obj) => {
-            const clickLike = document.querySelector(`.like_${obj.id}`)
-            // console.log("121823239872894782", obj.id);
-            clickLike.addEventListener("click", async () => {
-              let id = obj.id
-              // console.log("121823239872894782", id);
-              if (islogin) {
-                const res = await fetch("/clickLike", {
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  method: "POST",
-                  body: JSON.stringify({ id })
-                })
-                await res.json()
-              }
-            })
-
-
-
-          })
-
-
         }
-        // await checkLike(id)
+        //////////////////////////////////////////////////////工程進行中//////////////////////////////////////////////////////////////
+        // const memoWall = document.querySelector(".memo-wall")
+        // memoWall.innerHTML = "";
+        // for (let i = datab.length - 1; i >= 0; i--) {
+        //     const id = datab[i].id
+        //     const memo = document.createElement("form");
+        //     memo.classList.add("setare");
+        //     memoWall.appendChild(memo);
+        //     const text = document.createElement("textarea")
+        //     text.textContent = datab[i].content
+        //     text.classList.add("yellow", `id-${id}`);
+        //     memo.appendChild(text);
+        //     text.readOnly = true
+        //     const div = document.createElement("div");
+        //     div.classList.add("rubbish", "posset")
+        //     memo.appendChild(div)
+        //     const trash = document.createElement("i")
+        //     trash.classList.add("fa-solid", "fa-trash")
+        //     div.appendChild(trash)
+        ////////////////////////////////////////////////////////工程進行中////////////////////////////////////////////////////////////
+        back.classList.add("hidden")
+
+        await reload(id, page)
       })
 
     }
-    
-    
-    document.querySelector('#reply').addEventListener("submit", async event => {
+
+    resetReply.addEventListener("submit", async event => {
       const id = document.querySelector('.commentBox').getAttribute("data-post_id")
       event.preventDefault();
       const form = event.target;
       const formData = new FormData(form);
-      formData.append("files",image)
+      formData.append("files", image)
 
- 
+
 
 
       const res = await fetch(`/reply/${id}`, {
@@ -262,8 +204,11 @@ replyTitle.innerText = `回覆 : ${json.allData[0].title}`
       });
       const result = await res.json();//result = (success:true)
       if (result.success) {
-        backdrop.classList.add("none")
+
+        resetReply.reset();
+        replyBox.classList.add("none")
         window.location = "/"
+
       } else {
         document.querySelector("div#reply").innerHTML = result.msg;
       }
@@ -271,97 +216,34 @@ replyTitle.innerText = `回覆 : ${json.allData[0].title}`
 
   }
 }
-/////////////////////////////////////////////////////////////
 
-// async function checkLike(id) {
-//   const postColor = document.querySelector(`.postLike_${id}`)
-//   const color = document.querySelector(`.like_${id}`)
-//   const res = await fetch(`/checkLike/${id}`, {
-//     method: "GET",
-//   })
-//   const json = await res.json()
-
-//   if (json.color) {
-//     postColor.classList.add("isLiked")
-//     color.classList.add("isLiked")
-//   } else {
-//     postColor.classList.remove("isLiked")
-//     color.classList.remove("isLiked")
-//   }
-
-// }
 
 //////////////////////////CARLOS//////////////
-document.querySelector("input#selectUploadFile").addEventListener("change",(event)=>{
+document.querySelector("input#selectUploadFile").addEventListener("change", (event) => {
   document.getElementById('blah').src = window.URL.createObjectURL(event.target.files[0]);
   image = event.target.files[0];
 })
 
 
-signin.addEventListener("submit", async event => {
-  event.preventDefault();
-  const form = event.target;
-  const body = {
-    username: form.username.value,
-    password: form.password.value
-  }
-  const res = await fetch("/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-  const result = await res.json();//result = (success:true)
-  if (result.success) {
-    islogin = true;
 
-    window.location = "/"
-  } else {
-    islogin = false;
-    document.querySelector("div#user").innerHTML = result.msg;
-  }
-});
-
-async function checkUserLogin() {
-  const res = await fetch("/user");
-  const sessionResult = await res.json();
-  // const form = document.querySelector("#signin");
-  // const userDiv = document.querySelector("div#user")
-  if (sessionResult.id === null) {
-    islogin = false;
-    isreply.classList.add("none")
-    part1.classList.remove("none")
-    part2.classList.remove("none")
-    part3.classList.add("none")
-  } else {
-    islogin = true;
-    part3.classList.remove("none")
-    part1.classList.add("none")
-    part2.classList.add("none")
-    Showname.innerHTML = `<h3>${sessionResult.name}</h3>`
-    // userDiv.innerHTML = `${sessionResult.name}
-    // <div><a href="/logout">登出</a></div>`;
-    // form.classList.add("none")
-  }
+//////////////////////////已完成//////////////////////////
+function timetype(time) {
+  return moment(time).fromNow();
 }
-const logout = document.getElementById("logout")
-logout.addEventListener("click", async () => {
-  const colorAll = document.querySelector(`.likePlace`)
-  const postColor = document.querySelector(`.like`)
-  islogin = false;
-  part1.classList.remove("none")
-  part2.classList.remove("none")
-  part3.classList.add("none")
-  isreply.classList.add("none")
-  colorAll.classList.remove("isLiked")
-  postColor.classList.remove("isLiked")
-  await fetch("/logout", {
-    method: "GET",
-  })
+postClose.addEventListener("click", () => {
+  postPost.reset();
+  newPost.classList.add("none");
+});
+closeBox.addEventListener("click", async event => {
+  backdrop.classList.add("none")
 })
 
-//signup Fetching
+reply.addEventListener("click", async () => {
+  replyBox.classList.remove("none")
+})
+closeReplyBox.addEventListener("click", async () => {
+  replyBox.classList.add("none")
+})
 document.querySelector('#signup').addEventListener("submit", async event => {
   event.preventDefault();
   const form = event.target;
@@ -386,26 +268,180 @@ document.querySelector('#signup').addEventListener("submit", async event => {
     document.querySelector("div#user").innerHTML = result.msg;
   }
 });
+async function checkUserLogin() {
+  const res = await fetch("/user");
+  const sessionResult = await res.json();
+  // const form = document.querySelector("#signin");
+  // const userDiv = document.querySelector("div#user")
+  if (sessionResult.id === null) {
+    islogin = false;
+    isreply.classList.add("none")
+    part1.classList.remove("none")
+    part2.classList.remove("none")
+    part3.classList.add("none")
+  } else {
+    islogin = true;
+    part3.classList.remove("none")
+    part1.classList.add("none")
+    part2.classList.add("none")
+    Showname.innerHTML = `<h3>${sessionResult.name}</h3>`
 
-//reply box open /close
-
-
-
-reply.addEventListener("click", async () => {
-  // console.log("replyBox is clicked");
-  replyBox.classList.remove("none")
+  }
+}
+logout.addEventListener("click", async () => {
+  const colorAll = document.querySelector(`.likePlace`)
+  const postColor = document.querySelector(`.like`)
+  islogin = false;
+  part1.classList.remove("none")
+  part2.classList.remove("none")
+  part3.classList.add("none")
+  isreply.classList.add("none")
+  colorAll.classList.remove("isLiked")
+  postColor.classList.remove("isLiked")
+  await fetch("/logout", {
+    method: "GET",
+  })
 })
-closeReplyBox.addEventListener("click", async () => {
-  // console.log("replyBox is closed");
-  replyBox.classList.add("none")
-})
+signin.addEventListener("submit", async event => {
+  event.preventDefault();
+  const form = event.target;
+  const body = {
+    username: form.username.value,
+    password: form.password.value
+  }
+  const res = await fetch("/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  const result = await res.json();//result = (success:true)
+  if (result.success) {
+    islogin = true;
 
-submitBTN.addEventListener("click",async event=>{
+    window.location = "/"
+  } else {
+    islogin = false;
+    document.querySelector("div#user").innerHTML = result.msg;
+  }
+});
+async function checkLike(json) {
+  await json.allData.map(async (obj) => {
+    const color = document.querySelector(`.like_${obj.id}`)
+    const res = await fetch(`/checkLike/${obj.id}`, {
+      method: "GET",
+    })
+    const json = await res.json()
+
+    if (json.color) {
+      // postColor.classList.add("isLiked")
+      color.classList.add("isLiked")
+    } else {
+      // postColor.classList.remove("isLiked")
+      color.classList.remove("isLiked")
+    }
+  })
+}
+
+//////////////////////////工程中//////////////////////////
+
+//////////////////////////工程中//////////////////////////
+
+const reload = async function (id, page) {
+
+  pageLine.dataset.page = id;
+
+  const res = await fetch(`/addPostCommemt/${id}/${page}`, {
+    method: "GET",
+  });
+  const json = await res.json();
+  const title = document.querySelector(".titletext");
+  const commPlace = document.querySelector(".commentsWall");
+
+  if (json.result) {
+    if (islogin) {
+      isreply.classList.remove("none")
+    }
+    const replyTitle = document.querySelector(".closePage")
+
+    replyTitle.innerText = `回覆 : ${json.allData[0].title}`
+
+    title.innerText = json.allData[0].title
+    commPlace.innerHTML = await json.allData.map((obj, index) => {
+      return `<div data-post_id=${id} class="commentBox">
+      <div class="bar">
+        <div>
+          <div id="CommentID">#${index + 1 + (page * 5)}</div>
+          <div class="TKGusername ${obj.meta}">${obj.name}</div>
+          <div class="DOTDOTDOT">•</div>
+          <div class="PostedDate" currentitem="false">${timetype(obj.write_at)}</div>
+
+          <i class="fa-solid fa-eye none"></i>
+
+          <i class="none fa-solid fa-reply post-${json.allData[0].id}"></i>
+        </div>
+
+        <div class="MultiFunction">
+          <i class="fa-solid fa-share-nodes flexEnd none"></i>
+
+          <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
+        </div>
+      </div>
+      <div class="CommentContent">${obj.body}${isPhoto(obj.photo)}</div>
+      <div class="likeDislike">
+        <div class="likeArea">
+          <div class="likePlace like_${obj.id}">
+            <div><i class="fa-regular fa-thumbs-up"></i>${obj.like}</div>
+          </div>
+        </div>
+        <div class="quoteArea none">
+          <i class="fa-solid fa-comments"></i>0
+        </div>
+      </div>
+    </div>`}).join('');
+    checkLike(json)
+
+    await json.allData.map((obj) => {
+      const clickLike = document.querySelector(`.like_${obj.id}`)
+
+      clickLike.addEventListener("click", async () => {
+        let id = obj.id
+
+        if (islogin) {
+          const res = await fetch("/clickLike", {
+            headers: {
+              "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify({ id })
+          })
+          await res.json()
+
+        }
+      })
+
+    })
+  }
+}
+
+submitBTN.addEventListener("click", async event => {
   replyBox.classList.add("none");
 })
 
 
-
 window.onload = async function () {
   await checkUserLogin();
+  await loadpost();
+
 }
+
+
+function isPhoto(obj) {
+  if (obj) {
+    return `<img src='http://localhost:8000/${obj}' width='150'/> `
+  } else {
+    return '<span></span>'
+  }
+}
+// //check 點錯字
