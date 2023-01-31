@@ -9,7 +9,7 @@ const replyBox = document.querySelector("#replyBox")
 const closeReplyBox = document.querySelector("#closeReplyBox")
 const isreply = document.querySelector(".recomm")
 const uploadFiles = document.querySelector("#uploadFiles")
-const uploadFilesClick = document.querySelector("#uploadFilesClick")
+const uploadBtn = document.querySelector("#uploadBtn")
 const newPost = document.querySelector("#newPost");
 const backdrop = document.querySelector("#backdrop")
 const logout = document.getElementById("logout")
@@ -30,18 +30,14 @@ changePage.classList.add("hidden")
 back.classList.add("hidden")
 next.classList.add("hidden")
 let page = 0;
-// console.log(forPage);
-// const forPage1 = document.querySelector(".forPage1")
-// const forPage2 = document.querySelector(".forPage2")
-// const forPage3 = document.querySelector(".forPage3")
-
+const socket = io.connect()
 let islogin = false;
 let image;
 
 
 
 
-uploadFilesClick.addEventListener("click", async event => {
+uploadBtn.addEventListener("click", async event => {
 
   setTimeout(() => {
     backdrop.classList.remove("none")
