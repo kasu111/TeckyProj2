@@ -43,7 +43,7 @@ declare module "express-session" {
   }
 }
 io.on("connection", function (socket) {
-  console.log(socket);
+  // console.log(socket);
 });
 
 const uploadDir = "uploads";
@@ -173,7 +173,7 @@ app.get(
     // console.log(numOfPage);
 
     const comments = await client.query(
-      `SELECT comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at asc limit $2 OFFSET $3`,
+      `SELECT comments.photo,comments.id,sex,title,name,body,write_at FROM comments inner join posts on comments.post_id = posts.id inner join users on comments.user_id = users.id where posts.id=$1 order by write_at asc limit $2 OFFSET $3`,
       [id, 5, page * 5] //page
     );
 
@@ -364,17 +364,20 @@ app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
   let obj: any = transfer_formidable_into_obj(formResult);
 
   const userid = req.session.user?.id;
+  console.log(obj,'367')
   // const replyContent = req.body.replyContent;
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(
-      `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
-      [obj.replyContent, obj.files, userid, req.params.id]
+      `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4) RETURNING id`,
+      [obj.replyContent, obj.image, userid, req.params.id]
     );
+    console.log(newRecord.rows[0].id,'374')
   } else {
     await client.query(
       `insert into comments (body,photo,user_id,post_id) values($1,$2,$3,$4)`,
       [obj.replyContent, "", userid, req.params.id]
     );
+
 
     res.status(200).json({
       success: true,

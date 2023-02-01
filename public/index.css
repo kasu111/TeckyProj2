@@ -6,6 +6,13 @@ body{
     color: white;
     position: relative;
 }
+
+.post:hover{
+    cursor: pointer;
+    background-color: rgba(59, 59, 59, 0.8);
+}
+
+
 #titlePage{
     background-color:#3d3d3ddd;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
@@ -20,11 +27,11 @@ body{
     justify-content: center;
 }
 .resubmit{
-    width: 100px;
-    height: 30px;
+    width: 200px;
+    height: 50px;
 }
 h3{
-    color: rgb(223, 231, 2);
+    color: #43CC87;
     margin: 0;
     max-width: 280px;
     overflow:hidden;
@@ -148,7 +155,7 @@ html, body {
     font-size: 25px;
 }
 .titletext{
-    color:rgb(223, 231, 2); ;
+    color:#43CC87;
 }
 .topleft{
     border-right: 1px solid rgba(102, 102, 102, 0);
@@ -170,7 +177,7 @@ html, body {
     justify-content:space-around;
     align-items: center;
     font-size: 25px;
-    color:rgb(223, 231, 2); ;
+    color:#43CC87 ;
 }
 .username{
     width: 100px;
@@ -373,7 +380,7 @@ background-color:#404941;
     margin-left: 5px;
 }
 .add:hover{
-    border: 1px solid rgba(171, 255, 227, 0.719);
+    border: 1px solid rgba(46, 46, 46, 0.719);
     background-color:#6d87707e;
     text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
     box-shadow: 0 0 15px rgba(171, 255, 227, 0.719);
@@ -402,6 +409,19 @@ background-color:#404941;
         flex:1;
         display: flex;
         justify-content: center;
-
     }
 }
+
+#replyComment{
+    display: flex;
+    justify-content: center;
+    width:80px;
+    height: 50px;
+    border-radius: 10px;
+    transform: translateX(-10px);
+}
+.fa-comment-medical{
+    transform: translateY(-10px);
+    font-size: 40px;
+}
+

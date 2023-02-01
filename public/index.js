@@ -9,7 +9,7 @@ const replyBox = document.querySelector("#replyBox")
 const closeReplyBox = document.querySelector("#closeReplyBox")
 const isreply = document.querySelector(".recomm")
 const uploadFiles = document.querySelector("#uploadFiles")
-const uploadBtn = document.querySelector("#uploadBtn")
+const uploadBtn = document.querySelector(".uploadBtn")
 const newPost = document.querySelector("#newPost");
 const backdrop = document.querySelector("#backdrop")
 const logout = document.getElementById("logout")
@@ -35,10 +35,11 @@ let islogin = false;
 let image;
 
 socket.on("liked", async (data) => {
+
   loadpost()
 });
 socket.on("getPosted", async (data) => {
-  loadpost()
+  //loadpost()
 });
 
 
@@ -182,7 +183,7 @@ async function loadpost() {
       const form = event.target;
       const formData = new FormData(form);
       formData.append("files", image)
-
+      console.log(image)
 
 
 
@@ -191,6 +192,7 @@ async function loadpost() {
         body: formData
       });
       const result = await res.json();//result = (success:true)
+      
       if (result.success) {
 
         resetReply.reset();
@@ -482,3 +484,49 @@ async function loadpost2() {
       }).join("");
   }
 }
+
+const chairIcon = document.querySelector(".chairIcon")
+const openAnimate = document.querySelector('.openAnimate')
+const commentsWall = document.querySelector('.commentsWall')
+const leg = document.querySelector(".leg")
+const teckDone1 = document.querySelector('.teckDone1')
+const teckDone2 = document.querySelector('.teckDone2')
+const teckDone3 = document.querySelector('.teckDone3')
+
+let hideChair = function(){
+  openAnimate.classList.add('none')
+}
+
+let newChair = function(){
+  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
+  </div>`
+  }
+ 
+
+let teckDone = function(){
+  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
+  <span class="teckDone1 elementToFadeIn">踢櫈 Teck Done</span>
+  <span class="TDHKG elementToFadeIn">踢櫈討論區 TDF</span>
+  </div>`
+}
+
+async function runTheOpening(){
+  const res = await fetch("/user");
+  const sessionResult = await res.json();
+  if (sessionResult.id === null) {
+    islogin = false;
+  chairIcon.classList.remove("none")
+    openAnimate.classList.remove("none")
+    chairIcon.classList.add("spin2")
+    setTimeout(hideChair, 1300);
+    setTimeout(newChair,1200);
+    setTimeout(teckDone,1800)
+  }else{
+    chairIcon.classList.add("none")
+    openAnimate.classList.add("none")
+   
+  }
+}
+runTheOpening();
+  
+
