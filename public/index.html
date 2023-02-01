@@ -90,7 +90,7 @@
           >
             <div class="mb-3">
               <label for="username" class="form-label" maxlength="20"
-                >username:</label
+                >用戶名稱:</label
               >
               <input
                 type="text"
@@ -103,7 +103,7 @@
             </div>
             <div class="mb-3">
               <label for="exampleDropdownFormPassword2" class="form-label"
-                >Password:</label
+                >請輸入密碼:</label
               >
               <input
                 type="password"
@@ -111,6 +111,20 @@
                 class="form-control"
                 id="exampleDropdownFormPassword2"
                 placeholder="請輸入密碼"
+                minlength="8"
+                required
+              />
+              <label
+                for="exampleDropdownFormPassword3"
+                class="form-label toppass"
+                >重新輸入密碼:</label
+              >
+              <input
+                type="password"
+                name="password2"
+                class="form-control"
+                id="exampleDropdownFormPassword3"
+                placeholder="請重新輸入密碼"
                 minlength="8"
                 required
               />
@@ -293,7 +307,7 @@
         <div class="nextPage">
           <div id="back" class="forPage">上一頁</div>
           <div class="muchPage1"><i class="fa-solid fa-backward-step"></i></div>
-          <div id="changePage" class="forPage flex">
+          <div id="changePage" class="forPage flex overwall">
             第
             <div class="whatPage flex"></div>
             頁

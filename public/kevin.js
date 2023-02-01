@@ -1,5 +1,6 @@
 const chpass = document.querySelector("#clickReset")
 const resetPass = document.getElementById("resetPass")
+// const pAp = document.querySelector(".pAp")
 chpass.addEventListener("click", () => {
     resetPass.classList.remove("none")
 })
@@ -58,6 +59,10 @@ changePage.addEventListener("click", async (obj) => {
         next.classList.add("hidden")
         back.classList.remove("hidden")
     } else { }
+    //    let paId =pAp.dataset.pa
+    //     if (page == paId) {
+    //         paId.classList.add("pagenumber")
+    //     } else { paId.classList.remove("pagenumber") }
     console.log(page);
     await reload(id, pages)
 })
@@ -68,13 +73,6 @@ back.addEventListener("click", async () => {
         method: "GET",
     });
     await res.json();
-
-    if (page <= 0) {
-        page = 0
-        back.classList.add("hidden")
-        next.classList.remove("hidden")
-        return
-    }
     next.classList.remove("hidden")
     page = page - 1;
     await reload(id, page)

@@ -27,6 +27,8 @@ const whatPage = document.querySelector(".whatPage")
 const changePage = document.getElementById("changePage")
 const muchPage1 = document.querySelector(".muchPage1")
 const muchPage2 = document.querySelector(".muchPage2")
+const showSamePass = document.querySelector(".showSamePass")
+
 
 // const Pp = document.querySelectorAll(".Pp")
 changePage.classList.add("hidden")
@@ -38,19 +40,22 @@ let page = 0;
 const socket = io.connect()
 let islogin = false;
 let image;
+socket.on("getComment", async (data) => {
 
+})
 socket.on("getPosted", async (data) => {
+  await loadpost()
+});
+// checkLike(json)
+socket.on("newcomm", async (data) => {
+  const id = pageLine.getAttribute("data-page");
+  await reload(id, page)
+})
+socket.on("liked", async (data) => {
   loadpost()
   const id = pageLine.getAttribute("data-page");
-  const res = await fetch(`/addPostCommemt/${id}/${page}`, {
-    method: "GET",
-  });
-  const json = await res.json();
-  const numOfPage = json.numOfPage;
-  reload(id, page)
-
-});
-
+  await reload(id, page)
+})
 
 
 uploadBtn.addEventListener("click", async event => {
@@ -90,11 +95,12 @@ postPost.addEventListener("submit", async (event) => {
     method: "POST",
     body: formData,
   });
+
   await res.json();
   postPost.reset();
   newPost.classList.add("none");
   // await loadpost();
-  // window.location = "/"
+  window.location = "/"
 });
 
 async function loadpost() {
@@ -161,7 +167,7 @@ async function loadpost() {
           changePage.classList.remove("hidden")
           next.classList.remove("hidden")
           whatPage.innerHTML = ""
-          for (let i = page; i < numOfPage; i++) {
+          for (let i = 0; i < numOfPage; i++) {
             const wtPage = document.createElement("div")
             wtPage.classList.add("flex", "Pp")
             if (i + 1 == numOfPage) {
@@ -177,41 +183,39 @@ async function loadpost() {
         back.classList.add("hidden")
 
         await reload(id, page)
-        socket.on("liked", async (data) => {
-          reload(id, page)
-        });
-        socket.on("newcomm", async (data) => {
-          const id = pageLine.getAttribute("data-page");
-          const res = await fetch(`/addPostCommemt/${id}/${page}`, {
-            method: "GET",
-          });
-          const json = await res.json();
-          const numOfPage = json.numOfPage;
-          reload(id, page)
-          if (numOfPage > 1) {
-            changePage.classList.remove("hidden")
-            next.classList.remove("hidden")
-            whatPage.innerHTML = ""
-            for (let i = 0; i < numOfPage; i++) {
-              const wtPage = document.createElement("div")
-              wtPage.classList.add("flex", "Pp")
-              if (i + 1 == numOfPage) {
-                wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
-              }
-              else {
-                wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
-              }
+        // socket.on("newcomm", async (data) => {
+        //   const id = pageLine.getAttribute("data-page");
+        //   const res = await fetch(`/addPostCommemt/${id}/${page}`, {
+        //     method: "GET",
+        //   });
+        //   const json = await res.json();
+        //   const numOfPage = json.numOfPage;
+        //   // await reload(id, page)
+        // if (numOfPage > 1) {
+        //   changePage.classList.remove("hidden")
+        //   next.classList.remove("hidden")
+        //   whatPage.innerHTML = ""
+        //   for (let i = 0; i < numOfPage; i++) {
+        //     const wtPage = document.createElement("div")
+        //     wtPage.classList.add("flex", "Pp")
+        //     if (i + 1 == numOfPage) {
+        //       wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+        //     }
+        //     else {
+        //       wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+        //     }
 
-              whatPage.appendChild(wtPage)
-            }
-          }
-          if (page + 1 >= numOfPage) {
-            next.classList.add("hidden")
-            back.classList.remove("hidden")
-          }
-        });
+        //     whatPage.appendChild(wtPage)
+        //   }
+        // }
+        // if (page + 1 >= numOfPage) {
+        //   next.classList.add("hidden")
+        //   back.classList.remove("hidden")
+        // }
+        // });
       })
     }
+
 
     resetReply.addEventListener("submit", async event => {
       const id2 = document.querySelector('.commentBox').getAttribute("data-post_id")
@@ -238,7 +242,12 @@ async function loadpost() {
       });
       const json = await res.json();
       const numOfPage = json.numOfPage;
-      reload(id, page)
+      // await reload(id, page)
+      if (page <= 0) {
+        page = 0
+        back.classList.add("hidden")
+        // next.classList.remove("hidden")
+      }
       if (numOfPage > 1) {
         changePage.classList.remove("hidden")
         next.classList.remove("hidden")
@@ -256,10 +265,10 @@ async function loadpost() {
           whatPage.appendChild(wtPage)
         }
       }
-      if (page + 1 >= numOfPage) {
-        next.classList.add("hidden")
-        back.classList.remove("hidden")
-      }
+      // if (page + 1 >= numOfPage) {
+      //   next.classList.add("hidden")
+      //   // back.classList.remove("hidden")
+      // }
     });
 
   }
@@ -289,28 +298,38 @@ reply.addEventListener("click", async () => {
 closeReplyBox.addEventListener("click", async () => {
   replyBox.classList.add("none")
 })
+
+
 document.querySelector('#signup').addEventListener("submit", async event => {
   event.preventDefault();
+
   const form = event.target;
-  const body = {
-    username: form.username.value,
-    password: form.password.value,
-    sex: form.sex.value
-  }
-  const res = await fetch("/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-  const result = await res.json();//result = (success:true)
-  if (result.success) {
-    islogin = true;
-    window.location = "/"
+  if (form.password.value !== form.password2.value) {
+    showSamePass.innerHTML = "密碼對應不符，請重新輸入"
+    form.password.value.innerText = ''
+    form.password2.value.innerText = ''
+    isTimeOut()
   } else {
-    islogin = false;
-    document.querySelector("div#user").innerHTML = result.msg;
+    const body = {
+      username: form.username.value,
+      password: form.password.value,
+      sex: form.sex.value
+    }
+    const res = await fetch("/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+    const result = await res.json();//result = (success:true)
+    if (result.success) {
+      islogin = true;
+      window.location = "/"
+    } else {
+      islogin = false;
+      document.querySelector("div#user").innerHTML = result.msg;
+    }
   }
 });
 async function checkUserLogin() {
@@ -439,10 +458,10 @@ const reload = async function (id, page) {
       </div>
     </div>`}).join('');
 
-    // socket.on("liked", async (data) => {
-    //   checkLike(json)
-    // });
-    checkLike(json)
+
+    // checkLike(json)
+
+
     await json.allData.map((obj) => {
 
       const clickLike = document.querySelector(`.like_${obj.id}`)
@@ -458,14 +477,39 @@ const reload = async function (id, page) {
             method: "POST",
             body: JSON.stringify({ id })
           })
-
+          // checkLike(json)
         }
 
       })
-      socket.on("liked", async (data) => {
-        checkLike(json)
-      });
+      // socket.on("liked", async (data) => {
+      //   checkLike(json)
+      // });
     })
+    // socket.on("liked", async (data) => {
+    //   checkLike(json)
+    // });
+    checkLike(json)
+  }
+  if (numOfPage > 1) {
+    changePage.classList.remove("hidden")
+    next.classList.remove("hidden")
+    whatPage.innerHTML = ""
+    for (let i = 0; i < numOfPage; i++) {
+      const wtPage = document.createElement("div")
+      wtPage.classList.add("flex", "Pp")
+      if (i + 1 == numOfPage) {
+        wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+      }
+      else {
+        wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+      }
+
+      whatPage.appendChild(wtPage)
+    }
+  }
+  if (page + 1 >= numOfPage) {
+    next.classList.add("hidden")
+    // back.classList.remove("hidden")
   }
 }
 

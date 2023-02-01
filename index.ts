@@ -43,7 +43,7 @@ declare module "express-session" {
   }
 }
 io.on("connection", function (socket) {
-  console.log(socket);
+  // console.log(socket);
 });
 
 const uploadDir = "uploads";
@@ -100,6 +100,7 @@ function transfer_formidable_into_obj(form_result: formResult) {
 //輸入新post到database
 app.post("/addpost", async (req: express.Request, res: express.Response) => {
   io.emit("getPosted", "getPosted");
+  console.log("hihihihihhihiihi");
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
   const user = req.session.user;
@@ -138,10 +139,6 @@ async function callpage(id: number) {
     `SELECT count(*) from comments where post_id=$1`,
     [id]
   );
-  return Math.ceil(countPost.rows[0].count / 5);
-}
-async function callpost() {
-  const countPost = await client.query(`SELECT count(posts.id) from posts`);
   return Math.ceil(countPost.rows[0].count / 5);
 }
 /////////////////////////////////工程中////////////////////////////////////
@@ -212,9 +209,8 @@ app.get(
 );
 //get title到左邊column
 app.get("/getPost", async (req: express.Request, res: express.Response) => {
-  const postpage = callpost();
   const posttitle = await client.query(
-    "SELECT users.name,users.sex,posts.id,posts.title,posts.created_at from(SELECT posts.id,posts.title,posts.created_at,posts.user_id FROM posts limit 10 )as posts inner join users on posts.user_id = users.id order by created_at desc"
+    "SELECT users.name,users.sex,posts.id,posts.title,posts.created_at from(SELECT posts.id,posts.title,posts.created_at,posts.user_id FROM posts)as posts inner join users on posts.user_id = users.id order by created_at desc"
   );
 
   // let asd = a123.rows;
@@ -222,7 +218,7 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
   postData = await Promise.all(
     postData.map(async (obj) => {
       let likecount = await client.query(
-        `select comment_like.user_id  from (select posts.id as postid,comments.id as comid from posts inner join comments on posts.id = comments.post_id where is_first_comment =true limit 10)as com inner join comment_like on comment_like.comment_id =com.comid where com.postid = $1`, // where com.postid IN ${sql_param}
+        `select comment_like.user_id  from (select posts.id as postid,comments.id as comid from posts inner join comments on posts.id = comments.post_id where is_first_comment =true)as com inner join comment_like on comment_like.comment_id =com.comid where com.postid = $1`, // where com.postid IN ${sql_param}
         [obj.id]
       );
       let like = likecount.rows.length;
@@ -246,8 +242,8 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
 app.post(
   "/clickLike/:page",
   async (req: express.Request, res: express.Response) => {
-    io.emit("getPosted", "have liked");
     // res.json({ updated: 1 });
+    io.emit("liked", "have liked");
     const showlike = await client.query(
       "SELECT comment_id,user_id FROM comment_like WHERE comment_id = $1 AND user_id = $2",
       [req.body.id, req.session.user?.id]
@@ -360,9 +356,9 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 });
 
 //reply a post (commentsssss)
+
 //輸入新comment到database TESTING NOT CONFIrM
 app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
-  io.emit("newcomm", "have new commet");
   let formResult: any = await formidable_promise(req);
   let obj: any = transfer_formidable_into_obj(formResult);
 
@@ -384,6 +380,7 @@ app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
       result: true,
       message: "success",
     });
+    io.emit("newcomm", "have new commet");
   }
 });
 
