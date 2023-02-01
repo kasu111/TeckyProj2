@@ -189,21 +189,32 @@ const chairIcon = document.querySelector(".chairIcon")
 const openAnimate = document.querySelector('.openAnimate')
 const commentsWall = document.querySelector('.commentsWall')
 const leg = document.querySelector(".leg")
+const teckDone1 = document.querySelector('.teckDone1')
+const teckDone2 = document.querySelector('.teckDone2')
+const teckDone3 = document.querySelector('.teckDone3')
 
 let hideChair = function(){
   openAnimate.classList.add('none')
 }
 
 let newChair = function(){
-  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>`
+  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
+  </div>`
   }
+ 
+
+let teckDone = function(){
+  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
+  <span class="teckDone1 elementToFadeIn">踢櫈 Teck Done</span>
+  </div>`
+}
 /* <span class="leg">🦵</span> </div> */
 
 if(true){
   chairIcon.classList.add("spin2")
-  setTimeout(hideChair, 1500);
-  setTimeout(newChair,1400)
-  
+  setTimeout(hideChair, 1300);
+  setTimeout(newChair,1200);
+  setTimeout(teckDone,1800)
 }
 
 
