@@ -25,10 +25,15 @@ const pageLine = document.querySelector(".nextPage")
 const submitBTN = document.querySelector(".submitBTN")
 const whatPage = document.querySelector(".whatPage")
 const changePage = document.getElementById("changePage")
+const muchPage1 = document.querySelector(".muchPage1")
+const muchPage2 = document.querySelector(".muchPage2")
+
 // const Pp = document.querySelectorAll(".Pp")
 changePage.classList.add("hidden")
 back.classList.add("hidden")
 next.classList.add("hidden")
+muchPage1.classList.add("hidden")
+muchPage2.classList.add("hidden")
 let page = 0;
 const socket = io.connect()
 let islogin = false;
@@ -171,26 +176,49 @@ async function loadpost() {
           reload(id, page)
         });
         socket.on("newcomm", async (data) => {
+          const id = pageLine.getAttribute("data-page");
+          const res = await fetch(`/addPostCommemt/${id}/${page}`, {
+            method: "GET",
+          });
+          const json = await res.json();
+          const numOfPage = json.numOfPage;
           reload(id, page)
+          if (numOfPage > 1) {
+            changePage.classList.remove("hidden")
+            next.classList.remove("hidden")
+            whatPage.innerHTML = ""
+            for (let i = 0; i < numOfPage; i++) {
+              const wtPage = document.createElement("div")
+              wtPage.classList.add("flex", "Pp")
+              if (i + 1 == numOfPage) {
+                wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+              }
+              else {
+                wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+              }
+
+              whatPage.appendChild(wtPage)
+            }
+          }
+          if (page + 1 >= numOfPage) {
+            next.classList.add("hidden")
+            back.classList.remove("hidden")
+          }
         });
       })
     }
 
     resetReply.addEventListener("submit", async event => {
-      const id = document.querySelector('.commentBox').getAttribute("data-post_id")
+      const id2 = document.querySelector('.commentBox').getAttribute("data-post_id")
       event.preventDefault();
       const form = event.target;
       const formData = new FormData(form);
       formData.append("files", image)
-
-
-
-
-      const res = await fetch(`/reply/${id}`, {
+      const res2 = await fetch(`/reply/${id2}`, {
         method: "POST",
         body: formData
       });
-      const result = await res.json();//result = (success:true)
+      const result = await res2.json();//result = (success:true)
       if (result.success) {
 
         resetReply.reset();
@@ -199,19 +227,44 @@ async function loadpost() {
       } else {
         document.querySelector("div#reply").innerHTML = result.msg;
       }
+      const id = pageLine.getAttribute("data-page");
+      const res = await fetch(`/addPostCommemt/${id}/${page}`, {
+        method: "GET",
+      });
+      const json = await res.json();
+      const numOfPage = json.numOfPage;
+      reload(id, page)
+      if (numOfPage > 1) {
+        changePage.classList.remove("hidden")
+        next.classList.remove("hidden")
+        whatPage.innerHTML = ""
+        for (let i = 0; i < numOfPage; i++) {
+          const wtPage = document.createElement("div")
+          wtPage.classList.add("flex", "Pp")
+          if (i + 1 == numOfPage) {
+            wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+          }
+          else {
+            wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+          }
+
+          whatPage.appendChild(wtPage)
+        }
+      }
+      if (page + 1 >= numOfPage) {
+        next.classList.add("hidden")
+        back.classList.remove("hidden")
+      }
     });
 
   }
 }
-
 
 //////////////////////////CARLOS//////////////
 document.querySelector("input#selectUploadFile").addEventListener("change", (event) => {
   document.getElementById('blah').src = window.URL.createObjectURL(event.target.files[0]);
   image = event.target.files[0];
 })
-
-
 
 //////////////////////////已完成//////////////////////////
 function timetype(time) {
@@ -338,7 +391,7 @@ const reload = async function (id, page) {
   const json = await res.json();
   const title = document.querySelector(".titletext");
   const commPlace = document.querySelector(".commentsWall");
-
+  const numOfPage = json.numOfPage;
   if (json.result) {
     if (islogin) {
       isreply.classList.remove("none")
@@ -384,7 +437,6 @@ const reload = async function (id, page) {
     socket.on("liked", async (data) => {
       checkLike(json)
     });
-
     await json.allData.map((obj) => {
 
       const clickLike = document.querySelector(`.like_${obj.id}`)
@@ -435,50 +487,3 @@ function isPhoto(obj) {
 
 
 
-async function loadpost2() {
-
-  let post = [];
-  const res = await fetch("/getPost", {
-    method: "GET",
-  });
-  let json = await res.json();
-  post = json.postData;
-  // console.log(post);
-  const postLine = document.querySelector(".postLine");
-  // const toptitle = document.querySelector(".titletext")
-  const comments = postLine.children
-  const time = post.created_at;
-
-  if (json.result) {
-    postLine.innerHTML = post
-      .map((obj) => {
-        return `<div class="post" data-id="${obj.id}">
-          <div class="postSet">
-            <div class="postMenu">
-              <div class="postName ${obj.meta}">${obj.name}</div>
-              
-              <div class="like postLike_${post[0].id}">
-                <i class="fa-regular fa-thumbs-up"></i>
-                <div data-like="${obj.id}">${obj.like}</div>
-              </div>
-              <div class="flex1">
-            </div>
-              <div>
-              <div class="time">${timetype(obj.created_at)}</div>
-            </div>
-            </div>
-            <div>
-            </div>
-          </div>
-          <div class="postTitle">
-            <div class="Red"></div>
-            <div class="mainTitle">
-              <h4>
-                ${obj.title}
-              </h4>
-            </div>
-          </div>
-        </div>`
-      }).join("");
-  }
-}

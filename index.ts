@@ -140,6 +140,10 @@ async function callpage(id: number) {
   );
   return Math.ceil(countPost.rows[0].count / 5);
 }
+async function callpost() {
+  const countPost = await client.query(`SELECT count(posts.id) from posts`);
+  return Math.ceil(countPost.rows[0].count / 5);
+}
 /////////////////////////////////工程中////////////////////////////////////
 // app.get(
 //   "next/:id/:page",
@@ -209,6 +213,7 @@ app.get(
 );
 //get title到左邊column
 app.get("/getPost", async (req: express.Request, res: express.Response) => {
+  const postpage = callpost();
   const posttitle = await client.query(
     "SELECT users.name,users.sex,posts.id,posts.title,posts.created_at from(SELECT posts.id,posts.title,posts.created_at,posts.user_id FROM posts limit 10 )as posts inner join users on posts.user_id = users.id order by created_at desc"
   );
@@ -356,7 +361,6 @@ app.post("/signup", async (req: express.Request, res: express.Response) => {
 });
 
 //reply a post (commentsssss)
-
 //輸入新comment到database TESTING NOT CONFIrM
 app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
   io.emit("newcomm", "have new commet");

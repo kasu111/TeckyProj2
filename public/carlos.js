@@ -5,6 +5,7 @@
 // const signin = document.querySelector('#signin')
 // let islogin = false;
 
+
 // signin.addEventListener("submit", async event => {
 //     event.preventDefault();
 //     const form = event.target;
@@ -183,6 +184,34 @@ for (let i = 0; i < gifs.length; i++) {
     ReplyTextPlace1.value += `<img src='${gif.src}' width='150'/> `
   });
 }
+
+const chairIcon = document.querySelector(".chairIcon")
+const openAnimate = document.querySelector('.openAnimate')
+const commentsWall = document.querySelector('.commentsWall')
+const leg = document.querySelector(".leg")
+
+let hideChair = function(){
+  openAnimate.classList.add('none')
+}
+
+let newChair = function(){
+  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>`
+  }
+/* <span class="leg">🦵</span> </div> */
+
+if(true){
+  chairIcon.classList.add("spin2")
+  setTimeout(hideChair, 1500);
+  setTimeout(newChair,1400)
+  
+}
+
+
+
+
+
+
+
 
 //2. after typing cant input emoji anymore
 //1. too many emoji need queryselectorall
