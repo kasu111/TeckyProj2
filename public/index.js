@@ -9,7 +9,7 @@ const replyBox = document.querySelector("#replyBox")
 const closeReplyBox = document.querySelector("#closeReplyBox")
 const isreply = document.querySelector(".recomm")
 const uploadFiles = document.querySelector("#uploadFiles")
-const uploadBtn = document.querySelector("#uploadBtn")
+const uploadBtn = document.querySelector(".uploadBtn")
 const newPost = document.querySelector("#newPost");
 const backdrop = document.querySelector("#backdrop")
 const logout = document.getElementById("logout")
@@ -40,9 +40,6 @@ let page = 0;
 const socket = io.connect()
 let islogin = false;
 let image;
-socket.on("getComment", async (data) => {
-
-})
 socket.on("getPosted", async (data) => {
   await loadpost()
 });
@@ -223,11 +220,16 @@ async function loadpost() {
       const form = event.target;
       const formData = new FormData(form);
       formData.append("files", image)
+      console.log(image)
+
+
+
       const res2 = await fetch(`/reply/${id2}`, {
         method: "POST",
         body: formData
       });
       const result = await res2.json();//result = (success:true)
+
       if (result.success) {
 
         resetReply.reset();
@@ -532,5 +534,98 @@ function isPhoto(obj) {
 }
 // history.go(-1)
 
+
+
+async function loadpost2() {
+
+  let post = [];
+  const res = await fetch("/getPost", {
+    method: "GET",
+  });
+  let json = await res.json();
+  post = json.postData;
+  // console.log(post);
+  const postLine = document.querySelector(".postLine");
+  // const toptitle = document.querySelector(".titletext")
+  const comments = postLine.children
+  const time = post.created_at;
+
+  if (json.result) {
+    postLine.innerHTML = post
+      .map((obj) => {
+        return `<div class="post" data-id="${obj.id}">
+          <div class="postSet">
+            <div class="postMenu">
+              <div class="postName ${obj.meta}">${obj.name}</div>
+              
+              <div class="like postLike_${post[0].id}">
+                <i class="fa-regular fa-thumbs-up"></i>
+                <div data-like="${obj.id}">${obj.like}</div>
+              </div>
+              <div class="flex1">
+            </div>
+              <div>
+              <div class="time">${timetype(obj.created_at)}</div>
+            </div>
+            </div>
+            <div>
+            </div>
+          </div>
+          <div class="postTitle">
+            <div class="Red"></div>
+            <div class="mainTitle">
+              <h4>
+                ${obj.title}
+              </h4>
+            </div>
+          </div>
+        </div>`
+      }).join("");
+  }
+}
+
+const chairIcon = document.querySelector(".chairIcon")
+const openAnimate = document.querySelector('.openAnimate')
+const commentsWall = document.querySelector('.commentsWall')
+const leg = document.querySelector(".leg")
+const teckDone1 = document.querySelector('.teckDone1')
+const teckDone2 = document.querySelector('.teckDone2')
+const teckDone3 = document.querySelector('.teckDone3')
+
+let hideChair = function () {
+  openAnimate.classList.add('none')
+}
+
+let newChair = function () {
+  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
+  </div>`
+}
+
+
+let teckDone = function () {
+  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
+  <span class="teckDone1 elementToFadeIn">踢櫈 Teck Done</span>
+  <span class="TDHKG elementToFadeIn">踢櫈討論區 TDF</span>
+  </div>`
+}
+
+async function runTheOpening() {
+  const res = await fetch("/user");
+  const sessionResult = await res.json();
+  if (sessionResult.id === null) {
+    islogin = false;
+    chairIcon.classList.remove("none")
+    openAnimate.classList.remove("none")
+    chairIcon.classList.add("spin2")
+    setTimeout(hideChair, 1300);
+    setTimeout(newChair, 1200);
+    setTimeout(teckDone, 1800)
+  } else {
+    chairIcon.classList.add("none")
+    openAnimate.classList.add("none")
+
+  }
+}
+runTheOpening();
 
 

@@ -7,15 +7,13 @@
     padding-right: 5px;
 }
 .bluecolor {
-    /* color:rgb(31, 101, 175); */
-    color:#34AADC;
+    color:#34aadc;
     font-weight: bolder;
-    text-shadow: 0 0 5px rgba(201, 217, 252, 0.187);
+    
 }
 .redcolor{
-    color:#C0392B;
+    color:#c0392b;
     font-weight: bolder;
-    text-shadow: 0 0 5px rgba(255, 204, 204, 0.201);
 }
 .WOWso li{
     color:rgba(49, 255, 166, 0.717) !important;

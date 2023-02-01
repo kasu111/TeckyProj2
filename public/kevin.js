@@ -48,6 +48,7 @@ changePage.addEventListener("click", async (obj) => {
     });
     page = pages
     const json = await res.json();
+    console.log(json,'50')
     const numOfPage = json.numOfPage;
     next.classList.remove("hidden")
     back.classList.remove("hidden")

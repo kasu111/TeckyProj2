@@ -10,10 +10,7 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+   
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -239,7 +236,7 @@
                     >
                   </button>
                 </li>
-                <li>
+                <!-- <li>
                   <button
                     class="dropdown-item"
                     style="
@@ -250,7 +247,7 @@
                   >
                     Something else here
                   </button>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -290,9 +287,9 @@
         </div>
       </div>
     </div>
-    <div class="titleLine">
+    <div class="titleLine">  
       <div class="topLine topRight">
-        <div><i class="fa-solid fa-chevron-left"></i></div>
+        <div><i class="fa-solid fa-chevron-left hidden"></i></div>
         <div class="titletext"></div>
         <div class="flex alitem">
           <div class="isreply">
@@ -300,7 +297,7 @@
               <i class="fa-solid fa-comment-medical recomm none"></i>
             </div>
           </div>
-          <div><i class="fa-solid fa-heart"></i></div>
+          <div><i class="fa-solid fa-heart none"></i></div>
         </div>
       </div>
       <div>
@@ -363,17 +360,11 @@
           <div class="FunctionsSoMany">
             <div class="emojiBtn"><i class="fa-regular fa-face-smile"></i></div>
             <div class="gifBtn"><i class="fa-regular fa-image"></i></div>
-            <div id="uploadBtn">
+            <div id="uploadBtn" class="uploadBtn">
               <i class="fa-solid fa-file-arrow-up"></i>
             </div>
 
-            <!-- <div><i class="fa-solid fa-palette"></i></div> -->
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            
           </div>
           <div class="ReplyTextPlace">
             <form id="reply" class="ReplyForm" enctype="multipart/form-data">
@@ -385,12 +376,10 @@
               ></textarea>
               <div class="replySubmit">
                 <img
-                  src=""
                   id="uploadedImg"
-                  alt=""
                   width="50"
                   height="50"
-                  name="files"
+                  name="image"
                 />
 
                 <span><i class="fa-solid fa-paper-plane"></i></span>
@@ -495,8 +484,8 @@
         <div class="uploadBox">
           <div class="uploadAreaOuter">
             <div class="uploadArea">
-              <div>
-                <img class="uploadFilesBtn" src="" alt="your image" id="blah" />
+              <div class="uploadFilesPage">
+                <img class="uploadFilesBtn hidden" src="" alt="your image" id="blah" />
                 <input
                   id="selectUploadFile"
                   type="file"
@@ -505,15 +494,15 @@
                 <!-- onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" -->
               </div>
             </div>
-            <!-- <div class="dragClickPhoto">
+            <div class="dragClickPhoto">
           <i class="fa-solid fa-cloud-arrow-up uploadText"></i>
           <span class="uploadText">點擊或拖放圖片到此處</span>
-        </div> -->
-          </div>
-          <div class="submitPhoto">
-            <button class="resubmit photoBTN post-">Submit</button>
-          </div>
         </div>
+        </div>
+        <div class="submitPhoto">
+          <button class="resubmit photoBTN post-">上傳</button>
+        </div>
+       
       </div>
     </div>
     <div class="openAnimate">

@@ -116,6 +116,10 @@ function formToJson(formData) {
   return JSON.stringify(obj);
 }
 
+const blah = document.querySelector("#blah")
+
+const uploadFilesBtn = document.querySelector("#uploadFilesBtn")
+
 const uploadedImg = document.querySelector("#uploadedImg");
 
 const emojiBtn = document.querySelector(".emojiBtn");
@@ -146,6 +150,19 @@ document.querySelector(".photoBTN").addEventListener("click", async (event) => {
 });
 
 const emojiBox = document.querySelector(".emojiBox");
+const selectUploadFile = document.querySelector("#selectUploadFile")
+const dragClickPhoto = document.querySelector('.dragClickPhoto')
+
+selectUploadFile.addEventListener("change", async event=>{
+  blah.classList.remove("hidden")
+  dragClickPhoto.classList.add('none')
+})
+
+uploadedImg.addEventListener("click", async event=>{
+  setTimeout(() => {
+    backdrop.classList.remove("none")
+  }, 500);
+})
 
 emojiBtn.addEventListener("click", async (event) => {
   if (emojiBox.style.height === "300px") {
@@ -185,37 +202,44 @@ for (let i = 0; i < gifs.length; i++) {
   });
 }
 
-const chairIcon = document.querySelector(".chairIcon")
-const openAnimate = document.querySelector('.openAnimate')
-const commentsWall = document.querySelector('.commentsWall')
-const leg = document.querySelector(".leg")
-const teckDone1 = document.querySelector('.teckDone1')
-const teckDone2 = document.querySelector('.teckDone2')
-const teckDone3 = document.querySelector('.teckDone3')
+// const chairIcon = document.querySelector(".chairIcon")
+// const openAnimate = document.querySelector('.openAnimate')
+// const commentsWall = document.querySelector('.commentsWall')
+// const leg = document.querySelector(".leg")
+// const teckDone1 = document.querySelector('.teckDone1')
+// const teckDone2 = document.querySelector('.teckDone2')
+// const teckDone3 = document.querySelector('.teckDone3')
 
-let hideChair = function(){
-  openAnimate.classList.add('none')
-}
+// let hideChair = function(){
+//   openAnimate.classList.add('none')
+// }
 
-let newChair = function(){
-  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
-  </div>`
-  }
+// let newChair = function(){
+//   commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
+//   </div>`
+//   }
  
 
-let teckDone = function(){
-  commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
-  <span class="teckDone1 elementToFadeIn">踢櫈 Teck Done</span>
-  </div>`
-}
-/* <span class="leg">🦵</span> </div> */
+// let teckDone = function(){
+//   commentsWall.innerHTML = `<div><img src="chair.svg" class="chairIcon2"></img>
+//   <span class="teckDone1 elementToFadeIn">踢櫈 Teck Done</span>
+//   </div>`
+// }
 
-if(true){
-  chairIcon.classList.add("spin2")
-  setTimeout(hideChair, 1300);
-  setTimeout(newChair,1200);
-  setTimeout(teckDone,1800)
-}
+// if(islogin == false){
+//   chairIcon.classList.remove("none")
+//     openAnimate.classList.remove("none")
+//     chairIcon.classList.add("spin2")
+//     setTimeout(hideChair, 1300);
+//     setTimeout(newChair,1200);
+//     setTimeout(teckDone,1800)
+//   }
+//   else{
+//     chairIcon.classList.add("none")
+//     openAnimate.classList.add("none")
+//   }
+
+// }
 
 
 
