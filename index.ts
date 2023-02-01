@@ -62,15 +62,15 @@ let formidable_promise = (req: express.Request) => {
         reject({ err });
       }
       if (
-        JSON.stringify({ files }.files) !== "{}" &&
-        JSON.stringify({ fields }.fields) !== "{}"
+        JSON.stringify({ files }.files) != "{}" &&
+        JSON.stringify({ fields }.fields) != "{}"
       ) {
         // formidable exist file && formidable exist fields
         resolve({ fields, files });
-      } else if (JSON.stringify({ fields }.fields) !== "{}") {
+      } else if (JSON.stringify({ fields }.fields) != "{}") {
         // formidable does not exist file but exist fields
         resolve({ fields });
-      } else if (JSON.stringify({ files }.files) !== "{}") {
+      } else if (JSON.stringify({ files }.files) != "{}") {
         // formidable does not exist fields but exist file
         resolve({ files });
       } else {
@@ -363,7 +363,7 @@ app.post("/reply/:id", async (req: express.Request, res: express.Response) => {
   let obj: any = transfer_formidable_into_obj(formResult);
 
   const userid = req.session.user?.id;
-  console.log(obj, "367");
+  // console.log(obj, "367");
   // const replyContent = req.body.replyContent;
   if (obj.hasOwnProperty("image")) {
     const newRecord: any = await client.query(

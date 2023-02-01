@@ -217,17 +217,19 @@ async function loadpost() {
     resetReply.addEventListener("submit", async event => {
       const id2 = document.querySelector('.commentBox').getAttribute("data-post_id")
       event.preventDefault();
+      if (!event) {
+        resetReply.reset()
+        return
+      }
       const form = event.target;
       const formData = new FormData(form);
       formData.append("files", image)
-      console.log(image)
-
-
 
       const res2 = await fetch(`/reply/${id2}`, {
         method: "POST",
         body: formData
       });
+      resetReply.reset();
       const result = await res2.json();//result = (success:true)
 
       if (result.success) {
@@ -267,10 +269,10 @@ async function loadpost() {
           whatPage.appendChild(wtPage)
         }
       }
-      // if (page + 1 >= numOfPage) {
-      //   next.classList.add("hidden")
-      //   // back.classList.remove("hidden")
-      // }
+      if (page + 1 >= numOfPage) {
+        next.classList.add("hidden")
+        // back.classList.remove("hidden")
+      }
     });
 
   }
@@ -298,6 +300,7 @@ reply.addEventListener("click", async () => {
   replyBox.classList.remove("none")
 })
 closeReplyBox.addEventListener("click", async () => {
+  resetReply.reset()
   replyBox.classList.add("none")
 })
 
@@ -447,7 +450,7 @@ const reload = async function (id, page) {
           <i class="fa-solid fa-triangle-exclamation flexEnd none"></i>
         </div>
       </div>
-      <div class="CommentContent">${obj.body}${isPhoto(obj.photo)}</div>
+      <div class="CommentContent">${obj.body}<br>${isPhoto(obj.photo)}</div>
       <div class="likeDislike">
         <div class="likeArea">
           <div class="likePlace like_${obj.id}">
@@ -536,53 +539,53 @@ function isPhoto(obj) {
 
 
 
-async function loadpost2() {
+// async function loadpost2() {
 
-  let post = [];
-  const res = await fetch("/getPost", {
-    method: "GET",
-  });
-  let json = await res.json();
-  post = json.postData;
-  // console.log(post);
-  const postLine = document.querySelector(".postLine");
-  // const toptitle = document.querySelector(".titletext")
-  const comments = postLine.children
-  const time = post.created_at;
+//   let post = [];
+//   const res = await fetch("/getPost", {
+//     method: "GET",
+//   });
+//   let json = await res.json();
+//   post = json.postData;
+//   // console.log(post);
+//   const postLine = document.querySelector(".postLine");
+//   // const toptitle = document.querySelector(".titletext")
+//   const comments = postLine.children
+//   const time = post.created_at;
 
-  if (json.result) {
-    postLine.innerHTML = post
-      .map((obj) => {
-        return `<div class="post" data-id="${obj.id}">
-          <div class="postSet">
-            <div class="postMenu">
-              <div class="postName ${obj.meta}">${obj.name}</div>
-              
-              <div class="like postLike_${post[0].id}">
-                <i class="fa-regular fa-thumbs-up"></i>
-                <div data-like="${obj.id}">${obj.like}</div>
-              </div>
-              <div class="flex1">
-            </div>
-              <div>
-              <div class="time">${timetype(obj.created_at)}</div>
-            </div>
-            </div>
-            <div>
-            </div>
-          </div>
-          <div class="postTitle">
-            <div class="Red"></div>
-            <div class="mainTitle">
-              <h4>
-                ${obj.title}
-              </h4>
-            </div>
-          </div>
-        </div>`
-      }).join("");
-  }
-}
+//   if (json.result) {
+//     postLine.innerHTML = post
+//       .map((obj) => {
+//         return `<div class="post" data-id="${obj.id}">
+//           <div class="postSet">
+//             <div class="postMenu">
+//               <div class="postName ${obj.meta}">${obj.name}</div>
+
+//               <div class="like postLike_${post[0].id}">
+//                 <i class="fa-regular fa-thumbs-up"></i>
+//                 <div data-like="${obj.id}">${obj.like}</div>
+//               </div>
+//               <div class="flex1">
+//             </div>
+//               <div>
+//               <div class="time">${timetype(obj.created_at)}</div>
+//             </div>
+//             </div>
+//             <div>
+//             </div>
+//           </div>
+//           <div class="postTitle">
+//             <div class="Red"></div>
+//             <div class="mainTitle">
+//               <h4>
+//                 ${obj.title}
+//               </h4>
+//             </div>
+//           </div>
+//         </div>`
+//       }).join("");
+//   }
+// }
 
 const chairIcon = document.querySelector(".chairIcon")
 const openAnimate = document.querySelector('.openAnimate')
