@@ -25,10 +25,15 @@ const pageLine = document.querySelector(".nextPage")
 const submitBTN = document.querySelector(".submitBTN")
 const whatPage = document.querySelector(".whatPage")
 const changePage = document.getElementById("changePage")
+const muchPage1 = document.querySelector(".muchPage1")
+const muchPage2 = document.querySelector(".muchPage2")
+
 // const Pp = document.querySelectorAll(".Pp")
 changePage.classList.add("hidden")
 back.classList.add("hidden")
 next.classList.add("hidden")
+muchPage1.classList.add("hidden")
+muchPage2.classList.add("hidden")
 let page = 0;
 const socket = io.connect()
 let islogin = false;
@@ -85,7 +90,7 @@ postPost.addEventListener("submit", async (event) => {
   postPost.reset();
   newPost.classList.add("none");
   // await loadpost();
-  window.location = "/"
+  // window.location = "/"
 });
 
 async function loadpost() {
@@ -172,13 +177,40 @@ async function loadpost() {
           reload(id, page)
         });
         socket.on("newcomm", async (data) => {
+          const id = pageLine.getAttribute("data-page");
+          const res = await fetch(`/addPostCommemt/${id}/${page}`, {
+            method: "GET",
+          });
+          const json = await res.json();
+          const numOfPage = json.numOfPage;
           reload(id, page)
+          if (numOfPage > 1) {
+            changePage.classList.remove("hidden")
+            next.classList.remove("hidden")
+            whatPage.innerHTML = ""
+            for (let i = 0; i < numOfPage; i++) {
+              const wtPage = document.createElement("div")
+              wtPage.classList.add("flex", "Pp")
+              if (i + 1 == numOfPage) {
+                wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+              }
+              else {
+                wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+              }
+
+              whatPage.appendChild(wtPage)
+            }
+          }
+          if (page + 1 >= numOfPage) {
+            next.classList.add("hidden")
+            back.classList.remove("hidden")
+          }
         });
       })
     }
 
     resetReply.addEventListener("submit", async event => {
-      const id = document.querySelector('.commentBox').getAttribute("data-post_id")
+      const id2 = document.querySelector('.commentBox').getAttribute("data-post_id")
       event.preventDefault();
       const form = event.target;
       const formData = new FormData(form);
@@ -201,19 +233,44 @@ async function loadpost() {
       } else {
         document.querySelector("div#reply").innerHTML = result.msg;
       }
+      const id = pageLine.getAttribute("data-page");
+      const res = await fetch(`/addPostCommemt/${id}/${page}`, {
+        method: "GET",
+      });
+      const json = await res.json();
+      const numOfPage = json.numOfPage;
+      reload(id, page)
+      if (numOfPage > 1) {
+        changePage.classList.remove("hidden")
+        next.classList.remove("hidden")
+        whatPage.innerHTML = ""
+        for (let i = 0; i < numOfPage; i++) {
+          const wtPage = document.createElement("div")
+          wtPage.classList.add("flex", "Pp")
+          if (i + 1 == numOfPage) {
+            wtPage.innerHTML = `<div class="pAp">${i + 1}</div>`
+          }
+          else {
+            wtPage.innerHTML = `<div class="pAp">${i + 1}</div> <div>,</div>`
+          }
+
+          whatPage.appendChild(wtPage)
+        }
+      }
+      if (page + 1 >= numOfPage) {
+        next.classList.add("hidden")
+        back.classList.remove("hidden")
+      }
     });
 
   }
 }
-
 
 //////////////////////////CARLOS//////////////
 document.querySelector("input#selectUploadFile").addEventListener("change", (event) => {
   document.getElementById('blah').src = window.URL.createObjectURL(event.target.files[0]);
   image = event.target.files[0];
 })
-
-
 
 //////////////////////////已完成//////////////////////////
 function timetype(time) {
@@ -325,7 +382,7 @@ async function checkLike(json) {
 
     if (json.color && islogin) {
       color.classList.add("isLiked")
-    } else if (!json.color && islogin) {
+    } else if (!json.color) {
       color.classList.remove("isLiked")
     }
   })
@@ -340,7 +397,7 @@ const reload = async function (id, page) {
   const json = await res.json();
   const title = document.querySelector(".titletext");
   const commPlace = document.querySelector(".commentsWall");
-
+  const numOfPage = json.numOfPage;
   if (json.result) {
     if (islogin) {
       isreply.classList.remove("none")
@@ -382,11 +439,11 @@ const reload = async function (id, page) {
         </div>
       </div>
     </div>`}).join('');
-    checkLike(json)
-    socket.on("liked", async (data) => {
-      checkLike(json)
-    });
 
+    // socket.on("liked", async (data) => {
+    //   checkLike(json)
+    // });
+    checkLike(json)
     await json.allData.map((obj) => {
 
       const clickLike = document.querySelector(`.like_${obj.id}`)
@@ -402,13 +459,13 @@ const reload = async function (id, page) {
             method: "POST",
             body: JSON.stringify({ id })
           })
-          const json = await res.json()
-          if (json.liked) {
-            clickLike.classList.add("isLiked")
-          } else { clickLike.classList.remove("isLiked") }
-        }
-      })
 
+        }
+
+      })
+      socket.on("liked", async (data) => {
+        checkLike(json)
+      });
     })
   }
 }
@@ -423,9 +480,6 @@ window.onload = async function () {
   await loadpost();
 }
 
-// socket.on("getPosted", async (data) => {
-//   await loadpost();
-// });
 function isPhoto(obj) {
   if (obj) {
     return `<img src='http://localhost:8000/${obj}' width='150'/> `

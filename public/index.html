@@ -25,106 +25,182 @@
       referrerpolicy="no-referrer"
     ></script>
 
-  <link rel="stylesheet" href="./carlos.css" />
-  <link rel="stylesheet" href="./index.css" />
-  <link rel="stylesheet" href="./kevin.css" />
+    <link rel="stylesheet" href="./carlos.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="./kevin.css" />
 
-  <title>Project2</title>
-</head>
+    <title>Project2</title>
+  </head>
 
-<body>
-
-  <div id="newPost" class="none">
-    <div class="animate__animated animate__flash boxPost">
-      <header>
-        <div></div>
-        <div>
-          <h3>發表主題</h3>
-        </div>
-        <div id="postClose"><i class="fa-solid fa-xmark"></i></div>
-      </header>
-      <main>
-        <form name="postform" id="postform" enctype="multipart/form-data">
+  <body>
+    <div id="newPost" class="none">
+      <div class="animate__animated animate__flash boxPost">
+        <header>
+          <div></div>
           <div>
-            <input name="title" type="text" class="writeTitle" placeholder="請輸入主題" required />
-            <div></div>
+            <h3>發表主題</h3>
           </div>
-          <textarea name="posttext" class="writeText" placeholder="請輸入內文" required></textarea>
-          <div class="subadd">
-            <input type="submit" class="add" />
-          </div>
-        </form>
-      </main>
+          <div id="postClose"><i class="fa-solid fa-xmark"></i></div>
+        </header>
+        <main>
+          <form name="postform" id="postform" enctype="multipart/form-data">
+            <div>
+              <input
+                name="title"
+                type="text"
+                class="writeTitle"
+                placeholder="請輸入主題"
+                required
+              />
+              <div></div>
+            </div>
+            <textarea
+              name="posttext"
+              class="writeText"
+              placeholder="請輸入內文"
+              required
+            ></textarea>
+            <div class="subadd">
+              <input type="submit" class="add" />
+            </div>
+          </form>
+        </main>
+      </div>
     </div>
-  </div>
-  <div class="mainLine">
-    <div class="topLine topleft">
-      <!-- /////////////////////////////////////////////////////////////// -->
-      <div class="dropdown part1">
-        <button type="button" class="btn btn-secondary toggle boxShadow" data-bs-toggle="dropdown" aria-expanded="false"
-          data-bs-auto-close="outside">
-          <i class="fa-solid fa-user-plus"></i>
-        </button>
-        <form id="signup" action="/signup" class="dropdown-menu p-4 dropdown-bcolor">
-          <div class="mb-3">
-            <label for="username" class="form-label" maxlength="20">username:</label>
-            <input type="text" name="username" class="form-control" id="username" placeholder="請輸入名稱" required />
-          </div>
-          <div class="mb-3">
-            <label for="exampleDropdownFormPassword2" class="form-label">Password:</label>
-            <input type="password" name="password" class="form-control" id="exampleDropdownFormPassword2"
-              placeholder="請輸入密碼" minlength="8" required />
-          </div>
-          <div class="mb-3">
-            <div class="form-check jusbet">
-              <div>
-                <input class="form-check-input" id="checkpass" type="checkbox" />
-                <label class="form-check-label" for="checkpass">
-                  顯示密碼
-                </label>
-              </div>
-              <div>
-                <input type="radio" name="sex" id="male" value="true" />
-                <label for="male">男姓</label>
-                <input type="radio" name="sex" id="female" value="false" required />
-                <label for="female">女姓</label>
+    <div class="mainLine">
+      <div class="topLine topleft">
+        <!-- /////////////////////////////////////////////////////////////// -->
+        <div class="dropdown part1">
+          <button
+            type="button"
+            class="btn btn-secondary toggle boxShadow"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            data-bs-auto-close="outside"
+          >
+            <i class="fa-solid fa-user-plus"></i>
+          </button>
+          <form
+            id="signup"
+            action="/signup"
+            class="dropdown-menu p-4 dropdown-bcolor"
+          >
+            <div class="mb-3">
+              <label for="username" class="form-label" maxlength="20"
+                >username:</label
+              >
+              <input
+                type="text"
+                name="username"
+                class="form-control"
+                id="username"
+                placeholder="請輸入名稱"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="exampleDropdownFormPassword2" class="form-label"
+                >Password:</label
+              >
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                id="exampleDropdownFormPassword2"
+                placeholder="請輸入密碼"
+                minlength="8"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <div class="form-check jusbet">
+                <div>
+                  <input
+                    class="form-check-input"
+                    id="checkpass"
+                    type="checkbox"
+                  />
+                  <label class="form-check-label" for="checkpass">
+                    顯示密碼
+                  </label>
+                </div>
+                <div>
+                  <input type="radio" name="sex" id="male" value="true" />
+                  <label for="male">男姓</label>
+                  <input
+                    type="radio"
+                    name="sex"
+                    id="female"
+                    value="false"
+                    required
+                  />
+                  <label for="female">女姓</label>
+                </div>
               </div>
             </div>
-          </div>
-          <button type="submit" class="btn btn-secondary toggle icon boxShadow">
-            註冊
-          </button>
-          <button type="reset" class="btn btn-secondary toggle icon boxShadow">
-            Reset
-          </button>
-        </form>
-      </div>
-      <!-- //////////////////////////////////////////////////////////////// -->
-      <div class="loginDiv part2">
-        <form id="signin" method="POST" class="flex loginForm">
-          <div>
-            <label for="username">會員 : </label>
-            <input type="text" name="username" class="username" placeholder="請輸入名稱" required />
-          </div>
-          <div>
-            <label for="password">密碼 : </label>
-            <input type="password" name="password" class="password" placeholder="請輸入密碼" required />
-          </div>
-          <input type="submit" class="loginSubmit" />
-        </form>
-        <div id="user"></div>
-      </div>
-      <!-- ////////////////////////////////////////////////////////////////// -->
-      <div class="part3 flex1 addPage jusbet none">
-        <div>
-          <div class="dropdown WOWso">
-            <button class="btn btn-secondary -toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-bars"></i>
+            <button
+              type="submit"
+              class="btn btn-secondary toggle icon boxShadow"
+            >
+              註冊
             </button>
-            <ul class="dropdown-menu">
-              <li>
-                <button id="clickReset" class="dropdown-item Chpass" type="button">
-                  <i class="fa-solid fa-repeat textmm" style="
+            <button
+              type="reset"
+              class="btn btn-secondary toggle icon boxShadow"
+            >
+              Reset
+            </button>
+          </form>
+        </div>
+        <!-- //////////////////////////////////////////////////////////////// -->
+        <div class="loginDiv part2">
+          <form id="signin" method="POST" class="flex loginForm">
+            <div>
+              <label for="username">會員 : </label>
+              <input
+                type="text"
+                name="username"
+                class="username"
+                placeholder="請輸入名稱"
+                required
+              />
+            </div>
+            <div>
+              <label for="password">密碼 : </label>
+              <input
+                type="password"
+                name="password"
+                class="password"
+                placeholder="請輸入密碼"
+                required
+              />
+            </div>
+            <input type="submit" class="loginSubmit" />
+          </form>
+          <div id="user"></div>
+        </div>
+        <!-- ////////////////////////////////////////////////////////////////// -->
+        <div class="part3 flex1 addPage jusbet none">
+          <div>
+            <div class="dropdown WOWso">
+              <button
+                class="btn btn-secondary -toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-bars"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <button
+                    id="clickReset"
+                    class="dropdown-item Chpass"
+                    type="button"
+                  >
+                    <i
+                      class="fa-solid fa-repeat textmm"
+                      style="
                         color: rgba(49, 255, 166, 0.717) !important;
                         text-shadow: 0 0 7px rgba(185, 255, 232, 0.719);
                       "
@@ -213,17 +289,18 @@
       <div>
         <div class="nextPage">
           <div id="back" class="forPage">上一頁</div>
+          <div class="muchPage1"><i class="fa-solid fa-backward-step"></i></div>
           <div id="changePage" class="forPage flex">
             第
             <div class="whatPage flex"></div>
             頁
           </div>
+          <div class="muchPage2"><i class="fa-solid fa-forward-step"></i></div>
           <div id="next" class="forPage">下一頁</div>
         </div>
         <!-- 開comments -->
         <div class="commentsWall">
           <!-- //////////////////////////////////////////////////////////// -->
-          
           <div class="commentBox none">
             <div class="bar">
               <div>
@@ -414,11 +491,9 @@
        
       </div>
     </div>
-  </div>
-  <div class="openAnimate">
-    <img src="chair.svg" class="chairIcon" alt="">
-  </div>
-
+    <div class="openAnimate">
+      <img src="chair.svg" class="chairIcon" alt="" />
+    </div>
 
     <!-- emoji box -->
 
