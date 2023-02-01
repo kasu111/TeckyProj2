@@ -161,7 +161,6 @@ async function callpost() {
 app.get(
   "/addPostCommemt/:id/:page",
   async (req: express.Request, res: express.Response) => {
-    io.emit("getComment", "get new comment");
     const id = Number(req.params.id);
 
     const next = Number(req.params.page);
@@ -247,7 +246,7 @@ app.get("/getPost", async (req: express.Request, res: express.Response) => {
 app.post(
   "/clickLike/:page",
   async (req: express.Request, res: express.Response) => {
-    io.emit("liked", "have liked");
+    io.emit("getPosted", "have liked");
     // res.json({ updated: 1 });
     const showlike = await client.query(
       "SELECT comment_id,user_id FROM comment_like WHERE comment_id = $1 AND user_id = $2",

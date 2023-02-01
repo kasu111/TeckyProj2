@@ -39,11 +39,16 @@ const socket = io.connect()
 let islogin = false;
 let image;
 
-socket.on("liked", async (data) => {
-  loadpost()
-});
 socket.on("getPosted", async (data) => {
   loadpost()
+  const id = pageLine.getAttribute("data-page");
+  const res = await fetch(`/addPostCommemt/${id}/${page}`, {
+    method: "GET",
+  });
+  const json = await res.json();
+  const numOfPage = json.numOfPage;
+  reload(id, page)
+
 });
 
 
@@ -89,7 +94,7 @@ postPost.addEventListener("submit", async (event) => {
   postPost.reset();
   newPost.classList.add("none");
   // await loadpost();
-  window.location = "/"
+  // window.location = "/"
 });
 
 async function loadpost() {
@@ -376,7 +381,7 @@ async function checkLike(json) {
 
     if (json.color && islogin) {
       color.classList.add("isLiked")
-    } else if (!json.color && islogin) {
+    } else if (!json.color) {
       color.classList.remove("isLiked")
     }
   })
@@ -433,10 +438,11 @@ const reload = async function (id, page) {
         </div>
       </div>
     </div>`}).join('');
+
+    // socket.on("liked", async (data) => {
+    //   checkLike(json)
+    // });
     checkLike(json)
-    socket.on("liked", async (data) => {
-      checkLike(json)
-    });
     await json.allData.map((obj) => {
 
       const clickLike = document.querySelector(`.like_${obj.id}`)
@@ -452,13 +458,13 @@ const reload = async function (id, page) {
             method: "POST",
             body: JSON.stringify({ id })
           })
-          const json = await res.json()
-          if (json.liked) {
-            clickLike.classList.add("isLiked")
-          } else { clickLike.classList.remove("isLiked") }
-        }
-      })
 
+        }
+
+      })
+      socket.on("liked", async (data) => {
+        checkLike(json)
+      });
     })
   }
 }
@@ -473,9 +479,6 @@ window.onload = async function () {
   await loadpost();
 }
 
-// socket.on("getPosted", async (data) => {
-//   await loadpost();
-// });
 function isPhoto(obj) {
   if (obj) {
     return `<img src='http://localhost:8000/${obj}' width='150'/> `
